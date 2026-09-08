@@ -1,0 +1,437 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Panel de Control | COACH PRO</title>
+
+  <!-- Font Awesome -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+  <!-- Admin Stylesheet -->
+  <link rel="stylesheet" href="css/admin.css?v=2.9">
+</head>
+<body>
+
+  <!-- Admin Top Navbar -->
+  <header class="admin-navbar">
+    <div style="display: flex; align-items: center; gap: 14px;">
+      <a href="index.html" class="brand-badge">
+        <div class="brand-icon"><i class="fa-solid fa-bolt"></i></div>
+        <span>COACH PRO</span>
+      </a>
+      <span class="brand-tag">Panel de Entrenador</span>
+    </div>
+
+    <div class="nav-user-actions" style="display: flex; align-items: center; gap: 10px; flex-wrap: wrap;">
+      <!-- Coach Rate Badge -->
+      <div class="coach-rate-badge" id="coachRateBadge" title="Tu tarifa mensual actual para entrenamiento personalizado">
+        <i class="fa-solid fa-tag" style="color: var(--primary);"></i>
+        <span>Personalizado: <strong id="coachPersonalizadoPrice">$49</strong>/mes</span>
+        <button type="button" class="btn-edit-rate" id="btnEditCoachRate" title="Cambiar precio de tu servicio personalizado"><i class="fa-solid fa-pen"></i></button>
+      </div>
+
+      <!-- Coach Profile Badge -->
+      <div class="user-profile-badge" id="coachProfileBadge">
+        <img src="https://images.unsplash.com/photo-1567013127542-490d757e51fc?q=80&w=150&auto=format&fit=crop" alt="Coach Avatar" class="user-avatar" id="coachAvatarImg">
+        <div>
+          <span id="coachNameDisplay">Coach <strong>Valentín</strong></span>
+          <small id="coachSpecialtyDisplay" style="display: block; font-size: 0.7rem; color: var(--text-muted); line-height: 1;">Biomecánica</small>
+        </div>
+      </div>
+
+      <a href="index.html" class="btn btn-secondary btn-sm" title="Ir a la web principal">
+        <i class="fa-solid fa-globe"></i> Ver Web
+      </a>
+
+      <!-- Logout Button -->
+      <button type="button" class="btn btn-secondary btn-sm" id="btnLogoutCoach" title="Cerrar Sesión de Entrenador" style="border-color: rgba(255, 94, 87, 0.4); color: #ff5e57;">
+        <i class="fa-solid fa-right-from-bracket"></i> Salir
+      </button>
+    </div>
+  </header>
+
+  <!-- Layout -->
+  <div class="admin-layout">
+    <!-- Tab Navigation -->
+    <nav class="admin-tabbar">
+      <button class="sidebar-btn active" data-tab="dashboard">
+        <i class="fa-solid fa-chart-pie"></i> Dashboard
+      </button>
+      <button class="sidebar-btn" data-tab="alumnos">
+        <i class="fa-solid fa-users"></i> Alumnos
+      </button>
+      <button class="sidebar-btn" data-tab="builder">
+        <i class="fa-solid fa-dumbbell"></i> Crear Rutinas
+      </button>
+      <button class="sidebar-btn" data-tab="turnos">
+        <i class="fa-regular fa-calendar-check"></i> Turnos Online
+      </button>
+    </nav>
+
+    <!-- Content Workspace -->
+    <main class="admin-content">
+
+      <!-- ==========================================================================
+           TAB 1: DASHBOARD OVERVIEW
+           ========================================================================== -->
+      <section class="tab-panel active" id="tab-dashboard">
+        <!-- Metrics -->
+        <div class="metrics-grid">
+          <div class="metric-card">
+            <div class="metric-icon-wrap"><i class="fa-solid fa-users"></i></div>
+            <div class="metric-info">
+              <h4 id="countAlumnos">3</h4>
+              <p>Alumnos Activos</p>
+            </div>
+          </div>
+          <div class="metric-card">
+            <div class="metric-icon-wrap"><i class="fa-solid fa-dumbbell"></i></div>
+            <div class="metric-info">
+              <h4 id="countRoutines">2</h4>
+              <p>Rutinas Asignadas</p>
+            </div>
+          </div>
+          <div class="metric-card">
+            <div class="metric-icon-wrap"><i class="fa-regular fa-calendar-check"></i></div>
+            <div class="metric-info">
+              <h4 id="countBookings">2</h4>
+              <p>Turnos Pendientes</p>
+            </div>
+          </div>
+          <div class="metric-card">
+            <div class="metric-icon-wrap"><i class="fa-solid fa-circle-check"></i></div>
+            <div class="metric-info">
+              <h4>94%</h4>
+              <p>Cumplimiento Semanal</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Quick Actions Box -->
+        <div class="content-box">
+          <div class="box-header">
+            <h3><i class="fa-solid fa-wand-magic-sparkles" style="color: var(--primary);"></i> Acciones Rápidas</h3>
+          </div>
+          <div style="display: flex; gap: 12px; flex-wrap: wrap;">
+            <button class="btn btn-primary btn-trigger-new-student" id="btnOpenNewStudent">
+              <i class="fa-solid fa-user-plus"></i> Registrar Nuevo Alumno
+            </button>
+            <button class="sidebar-btn-trigger btn btn-secondary" onclick="document.querySelector('[data-tab=\'builder\']').click()">
+              <i class="fa-solid fa-dumbbell"></i> Diseñar Nueva Rutina
+            </button>
+            <a href="alumno.html?id=1" target="_blank" class="btn btn-secondary">
+              <i class="fa-solid fa-mobile-screen"></i> Ver Portal del Alumno (Demo Lucas)
+            </a>
+          </div>
+        </div>
+      </section>
+
+      <!-- ==========================================================================
+           TAB 2: GESTIÓN DE ALUMNOS
+           ========================================================================== -->
+      <section class="tab-panel" id="tab-alumnos">
+        <div class="content-box">
+          <div class="box-header">
+            <h3><i class="fa-solid fa-users" style="color: var(--primary);"></i> Directorio de Alumnos</h3>
+            <button class="btn btn-primary btn-sm btn-trigger-new-student" id="btnOpenNewStudent2">
+              <i class="fa-solid fa-plus"></i> Nuevo Alumno
+            </button>
+          </div>
+
+          <div class="data-table-wrap">
+            <table class="data-table">
+              <thead>
+                <tr>
+                  <th>Alumno & Objetivo</th>
+                  <th>Plan Contratado</th>
+                  <th>WhatsApp</th>
+                  <th>Estado</th>
+                  <th>Acciones</th>
+                </tr>
+              </thead>
+              <tbody id="alumnosTableBody">
+                <!-- Populated dynamically via JS -->
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+
+      <!-- ==========================================================================
+           TAB 3: CONSTRUCTOR DE RUTINAS (ROUTINE BUILDER)
+           ========================================================================== -->
+      <section class="tab-panel" id="tab-builder">
+        <div class="content-box">
+          <div class="box-header">
+            <h3><i class="fa-solid fa-dumbbell" style="color: var(--primary);"></i> Constructor & Asignador de Rutinas</h3>
+            <div style="display: flex; gap: 10px; flex-wrap: wrap;">
+              <button type="button" class="btn btn-secondary btn-sm" id="btnPreviewCurrentRoutine">
+                <i class="fa-solid fa-eye"></i> Previsualizar Alumno
+              </button>
+              <button type="button" class="btn btn-secondary btn-sm" id="btnExportPDF">
+                <i class="fa-solid fa-file-pdf" style="color: #ff5e57;"></i> Ficha PDF / Imprimir
+              </button>
+              <button type="button" class="btn btn-whatsapp btn-sm" id="btnSendCurrentRoutine">
+                <i class="fa-brands fa-whatsapp"></i> Enviar Rutina
+              </button>
+            </div>
+          </div>
+
+          <div class="builder-grid">
+            <!-- Builder Left Sidebar: Settings -->
+            <div class="builder-sidebar">
+              <div class="form-group">
+                <label for="routineStudentSelect">Alumno Asignado</label>
+                <select id="routineStudentSelect" class="form-select">
+                  <!-- Populated dynamically -->
+                </select>
+              </div>
+
+              <div class="form-group">
+                <label for="routineTitleInput">Nombre de la Fase / Rutina</label>
+                <input type="text" id="routineTitleInput" class="form-input" placeholder="Ej: Fase 1: Hipertrofia & Fuerza">
+              </div>
+
+              <div class="form-group">
+                <label for="routineNotesInput">Recomendación General del Coach</label>
+                <textarea id="routineNotesInput" class="form-input" rows="4" placeholder="Ej: Controlar la cadencia en la fase excéntrica y registrar cargas."></textarea>
+              </div>
+
+              <button type="button" class="btn btn-primary" id="btnSaveRoutine" style="margin-top: 10px;">
+                <i class="fa-solid fa-floppy-disk"></i> Guardar Rutina
+              </button>
+            </div>
+
+            <!-- Builder Main: Day & Exercises Editor -->
+            <div>
+              <div class="day-selector-header" style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; gap: 10px;">
+                <label style="font-size: 0.78rem; font-weight: 700; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.5px; min-width: 0;">
+                  Días de Rutina (Máximo 6 Días por Semana)
+                </label>
+                <span style="font-size: 0.72rem; color: var(--primary); background: rgba(0, 255, 135, 0.1); border: 1px solid var(--border-accent); padding: 2px 8px; border-radius: 4px; font-weight: 700; flex-shrink: 0; white-space: nowrap;">
+                  1 a 6 Días
+                </span>
+              </div>
+
+              <div class="day-selector-pills" id="builderDayPills" style="display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 12px;">
+                <button type="button" class="day-pill-btn active" data-day="day1">Día 1</button>
+                <button type="button" class="day-pill-btn" data-day="day2">Día 2</button>
+                <button type="button" class="day-pill-btn" data-day="day3">Día 3</button>
+                <button type="button" class="day-pill-btn" data-day="day4">Día 4</button>
+                <button type="button" class="day-pill-btn" data-day="day5">Día 5</button>
+                <button type="button" class="day-pill-btn" data-day="day6">Día 6</button>
+              </div>
+
+              <div class="form-group" style="margin-bottom: 14px;">
+                <label for="currentDayNameInput" style="font-size: 0.75rem; color: var(--text-muted);">Enfoque / Nombre del Día Seleccionado:</label>
+                <input type="text" id="currentDayNameInput" class="form-input" placeholder="Ej: Día 1: Empujes de Pecho, Hombro & Tríceps">
+              </div>
+
+              <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 14px;">
+                <h4 style="font-size: 1rem; color: var(--text-white);">Ejercicios del Día</h4>
+                <button type="button" class="btn btn-secondary btn-sm" id="btnAddExercise">
+                  <i class="fa-solid fa-plus"></i> Añadir Ejercicio
+                </button>
+              </div>
+
+              <div class="exercises-editor-list" id="exercisesEditorList">
+                <!-- Exercise Edit Rows generated dynamically -->
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ==========================================================================
+           TAB 4: TURNOS ONLINE
+           ========================================================================== -->
+      <section class="tab-panel" id="tab-turnos">
+        <div class="content-box">
+          <div class="box-header">
+            <h3><i class="fa-regular fa-calendar-check" style="color: var(--primary);"></i> Solicitudes de Turnos</h3>
+          </div>
+
+          <p style="font-size: 0.85rem; color: var(--text-muted); margin-bottom: 10px;">
+            Compartí este link con tus alumnos para que reserven un turno directo con vos. Cada solicitud va a aparecer acá.
+          </p>
+          <div class="share-link-box" style="margin: 0 0 20px 0;">
+            <div class="share-link-text" id="myBookingLinkText">http://localhost/reservar.html?coach=coach_1</div>
+            <button type="button" class="btn btn-secondary btn-sm" id="btnCopyBookingLink" title="Copiar enlace">
+              <i class="fa-regular fa-copy"></i> Copiar
+            </button>
+          </div>
+
+          <div class="data-table-wrap">
+            <table class="data-table">
+              <thead>
+                <tr>
+                  <th>Cliente</th>
+                  <th>Servicio Solicitado</th>
+                  <th>Fecha & Horario</th>
+                  <th>WhatsApp</th>
+                  <th>Estado</th>
+                  <th>Acción</th>
+                </tr>
+              </thead>
+              <tbody id="bookingsTableBody">
+                <!-- Populated dynamically via JS -->
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+
+    </main>
+  </div>
+
+  <!-- ==========================================================================
+       MODAL: NUEVO ALUMNO
+       ========================================================================== -->
+  <div class="modal-overlay" id="newStudentModal">
+    <div class="modal-card">
+      <div class="modal-header">
+        <h3 style="font-size: 1.15rem; color: var(--text-white);"><i class="fa-solid fa-user-plus" style="color: var(--primary);"></i> Registrar Nuevo Alumno</h3>
+        <button class="modal-close" id="closeStudentModal"><i class="fa-solid fa-xmark"></i></button>
+      </div>
+
+      <form id="newStudentForm">
+        <div class="form-group" style="margin-bottom: 12px;">
+          <label for="newStudentName">Nombre y Apellido</label>
+          <input type="text" id="newStudentName" class="form-input" placeholder="Ej: Gonzalo Rossi" required>
+        </div>
+        <div class="form-group" style="margin-bottom: 12px;">
+          <label for="newStudentPhone">Número de WhatsApp (con código de país)</label>
+          <input type="tel" id="newStudentPhone" class="form-input" placeholder="+54 9 11 2233-4455" required>
+        </div>
+        <div class="form-group" style="margin-bottom: 12px;">
+          <label for="newStudentEmail">Email</label>
+          <input type="email" id="newStudentEmail" class="form-input" placeholder="gonzalo@ejemplo.com" required>
+        </div>
+        <div class="form-group" style="margin-bottom: 12px;">
+          <label for="newStudentPlan">Plan de Suscripción</label>
+          <select id="newStudentPlan" class="form-select">
+            <option value="Coaching Integral">Coaching Integral (1 a 1)</option>
+            <option value="Rutina Online">Rutina Online</option>
+            <option value="VIP Presencial">VIP Presencial / Híbrido</option>
+          </select>
+        </div>
+        <div class="form-group" style="margin-bottom: 18px;">
+          <label for="newStudentGoal">Meta Principal de Entrenamiento</label>
+          <input type="text" id="newStudentGoal" class="form-input" placeholder="Ej: Hipertrofia de hombros y sentadilla 100kg" required>
+        </div>
+
+        <button type="submit" class="btn btn-primary" style="width: 100%;">
+          <i class="fa-solid fa-check"></i> Registrar Alumno
+        </button>
+      </form>
+    </div>
+  </div>
+
+  <!-- ==========================================================================
+       MODAL: ENVIAR RUTINA POR WHATSAPP O ENLACE
+       ========================================================================== -->
+  <div class="modal-overlay" id="sendRoutineModal">
+    <div class="modal-card">
+      <div class="modal-header">
+        <h3 style="font-size: 1.15rem; color: var(--text-white);"><i class="fa-brands fa-whatsapp" style="color: #25d366;"></i> Enviar Rutina al Alumno</h3>
+        <button class="modal-close" id="closeSendModal"><i class="fa-solid fa-xmark"></i></button>
+      </div>
+
+      <p style="font-size: 0.9rem; color: var(--text-muted); margin-bottom: 14px;">
+        Se enviará el acceso directo a la rutina personalizada de <strong id="sendStudentName" style="color: var(--text-white);">Lucas Martínez</strong> (<span id="sendStudentPhone"></span>).
+      </p>
+
+      <div class="share-link-box">
+        <div class="share-link-text" id="studentPortalLinkText">http://localhost:8085/alumno.html?id=1</div>
+        <button type="button" class="btn btn-secondary btn-sm" id="btnCopyPortalLink" title="Copiar enlace">
+          <i class="fa-regular fa-copy"></i> Copiar
+        </button>
+      </div>
+
+      <div style="display: flex; flex-direction: column; gap: 10px; margin-top: 20px;">
+        <button type="button" class="btn btn-whatsapp" id="btnConfirmSendWhatsApp">
+          <i class="fa-brands fa-whatsapp"></i> Enviar Rutina por WhatsApp (1 Clic)
+        </button>
+        <button type="button" class="btn btn-secondary" id="btnModalExportPDF">
+          <i class="fa-solid fa-file-pdf" style="color: #ff5e57;"></i> Descargar Ficha PDF / Imprimir
+        </button>
+        <button type="button" class="btn btn-secondary" id="btnOpenPortalPreview">
+          <i class="fa-solid fa-arrow-up-right-from-square"></i> Abrir y Probar como Alumno
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ==========================================================================
+       MODAL: VISTA PREVIA & DESCARGA DE FICHA PDF
+       ========================================================================== -->
+  <div class="modal-overlay" id="pdfExportModal">
+    <div class="modal-card modal-card-xl">
+      <div class="modal-header">
+        <div style="display: flex; align-items: center; gap: 10px;">
+          <div style="width: 32px; height: 32px; border-radius: 6px; background: rgba(255, 94, 87, 0.15); display: flex; align-items: center; justify-content: center; color: #ff5e57;">
+            <i class="fa-solid fa-file-pdf"></i>
+          </div>
+          <div>
+            <h3 style="font-size: 1.15rem; color: var(--text-white);">Ficha de Entrenamiento para Imprimir / PDF</h3>
+            <p style="font-size: 0.8rem; color: var(--text-muted);">Formato A4 profesional con membrete oficial y casilleros de registro</p>
+          </div>
+        </div>
+        <div style="display: flex; align-items: center; gap: 8px;">
+          <button type="button" class="btn btn-primary btn-sm" id="btnPrintRoutine">
+            <i class="fa-solid fa-print"></i> Imprimir / Guardar en PDF
+          </button>
+          <button type="button" class="btn btn-secondary btn-sm" id="btnCopyRoutineText" title="Copiar texto resumen">
+            <i class="fa-regular fa-copy"></i> Copiar Texto
+          </button>
+          <button class="modal-close" id="closePdfModal"><i class="fa-solid fa-xmark"></i></button>
+        </div>
+      </div>
+
+      <!-- Printable Routine Document Container (Preview) -->
+      <div class="pdf-preview-scroller">
+        <div class="printable-sheet" id="printableRoutineCard">
+          <!-- Populated dynamically via JS -->
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ==========================================================================
+       MODAL: EDITAR TARIFA DE PERSONALIZADO
+       ========================================================================== -->
+  <div class="modal-overlay" id="editRateModal">
+    <div class="modal-card" style="max-width: 420px;">
+      <div class="modal-header">
+        <h3 style="font-size: 1.1rem; color: var(--text-white);"><i class="fa-solid fa-tag" style="color: var(--primary);"></i> Tarifa de tu Personalizado</h3>
+        <button class="modal-close" id="closeEditRateModal"><i class="fa-solid fa-xmark"></i></button>
+      </div>
+      <form id="editRateForm">
+        <p style="font-size: 0.85rem; color: var(--text-muted); margin-bottom: 14px;">
+          Define cuánto cobras mensualmente por tu plan 1 a 1 de seguimiento y rutinas personalizadas.
+        </p>
+        <div class="form-group" style="margin-bottom: 16px;">
+          <label for="inputNewRate">Precio Mensual ($ USD / Moneda local)</label>
+          <input type="number" id="inputNewRate" class="form-input" min="5" max="2000" step="1" required>
+        </div>
+        <button type="submit" class="btn btn-primary" style="width: 100%;">
+          <i class="fa-solid fa-check"></i> Actualizar Tarifa de Personalizado
+        </button>
+      </form>
+    </div>
+  </div>
+
+  <!-- Toast Notification -->
+  <div class="toast-msg" id="adminToast"></div>
+
+  <!-- Firebase (shared cloud database) -->
+  <script src="https://www.gstatic.com/firebasejs/10.13.2/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.13.2/firebase-firestore-compat.js"></script>
+  <script src="js/firebase-config.js"></script>
+
+  <!-- Authentication Module & Admin Script -->
+  <script src="js/auth.js?v=2.0"></script>
+  <script src="js/admin.js?v=4.1"></script>
+</body>
+</html>

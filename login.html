@@ -1,0 +1,327 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Acceso Entrenadores | COACH PRO</title>
+
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;700;800;900&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+  <!-- Font Awesome -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+  <!-- Stylesheet -->
+  <link rel="stylesheet" href="css/admin.css?v=2.9">
+
+  <style>
+    body {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
+      background: radial-gradient(circle at 50% 20%, rgba(0, 255, 135, 0.08) 0%, #08090d 70%);
+      padding: 24px 16px;
+    }
+
+    .login-container {
+      width: 100%;
+      max-width: 480px;
+    }
+
+    .login-brand-header {
+      text-align: center;
+      margin-bottom: 24px;
+    }
+
+    .login-brand-header .brand-badge {
+      justify-content: center;
+      font-size: 1.6rem;
+      margin-bottom: 8px;
+    }
+
+    .login-subtitle {
+      color: var(--text-muted);
+      font-size: 0.9rem;
+    }
+
+    .login-card {
+      background: rgba(16, 21, 34, 0.92);
+      backdrop-filter: blur(16px);
+      border: 1px solid var(--border-light);
+      border-radius: var(--radius-lg);
+      padding: 30px;
+      box-shadow: 0 20px 50px rgba(0, 0, 0, 0.8), 0 0 0 1px rgba(0, 255, 135, 0.12);
+    }
+
+    .auth-tab-switch {
+      display: flex;
+      background: rgba(255, 255, 255, 0.04);
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--radius-md);
+      padding: 4px;
+      margin-bottom: 24px;
+    }
+
+    .auth-tab-btn {
+      flex: 1;
+      padding: 10px;
+      font-size: 0.85rem;
+      font-weight: 700;
+      color: var(--text-muted);
+      background: transparent;
+      border: none;
+      border-radius: var(--radius-sm);
+      cursor: pointer;
+      transition: var(--transition);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+    }
+
+    .auth-tab-btn.active {
+      background: var(--primary);
+      color: #08090d;
+      box-shadow: 0 4px 14px var(--primary-glow);
+    }
+
+    .auth-form-panel {
+      display: none;
+    }
+
+    .auth-form-panel.active {
+      display: block;
+      animation: fadeIn 0.25s ease;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(6px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .auth-alert {
+      padding: 10px 14px;
+      border-radius: var(--radius-sm);
+      margin-bottom: 16px;
+      font-size: 0.82rem;
+      display: none;
+    }
+
+    .auth-alert.error {
+      display: block;
+      background: rgba(255, 71, 87, 0.12);
+      border: 1px solid rgba(255, 71, 87, 0.35);
+      color: #ff4757;
+    }
+
+    .auth-alert.success {
+      display: block;
+      background: rgba(0, 255, 135, 0.12);
+      border: 1px solid rgba(0, 255, 135, 0.35);
+      color: var(--primary);
+    }
+  </style>
+</head>
+<body>
+
+  <div class="login-container">
+    <!-- Brand Header -->
+    <div class="login-brand-header">
+      <a href="index.html" class="brand-badge">
+        <div class="brand-icon"><i class="fa-solid fa-bolt"></i></div>
+        <span>COACH PRO</span>
+      </a>
+      <p class="login-subtitle">Portal de Gestión para Entrenadores Personales</p>
+    </div>
+
+    <!-- Login Card -->
+    <div class="login-card">
+      <!-- Tabs Switcher -->
+      <div class="auth-tab-switch">
+        <button type="button" class="auth-tab-btn active" id="tabLogin">
+          <i class="fa-solid fa-right-to-bracket"></i> Iniciar Sesión
+        </button>
+        <button type="button" class="auth-tab-btn" id="tabRegister">
+          <i class="fa-solid fa-user-plus"></i> Nuevo Entrenador
+        </button>
+      </div>
+
+      <!-- Alert Box -->
+      <div class="auth-alert" id="authAlert"></div>
+
+      <!-- Form 1: Login -->
+      <form id="loginForm" class="auth-form-panel active">
+        <div class="form-group" style="margin-bottom: 14px;">
+          <label for="loginEmail">Correo Electrónico del Coach</label>
+          <input type="email" id="loginEmail" class="form-input" placeholder="coach@valenfit.com" required>
+        </div>
+
+        <div class="form-group" style="margin-bottom: 20px;">
+          <label for="loginPassword">Contraseña de Acceso</label>
+          <input type="password" id="loginPassword" class="form-input" placeholder="••••••••" required>
+        </div>
+
+        <button type="submit" class="btn btn-primary" style="width: 100%; padding: 13px;">
+          <i class="fa-solid fa-lock-open"></i> Entrar a mi Panel de Control
+        </button>
+      </form>
+
+      <!-- Form 2: Register New Trainer -->
+      <form id="registerForm" class="auth-form-panel">
+        <div class="form-group" style="margin-bottom: 12px;">
+          <label for="regName">Nombre y Apellido</label>
+          <input type="text" id="regName" class="form-input" placeholder="Ej: Marcos Silva" required>
+        </div>
+
+        <div class="form-group" style="margin-bottom: 12px;">
+          <label for="regSpecialty">Especialidad de Entrenamiento</label>
+          <input type="text" id="regSpecialty" class="form-input" placeholder="Ej: Hipertrofia & Biomecánica de Fuerza" required>
+        </div>
+
+        <div class="form-group" style="margin-bottom: 12px;">
+          <label for="regPrice">Tarifa Mensual de tu Servicio Personalizado ($)</label>
+          <input type="number" id="regPrice" class="form-input" placeholder="Ej: 50" min="10" max="1000" value="50" required>
+          <small style="color: var(--text-muted); font-size: 0.72rem; margin-top: 3px; display: block;">
+            Esto figurará en tu panel y en las fichas de presupuesto para tus alumnos.
+          </small>
+        </div>
+
+        <div class="form-group" style="margin-bottom: 12px;">
+          <label for="regPhone">Teléfono de WhatsApp (para recibir alumnos)</label>
+          <input type="tel" id="regPhone" class="form-input" placeholder="+54 9 11 1234-5678" required>
+        </div>
+
+        <div class="form-group" style="margin-bottom: 12px;">
+          <label for="regEmail">Correo Electrónico</label>
+          <input type="email" id="regEmail" class="form-input" placeholder="tuemail@ejemplo.com" required>
+        </div>
+
+        <div class="form-group" style="margin-bottom: 20px;">
+          <label for="regPassword">Crear Contraseña</label>
+          <input type="password" id="regPassword" class="form-input" placeholder="Mínimo 4 caracteres" required>
+        </div>
+
+        <button type="submit" class="btn btn-primary" style="width: 100%; padding: 13px;">
+          <i class="fa-solid fa-check"></i> Registrar mi Perfil de Entrenador
+        </button>
+      </form>
+
+    </div>
+
+    <!-- Back to Web Link -->
+    <div style="text-align: center; margin-top: 18px;">
+      <a href="index.html" style="color: var(--text-muted); font-size: 0.85rem; text-decoration: none;">
+        <i class="fa-solid fa-arrow-left"></i> Volver a la página principal
+      </a>
+    </div>
+  </div>
+
+  <!-- Firebase (shared cloud database) -->
+  <script src="https://www.gstatic.com/firebasejs/10.13.2/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.13.2/firebase-firestore-compat.js"></script>
+  <script src="js/firebase-config.js"></script>
+
+  <!-- Auth Script -->
+  <script src="js/auth.js?v=2.0"></script>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      const tabLogin = document.getElementById('tabLogin');
+      const tabRegister = document.getElementById('tabRegister');
+      const loginForm = document.getElementById('loginForm');
+      const registerForm = document.getElementById('registerForm');
+      const authAlert = document.getElementById('authAlert');
+
+      function showAlert(msg, isError = true) {
+        authAlert.textContent = msg;
+        authAlert.className = `auth-alert ${isError ? 'error' : 'success'}`;
+        authAlert.style.display = 'block';
+      }
+
+      tabLogin.addEventListener('click', () => {
+        tabLogin.classList.add('active');
+        tabRegister.classList.remove('active');
+        loginForm.classList.add('active');
+        registerForm.classList.remove('active');
+        authAlert.style.display = 'none';
+      });
+
+      tabRegister.addEventListener('click', () => {
+        tabRegister.classList.add('active');
+        tabLogin.classList.remove('active');
+        registerForm.classList.add('active');
+        loginForm.classList.remove('active');
+        authAlert.style.display = 'none';
+      });
+
+      // Deep-link support: login.html?tab=register opens the sign-up tab directly
+      if (new URLSearchParams(window.location.search).get('tab') === 'register') {
+        tabRegister.click();
+      }
+
+      // Handle Login
+      loginForm.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        const email = document.getElementById('loginEmail').value;
+        const password = document.getElementById('loginPassword').value;
+        const submitBtn = loginForm.querySelector('button[type="submit"]');
+        if (submitBtn) submitBtn.disabled = true;
+
+        try {
+          const res = await window.ValenAuth.loginCoach(email, password);
+          if (res.success) {
+            const target = res.coach.isActive ? 'admin.html' : 'activar.html';
+            showAlert(`¡Bienvenido/a, ${res.coach.displayName}! Ingresando...`, false);
+            setTimeout(() => {
+              window.location.href = target;
+            }, 600);
+          } else {
+            showAlert(res.message, true);
+            if (submitBtn) submitBtn.disabled = false;
+          }
+        } catch (err) {
+          console.error(err);
+          showAlert('No se pudo conectar. Revisá tu conexión e intentá de nuevo.', true);
+          if (submitBtn) submitBtn.disabled = false;
+        }
+      });
+
+      // Handle Register
+      registerForm.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        const coachData = {
+          name: document.getElementById('regName').value,
+          specialty: document.getElementById('regSpecialty').value,
+          pricePersonalizado: document.getElementById('regPrice').value,
+          phone: document.getElementById('regPhone').value,
+          email: document.getElementById('regEmail').value,
+          password: document.getElementById('regPassword').value
+        };
+        const submitBtn = registerForm.querySelector('button[type="submit"]');
+        if (submitBtn) submitBtn.disabled = true;
+
+        try {
+          const res = await window.ValenAuth.registerCoach(coachData);
+          if (res.success) {
+            showAlert(`¡Cuenta de ${res.coach.displayName} creada con éxito! Activando tu acceso...`, false);
+            setTimeout(() => {
+              window.location.href = 'activar.html';
+            }, 800);
+          } else {
+            showAlert(res.message, true);
+            if (submitBtn) submitBtn.disabled = false;
+          }
+        } catch (err) {
+          console.error(err);
+          showAlert('No se pudo conectar. Revisá tu conexión e intentá de nuevo.', true);
+          if (submitBtn) submitBtn.disabled = false;
+        }
+      });
+    });
+  </script>
+</body>
+</html>

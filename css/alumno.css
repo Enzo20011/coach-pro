@@ -1,0 +1,738 @@
+/* ==========================================================================
+   PORTAL DEL ALUMNO v2.0 – COACH PRO CLIENT APP
+   Ultra-Premium Mobile Gym Companion | Dark Athletic Aesthetic
+   ========================================================================== */
+
+@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800;900&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap');
+
+:root {
+  --bg-app: #060810;
+  --bg-surface: #0c1020;
+  --bg-card: rgba(14, 20, 34, 0.92);
+  --bg-card-active: rgba(0, 255, 135, 0.07);
+
+  --primary: #00ff87;
+  --primary-dim: rgba(0, 255, 135, 0.16);
+  --primary-glow: rgba(0, 255, 135, 0.38);
+  --accent-cyan: #00d4ff;
+
+  --text-white: #ffffff;
+  --text-main: #dde4ef;
+  --text-muted: #8896b0;
+  --text-dim: #4d5d78;
+
+  --border-subtle: rgba(255, 255, 255, 0.07);
+  --border-medium: rgba(255, 255, 255, 0.12);
+  --border-accent: rgba(0, 255, 135, 0.38);
+
+  --font-heading: 'Outfit', sans-serif;
+  --font-body: 'Plus Jakarta Sans', sans-serif;
+
+  --radius-sm: 10px;
+  --radius-md: 14px;
+  --radius-lg: 20px;
+  --radius-full: 9999px;
+  --ease-smooth: cubic-bezier(0.16, 1, 0.3, 1);
+  --transition: all 0.25s var(--ease-smooth);
+}
+
+*, *::before, *::after {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html {
+  font-size: 16px;
+  color-scheme: dark;
+  -webkit-text-size-adjust: 100%;
+}
+
+html {
+  background: var(--bg-app);
+}
+
+body {
+  background: var(--bg-app);
+  color: var(--text-main);
+  font-family: var(--font-body);
+  line-height: 1.55;
+  -webkit-font-smoothing: antialiased;
+  padding-bottom: 88px;
+  max-width: 500px;
+  margin: 0 auto;
+  min-height: 100vh;
+  position: relative;
+  overflow-x: hidden;
+}
+
+/* On wider screens, present the app as a floating "phone" card over an ambient
+   backdrop instead of a bare narrow column stretched across a blank page. */
+@media (min-width: 640px) {
+  html {
+    background:
+      radial-gradient(circle at 18% 12%, rgba(0, 255, 135, 0.12) 0%, transparent 55%),
+      radial-gradient(circle at 85% 88%, rgba(0, 212, 255, 0.10) 0%, transparent 55%),
+      var(--bg-app);
+  }
+
+  body {
+    box-shadow: 0 40px 100px rgba(0, 0, 0, 0.65), 0 0 0 1px var(--border-medium);
+  }
+
+  .app-header {
+    border-radius: 0;
+  }
+}
+
+/* Ambient glow */
+body::before {
+  content: '';
+  position: fixed;
+  top: -100px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 360px;
+  height: 360px;
+  background: radial-gradient(circle, rgba(0, 255, 135, 0.07) 0%, transparent 65%);
+  filter: blur(60px);
+  pointer-events: none;
+  z-index: 0;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--font-heading);
+  color: var(--text-white);
+  line-height: 1.18;
+  letter-spacing: -0.02em;
+}
+
+/* ==========================================================================
+   APP HEADER
+   ========================================================================== */
+.app-header {
+  background: rgba(6, 8, 16, 0.92);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  padding: 14px 18px;
+  border-bottom: 1px solid var(--border-subtle);
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.coach-brand {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.coach-avatar {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 2px solid var(--primary);
+  box-shadow: 0 0 12px var(--primary-glow);
+}
+
+.coach-info h4 {
+  font-family: var(--font-heading);
+  font-size: 0.92rem;
+  color: var(--text-white);
+  line-height: 1.1;
+  font-weight: 800;
+}
+
+.coach-info span {
+  font-size: 0.68rem;
+  color: var(--primary);
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.07em;
+}
+
+.routine-title-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: var(--primary-dim);
+  border: 1px solid var(--border-accent);
+  color: var(--primary);
+  font-size: 0.72rem;
+  font-weight: 700;
+  padding: 4px 11px;
+  border-radius: var(--radius-full);
+  white-space: nowrap;
+  max-width: 130px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* ==========================================================================
+   GREETING BOX
+   ========================================================================== */
+.student-greeting-box {
+  padding: 22px 20px 18px 20px;
+  background: linear-gradient(170deg, rgba(18, 26, 44, 0.85) 0%, rgba(8, 11, 20, 0.95) 100%);
+  border-bottom: 1px solid var(--border-subtle);
+  position: relative;
+  overflow: hidden;
+}
+
+.student-greeting-box::before {
+  content: '';
+  position: absolute;
+  top: -50%;
+  right: -60px;
+  width: 220px;
+  height: 220px;
+  background: radial-gradient(circle, rgba(0, 255, 135, 0.08) 0%, transparent 65%);
+  pointer-events: none;
+}
+
+.student-greeting-box h2 {
+  font-size: 1.7rem;
+  font-weight: 900;
+  margin-bottom: 6px;
+  position: relative;
+}
+
+/* The greeting box has room to spare, unlike the cramped header pill that
+   shares this class — let the routine title wrap instead of truncating. */
+#routineTitleBadge {
+  max-width: 100%;
+  white-space: normal;
+  overflow: visible;
+  text-overflow: clip;
+}
+
+/* ==========================================================================
+   PROGRESS SUMMARY
+   ========================================================================== */
+.progress-summary {
+  margin: 16px 18px 0 18px;
+  background: var(--bg-card);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-md);
+  padding: 14px 16px;
+  position: relative;
+  z-index: 1;
+}
+
+.progress-summary-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 9px;
+}
+
+.progress-summary-top span:first-child {
+  font-family: var(--font-heading);
+  font-size: 0.78rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--text-muted);
+}
+
+.progress-summary-top span:last-child {
+  font-family: var(--font-heading);
+  font-size: 0.92rem;
+  font-weight: 800;
+  color: var(--primary);
+}
+
+.progress-bar-track {
+  height: 8px;
+  background: rgba(255, 255, 255, 0.06);
+  border-radius: var(--radius-full);
+  overflow: hidden;
+}
+
+.progress-bar-fill {
+  height: 100%;
+  width: 0%;
+  background: linear-gradient(90deg, var(--accent-cyan), var(--primary));
+  border-radius: var(--radius-full);
+  transition: width 0.4s var(--ease-smooth);
+  box-shadow: 0 0 10px var(--primary-glow);
+}
+
+.progress-summary-sub {
+  margin-top: 8px;
+  font-size: 0.76rem;
+  color: var(--text-dim);
+}
+
+/* ==========================================================================
+   COACH NOTE ALERT
+   ========================================================================== */
+.coach-note-alert {
+  margin: 16px 18px 0 18px;
+  background: linear-gradient(135deg, rgba(0, 212, 255, 0.08) 0%, rgba(0, 255, 135, 0.04) 100%);
+  border: 1px solid rgba(0, 212, 255, 0.25);
+  padding: 13px 16px;
+  border-radius: var(--radius-md);
+  display: flex;
+  align-items: flex-start;
+  gap: 11px;
+  font-size: 0.85rem;
+  color: var(--text-main);
+  position: relative;
+  z-index: 1;
+}
+
+.coach-note-alert i {
+  color: var(--accent-cyan);
+  font-size: 1.05rem;
+  margin-top: 2px;
+  flex-shrink: 0;
+}
+
+.coach-note-alert strong {
+  display: block;
+  font-size: 0.74rem;
+  text-transform: uppercase;
+  letter-spacing: 0.07em;
+  color: var(--accent-cyan);
+  margin-bottom: 3px;
+  font-weight: 800;
+}
+
+/* ==========================================================================
+   DAY SWITCHER TABS
+   ========================================================================== */
+.days-nav-scroll {
+  display: flex;
+  gap: 8px;
+  overflow-x: auto;
+  overflow-y: hidden;
+  padding: 16px 18px;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+  position: relative;
+  z-index: 1;
+}
+
+.days-nav-scroll::-webkit-scrollbar { display: none; }
+
+.day-tab-pill {
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid var(--border-subtle);
+  color: var(--text-muted);
+  font-family: var(--font-heading);
+  font-weight: 700;
+  font-size: 0.8rem;
+  padding: 10px 16px;
+  border-radius: var(--radius-full);
+  cursor: pointer;
+  white-space: nowrap;
+  flex-shrink: 0;
+  transition: var(--transition);
+}
+
+.day-tab-pill:hover {
+  border-color: var(--border-accent);
+  color: var(--text-white);
+}
+
+.day-tab-pill.active {
+  background: var(--primary);
+  border-color: var(--primary);
+  color: #050810;
+  box-shadow: 0 0 18px var(--primary-glow);
+}
+
+/* ==========================================================================
+   EXERCISES CONTAINER
+   ========================================================================== */
+.exercises-container {
+  padding: 0 18px 16px 18px;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  position: relative;
+  z-index: 1;
+}
+
+.exercise-client-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-lg);
+  padding: 18px;
+  transition: var(--transition);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  position: relative;
+  overflow: hidden;
+}
+
+.exercise-client-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.06), transparent);
+}
+
+.exercise-client-card.all-done {
+  border-color: rgba(0, 255, 135, 0.35);
+  background: rgba(0, 255, 135, 0.05);
+}
+
+.exercise-client-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 10px;
+  margin-bottom: 10px;
+}
+
+.ex-title-wrap h3 {
+  font-size: 1.08rem;
+  color: var(--text-white);
+  margin-bottom: 2px;
+  font-weight: 800;
+}
+
+.ex-meta-badge {
+  font-family: var(--font-heading);
+  font-size: 0.85rem;
+  font-weight: 800;
+  color: var(--primary);
+  flex-shrink: 0;
+  background: var(--primary-dim);
+  padding: 3px 10px;
+  border-radius: var(--radius-full);
+  border: 1px solid rgba(0, 255, 135, 0.2);
+}
+
+/* Coach cue */
+.cue-box {
+  background: rgba(255, 255, 255, 0.025);
+  border-left: 3px solid var(--primary);
+  padding: 7px 12px;
+  border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
+  font-size: 0.77rem;
+  color: var(--text-muted);
+  margin-bottom: 14px;
+  display: flex;
+  align-items: center;
+  gap: 7px;
+}
+
+.cue-box i { color: var(--primary); font-size: 0.8rem; }
+
+/* ==========================================================================
+   SETS CHECKLIST
+   ========================================================================== */
+.sets-grid-list {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.set-row {
+  background: rgba(255, 255, 255, 0.025);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-sm);
+  padding: 12px 14px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  cursor: pointer;
+  transition: var(--transition);
+  -webkit-tap-highlight-color: transparent;
+}
+
+.set-row:active { transform: scale(0.98); }
+
+.set-row.completed {
+  background: rgba(0, 255, 135, 0.07);
+  border-color: rgba(0, 255, 135, 0.3);
+}
+
+.set-left-group {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.set-checkbox {
+  width: 22px;
+  height: 22px;
+  border-radius: 6px;
+  border: 2px solid var(--border-medium);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: transparent;
+  transition: var(--transition);
+  flex-shrink: 0;
+}
+
+.set-row.completed .set-checkbox {
+  background: var(--primary);
+  border-color: var(--primary);
+  color: #050810;
+  box-shadow: 0 0 10px var(--primary-glow);
+}
+
+.set-label {
+  font-family: var(--font-heading);
+  font-size: 0.9rem;
+  font-weight: 700;
+  color: var(--text-white);
+  transition: var(--transition);
+}
+
+.set-row.completed .set-label {
+  color: var(--text-dim);
+  text-decoration: line-through;
+}
+
+.set-target {
+  font-size: 0.76rem;
+  color: var(--text-muted);
+  text-align: right;
+  line-height: 1.3;
+}
+
+.set-target strong {
+  display: block;
+  color: var(--primary);
+  font-family: var(--font-heading);
+  font-weight: 700;
+}
+
+/* Rest trigger button */
+.btn-trigger-rest {
+  background: var(--primary-dim);
+  border: 1px solid var(--border-accent);
+  color: var(--primary);
+  padding: 8px 14px;
+  border-radius: var(--radius-full);
+  font-size: 0.74rem;
+  font-weight: 700;
+  font-family: var(--font-heading);
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  margin-top: 12px;
+  transition: var(--transition);
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.btn-trigger-rest:hover, .btn-trigger-rest:active {
+  background: rgba(0, 255, 135, 0.25);
+  box-shadow: 0 0 16px var(--primary-glow);
+}
+
+/* ==========================================================================
+   FLOATING REST TIMER
+   ========================================================================== */
+.floating-timer-bar {
+  position: fixed;
+  bottom: 96px;
+  left: 50%;
+  transform: translateX(-50%) translateY(24px);
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+  background: rgba(8, 10, 18, 0.97);
+  border: 1.5px solid var(--primary);
+  padding: 12px 22px;
+  border-radius: var(--radius-full);
+  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.8), var(--primary-glow) 0 0 28px;
+  display: flex;
+  align-items: center;
+  gap: 18px;
+  z-index: 200;
+  transition: transform 0.35s var(--ease-smooth), opacity 0.3s ease, visibility 0.35s;
+  white-space: nowrap;
+  backdrop-filter: blur(16px);
+}
+
+.floating-timer-bar.active {
+  transform: translateX(-50%) translateY(0);
+  opacity: 1;
+  visibility: visible;
+  pointer-events: auto;
+}
+
+.timer-label {
+  font-size: 0.68rem;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--text-muted);
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.timer-label i { color: var(--primary); }
+
+.timer-digits {
+  font-family: var(--font-heading);
+  font-size: 1.5rem;
+  font-weight: 900;
+  color: var(--primary);
+  letter-spacing: -0.02em;
+  text-shadow: 0 0 20px var(--primary-glow);
+  min-width: 55px;
+  text-align: center;
+}
+
+.timer-controls {
+  display: flex;
+  gap: 6px;
+  align-items: center;
+}
+
+.timer-btn {
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid var(--border-medium);
+  color: var(--text-white);
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.78rem;
+  font-weight: 700;
+  font-family: var(--font-heading);
+  cursor: pointer;
+  transition: var(--transition);
+  -webkit-tap-highlight-color: transparent;
+}
+
+.timer-btn:hover, .timer-btn:active {
+  background: rgba(255, 255, 255, 0.16);
+}
+
+/* ==========================================================================
+   BOTTOM APP BAR
+   ========================================================================== */
+.app-bottom-bar {
+  position: fixed;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 100%;
+  max-width: 500px;
+  background: rgba(6, 8, 16, 0.97);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border-top: 1px solid var(--border-subtle);
+  padding: 10px 18px;
+  display: flex;
+  gap: 10px;
+  z-index: 150;
+  box-shadow: 0 -8px 30px rgba(0, 0, 0, 0.45);
+}
+
+.app-action-btn {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  font-family: var(--font-heading);
+  font-weight: 700;
+  font-size: 0.88rem;
+  padding: 13px 12px;
+  border-radius: var(--radius-md);
+  border: none;
+  cursor: pointer;
+  text-decoration: none;
+  transition: var(--transition);
+  letter-spacing: 0.02em;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.app-action-btn.finish {
+  background: var(--primary);
+  color: #050810;
+  box-shadow: 0 4px 18px var(--primary-glow);
+}
+
+.app-action-btn.finish:hover, .app-action-btn.finish:active {
+  background: #22ffa0;
+  transform: translateY(-2px);
+}
+
+.app-action-btn.whatsapp {
+  background: linear-gradient(135deg, #25d366, #1aab54);
+  color: #ffffff;
+  flex: 0 0 52px;
+  font-size: 1.3rem;
+  padding: 0;
+  border-radius: 50%;
+  box-shadow: 0 4px 16px rgba(37, 211, 102, 0.4);
+}
+
+.app-action-btn.whatsapp:hover {
+  transform: scale(1.08);
+}
+
+/* Ficha PDF Pill Button */
+.btn-pdf-pill {
+  background: rgba(255, 94, 87, 0.12);
+  border: 1px solid rgba(255, 94, 87, 0.35);
+  color: #ff5e57;
+  font-family: var(--font-heading);
+  font-size: 0.78rem;
+  font-weight: 700;
+  padding: 6px 12px;
+  border-radius: var(--radius-full);
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  cursor: pointer;
+  transition: var(--transition);
+  white-space: nowrap;
+}
+
+.btn-pdf-pill:hover {
+  background: rgba(255, 94, 87, 0.22);
+  border-color: #ff5e57;
+  transform: translateY(-1px);
+}
+
+@media print {
+  body {
+    background: #ffffff !important;
+    color: #000000 !important;
+    max-width: 100% !important;
+    padding: 10mm !important;
+  }
+  .app-header, .days-nav-scroll, .floating-timer-bar, .app-bottom-bar, .btn-pdf-pill {
+    display: none !important;
+  }
+  .exercise-client-card {
+    border: 1px solid #cbd5e1 !important;
+    background: #ffffff !important;
+    color: #000000 !important;
+    page-break-inside: avoid !important;
+  }
+  .cue-pill {
+    border: 1px solid #94a3b8 !important;
+    color: #334155 !important;
+    background: #f1f5f9 !important;
+  }
+  .set-row-item {
+    border-bottom: 1px solid #e2e8f0 !important;
+  }
+}

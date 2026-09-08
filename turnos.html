@@ -1,0 +1,346 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Agenda Online | COACH PRO</title>
+
+  <!-- SEO Meta Tags -->
+  <meta name="description" content="Conocé la Agenda Online de COACH PRO: tus alumnos reservan turnos solos, eligiendo servicio, día y horario, con confirmación automática por WhatsApp.">
+  <meta name="keywords" content="agenda online para entrenadores, software de turnos para gimnasios, plataforma para personal trainers">
+  <meta name="author" content="Austral Dev">
+
+  <!-- Open Graph / Social Media -->
+  <meta property="og:title" content="Agenda Online | COACH PRO">
+  <meta property="og:description" content="Tus alumnos reservan turnos solos, con confirmación automática por WhatsApp. Conocé la Agenda Online de COACH PRO.">
+  <meta property="og:type" content="website">
+  <meta property="og:image" content="https://images.unsplash.com/photo-1571019614242-c5c5dee9f50b?q=80&w=1200&auto=format&fit=crop">
+
+  <!-- Font Awesome Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+  <!-- Custom CSS -->
+  <link rel="stylesheet" href="css/style.css?v=3.1">
+</head>
+<body>
+
+  <!-- Scroll Progress Bar -->
+  <div class="scroll-progress-bar" id="scrollProgressBar"></div>
+
+  <!-- ==========================================================================
+       HEADER & NAVIGATION
+       ========================================================================== -->
+  <header class="header" id="header">
+    <div class="container nav-container">
+      <a href="index.html" class="logo">
+        <span class="logo-badge"><i class="fa-solid fa-bolt"></i></span>
+        <span>COACH</span> PRO
+      </a>
+
+      <nav>
+        <ul class="nav-links" id="navLinks">
+          <li><a class="nav-link" href="index.html"><i class="fa-solid fa-house"></i> Inicio</a></li>
+          <li><a class="nav-link" href="planes.html"><i class="fa-solid fa-rocket"></i> Sumate</a></li>
+          <li><a class="nav-link" href="rutina-demo.html"><i class="fa-solid fa-mobile-screen-button"></i> App del Alumno</a></li>
+          <li><a class="nav-link active" href="turnos.html"><i class="fa-regular fa-calendar-days"></i> Agenda Online</a></li>
+          <li><a class="nav-link" href="transformaciones.html"><i class="fa-solid fa-trophy"></i> Casos de Éxito</a></li>
+          <li><a class="nav-link" href="faq.html"><i class="fa-solid fa-circle-question"></i> FAQ</a></li>
+        </ul>
+      </nav>
+
+      <div class="nav-actions">
+        <a href="admin.html" class="btn btn-secondary btn-sm" style="border-color: rgba(0, 255, 135, 0.4); color: var(--primary);" title="Panel Coach">
+          <i class="fa-solid fa-lock"></i> Ingresar
+        </a>
+        <a class="btn btn-primary btn-sm" href="login.html?tab=register">
+          <i class="fa-solid fa-fire"></i> Empezar
+        </a>
+        <button class="menu-toggle" id="menuToggle" aria-label="Abrir menú">
+          <i class="fa-solid fa-bars"></i>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- ==========================================================================
+       PAGE CONTENT: TURNOS ONLINE
+       ========================================================================== -->
+  <main>
+    <section class="section booking-section">
+      <div class="container">
+        <div class="section-header">
+          <div class="section-tag"><i class="fa-regular fa-calendar-days"></i> Funcionalidad: Agenda Online</div>
+          <h2 class="section-title">Así reservan turno <span>tus alumnos</span></h2>
+          <p class="section-desc">Cada entrenador define sus propios servicios, precios y horarios disponibles. Probá vos mismo esta demo interactiva de cómo tus alumnos agendarían una sesión con vos.</p>
+        </div>
+
+        <!-- Stepper Visual -->
+        <div class="stepper-header">
+          <div class="step-item active" id="step1Indicator">
+            <div class="step-bubble">1</div>
+            <div class="step-label">Servicio</div>
+          </div>
+          <div class="step-item" id="step2Indicator">
+            <div class="step-bubble">2</div>
+            <div class="step-label">Fecha & Hora</div>
+          </div>
+          <div class="step-item" id="step3Indicator">
+            <div class="step-bubble">3</div>
+            <div class="step-label">Confirmación</div>
+          </div>
+        </div>
+
+        <div class="booking-wrapper">
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px;">
+            <span class="live-badge">
+              <span class="pulse-dot"></span> Demo Interactiva
+            </span>
+            <span style="font-size: 0.85rem; color: var(--text-muted);">
+              <i class="fa-solid fa-circle-info" style="color: var(--primary);"></i> Ejemplo de agenda de un entrenador
+            </span>
+          </div>
+
+          <div class="booking-grid">
+            <!-- Left Column -->
+            <div>
+              <h3 style="font-size: 1.15rem; margin-bottom: 16px; color: var(--text-white);">1. Selecciona el Servicio</h3>
+              <div class="services-selection">
+                <div class="service-card-radio active" data-service="eval">
+                  <div class="service-info">
+                    <h4>Evaluación Inicial de Fuerza & Movilidad</h4>
+                    <p>Diagnóstico de movilidad articular, historial lesional y objetivos (30 min)</p>
+                  </div>
+                  <div class="service-price">GRATIS</div>
+                </div>
+                <div class="service-card-radio" data-service="personal">
+                  <div class="service-info">
+                    <h4>Sesión de Entrenamiento 1 a 1</h4>
+                    <p>Entrenamiento presencial o virtual enfocado en fuerza e hipertrofia (60 min)</p>
+                  </div>
+                  <div class="service-price">$20</div>
+                </div>
+                <div class="service-card-radio" data-service="biomechanics">
+                  <div class="service-info">
+                    <h4>Evaluación Postural & Biomecánica</h4>
+                    <p>Análisis de técnica en levantamientos básicos y detección de asimetrías (45 min)</p>
+                  </div>
+                  <div class="service-price">$30</div>
+                </div>
+              </div>
+
+              <h3 style="font-size: 1.15rem; margin-bottom: 16px; color: var(--text-white);">2. Selecciona Día y Horario</h3>
+              <div class="date-selector">
+                <div class="calendar-strip" id="calendarStrip">
+                  <!-- JS dynamically renders days here -->
+                </div>
+              </div>
+              <div class="slots-grid" id="slotsContainer">
+                <div class="time-slot-btn active">08:30 AM</div>
+                <div class="time-slot-btn">10:00 AM</div>
+                <div class="time-slot-btn">11:30 AM</div>
+                <div class="time-slot-btn">03:30 PM</div>
+                <div class="time-slot-btn">05:00 PM</div>
+                <div class="time-slot-btn">06:30 PM</div>
+              </div>
+            </div>
+
+            <!-- Right Column -->
+            <div>
+              <h3 style="font-size: 1.15rem; margin-bottom: 16px; color: var(--text-white);">3. Completa tus Datos</h3>
+              <form class="booking-form" id="bookingForm">
+                <div class="form-group">
+                  <label for="bookName">Nombre y Apellido</label>
+                  <input type="text" id="bookName" class="form-input" placeholder="Ej: Lucas Martínez" required>
+                </div>
+                <div class="form-group">
+                  <label for="bookPhone">Número de WhatsApp</label>
+                  <input type="tel" id="bookPhone" class="form-input" placeholder="+54 9 11 2345-6789" required>
+                </div>
+                <div class="form-group">
+                  <label for="bookNote">Nota u Objetivo (Opcional)</label>
+                  <input type="text" id="bookNote" class="form-input" placeholder="Ej: Mejorar técnica en sentadilla">
+                </div>
+
+                <!-- Live Summary Box -->
+                <div class="booking-summary-box">
+                  <div class="summary-row">
+                    <span>Servicio:</span>
+                    <span id="summaryService">Evaluación Inicial de Fuerza & Movilidad</span>
+                  </div>
+                  <div class="summary-row">
+                    <span>Fecha:</span>
+                    <span id="summaryDate">Hoy</span>
+                  </div>
+                  <div class="summary-row">
+                    <span>Horario:</span>
+                    <span id="summaryTime">08:30 AM</span>
+                  </div>
+                  <div class="summary-row">
+                    <span>Costo:</span>
+                    <span id="summaryCost">GRATIS</span>
+                  </div>
+                </div>
+
+                <button type="submit" class="btn btn-whatsapp btn-full" style="margin-top: 10px;">
+                  <i class="fa-brands fa-whatsapp"></i> Confirmar Turno por WhatsApp
+                </button>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- ==========================================================================
+       FOOTER (always visible)
+       ========================================================================== -->
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-grid">
+        <div class="footer-col">
+          <a class="logo" href="index.html">
+            <span class="logo-badge"><i class="fa-solid fa-bolt"></i></span>
+            <span>COACH</span> PRO
+          </a>
+          <p>La plataforma todo-en-uno para entrenadores personales: gestioná alumnos, rutinas y turnos con un panel profesional a tu marca.</p>
+          <div class="footer-socials">
+            <a href="#" class="social-btn" aria-label="Instagram"><i class="fa-brands fa-instagram"></i></a>
+            <a href="#" class="social-btn" aria-label="YouTube"><i class="fa-brands fa-youtube"></i></a>
+            <a href="#" class="social-btn" aria-label="TikTok"><i class="fa-brands fa-tiktok"></i></a>
+            <a href="#" class="social-btn" aria-label="WhatsApp"><i class="fa-brands fa-whatsapp"></i></a>
+          </div>
+        </div>
+
+        <div class="footer-col">
+          <h4>Navegación</h4>
+          <div class="footer-links">
+            <a href="index.html">Inicio</a>
+            <a href="planes.html">Sumate a COACH PRO</a>
+            <a href="rutina-demo.html">App del Alumno</a>
+            <a href="turnos.html">Agenda Online</a>
+            <a href="transformaciones.html">Casos de Éxito</a>
+            <a href="admin.html" style="color: var(--primary); font-weight: 700;"><i class="fa-solid fa-lock"></i> Acceso Panel Coach</a>
+          </div>
+        </div>
+
+        <div class="footer-col">
+          <h4>Para tu Negocio</h4>
+          <div class="footer-links">
+            <a href="admin.html">Gestión de Alumnos</a>
+            <a href="rutina-demo.html">Constructor de Rutinas</a>
+            <a href="turnos.html">Agenda de Turnos Online</a>
+            <a href="planes.html">Fichas PDF Profesionales</a>
+            <a href="transformaciones.html">Casos de Éxito</a>
+          </div>
+        </div>
+
+        <div class="footer-col">
+          <h4>Contacto Directo</h4>
+          <div class="footer-links">
+            <a href="tel:+5491100000000"><i class="fa-solid fa-phone"></i> +54 9 11 0000-0000</a>
+            <a href="mailto:hola@coachpro.com"><i class="fa-solid fa-envelope"></i> hola@coachpro.com</a>
+            <a href="#"><i class="fa-solid fa-headset"></i> Soporte 100% Online</a>
+            <a href="#"><i class="fa-solid fa-clock"></i> Lun a Vie: 09:00 a 19:00 hs</a>
+          </div>
+        </div>
+      </div>
+
+      <div class="footer-bottom">
+        <div>© 2026 COACH PRO. Todos los derechos reservados.</div>
+      </div>
+    </div>
+  </footer>
+
+  <!-- WhatsApp Widget -->
+  <div class="whatsapp-widget-container">
+    <div class="whatsapp-chat-bubble" id="whatsappChatBubble">
+      <div class="bubble-header">
+        <div class="bubble-sender">
+          <i class="fa-solid fa-circle" style="font-size: 0.6rem; color: #00ff87;"></i> Equipo COACH PRO
+        </div>
+        <button class="bubble-close" id="closeBubble" aria-label="Cerrar mensaje">
+          <i class="fa-solid fa-xmark"></i>
+        </button>
+      </div>
+      <div class="bubble-text">
+        ¡Hola! 👋 ¿Querés conocer cómo COACH PRO puede ayudarte a gestionar tu negocio de entrenador?
+      </div>
+    </div>
+    <a href="https://wa.me/5491100000000?text=Hola!%20Quiero%20conocer%20m%C3%A1s%20sobre%20COACH%20PRO%20para%20mi%20negocio%20de%20entrenador." class="floating-whatsapp" target="_blank" rel="noopener noreferrer" aria-label="Contactar por WhatsApp">
+      <i class="fa-brands fa-whatsapp"></i>
+    </a>
+  </div>
+
+  <!-- Mobile Sticky Action Bar -->
+  <div class="mobile-sticky-bar">
+    <div class="sticky-bar-grid">
+      <a class="sticky-action-btn primary" href="planes.html">
+        <i class="fa-solid fa-bolt"></i> Sumate
+      </a>
+      <a class="sticky-action-btn secondary" href="turnos.html">
+        <i class="fa-regular fa-calendar-check"></i> Agenda
+      </a>
+      <a href="https://wa.me/5491100000000?text=Hola!%20Quiero%20informaci%C3%B3n%20sobre%20COACH%20PRO%20para%20entrenadores" target="_blank" rel="noopener noreferrer" class="sticky-action-btn whatsapp">
+        <i class="fa-brands fa-whatsapp"></i> Chat
+      </a>
+    </div>
+  </div>
+
+  <!-- Checkout Modal -->
+  <div class="modal-overlay" id="checkoutModal">
+    <div class="modal-dialog">
+      <div class="modal-header">
+        <h3><i class="fa-solid fa-comments" style="color: var(--primary); margin-right: 8px;"></i> Solicitar una Demo</h3>
+        <button class="modal-close" id="closeModal" aria-label="Cerrar ventana">
+          <i class="fa-solid fa-xmark"></i>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div class="checkout-plan-summary">
+          <div>
+            <span style="font-size: 0.8rem; text-transform: uppercase; color: var(--text-muted); font-weight: 700;">Consulta sobre:</span>
+            <h4 id="modalPlanName">Demo de COACH PRO</h4>
+          </div>
+          <div class="checkout-price" id="modalPlanPrice"></div>
+        </div>
+        <form id="checkoutForm">
+          <div class="form-group" style="margin-bottom: 12px;">
+            <label for="clientName">Nombre Completo</label>
+            <input type="text" id="clientName" class="form-input" placeholder="Tu nombre y apellido" required>
+          </div>
+          <div class="form-group" style="margin-bottom: 12px;">
+            <label for="clientPhone">Teléfono de WhatsApp</label>
+            <input type="tel" id="clientPhone" class="form-input" placeholder="+54 9 11 1234-5678" required>
+          </div>
+          <div class="form-group" style="margin-bottom: 12px;">
+            <label for="clientEmail">Correo Electrónico</label>
+            <input type="email" id="clientEmail" class="form-input" placeholder="tuemail@ejemplo.com" required>
+          </div>
+          <div class="form-group" style="margin-bottom: 20px;">
+            <label for="clientGoal">¿Qué te interesa?</label>
+            <select id="clientGoal" class="form-input">
+              <option value="Quiero una demo de la plataforma">Quiero una demo de la plataforma</option>
+              <option value="Quiero info de precios para mi negocio">Quiero info de precios para mi negocio</option>
+              <option value="Tengo una consulta técnica">Tengo una consulta técnica</option>
+            </select>
+          </div>
+          <button type="submit" class="btn btn-primary btn-full">
+            <i class="fa-solid fa-paper-plane"></i> Enviar Consulta
+          </button>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <!-- Toast Notification -->
+  <div class="toast-notification" id="toastNotification">
+    <i class="fa-solid fa-check-circle"></i>
+    <span id="toastMessage">¡Acción completada!</span>
+  </div>
+
+  <!-- Main JavaScript -->
+  <script src="js/main.js"></script>
+
+</body>
+</html>

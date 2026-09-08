@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Reservar Turno | COACH PRO</title>
+
+  <!-- Font Awesome -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+  <!-- Custom CSS -->
+  <link rel="stylesheet" href="css/style.css?v=3.1">
+
+  <style>
+    .reservar-header {
+      padding: 18px 0;
+      border-bottom: 1px solid var(--border-subtle);
+    }
+
+    .reservar-header .logo {
+      font-size: 1.1rem;
+    }
+
+    .coach-identity-card {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      background: var(--bg-card);
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--radius-lg);
+      padding: 16px 20px;
+      margin-bottom: 28px;
+    }
+
+    .coach-identity-card img {
+      width: 54px;
+      height: 54px;
+      border-radius: 50%;
+      object-fit: cover;
+      border: 2px solid var(--primary);
+    }
+
+    .coach-identity-name {
+      font-family: var(--font-heading);
+      font-weight: 800;
+      font-size: 1.05rem;
+      color: var(--text-white);
+    }
+
+    .coach-identity-specialty {
+      font-size: 0.82rem;
+      color: var(--text-muted);
+    }
+  </style>
+</head>
+<body>
+
+  <header class="reservar-header">
+    <div class="container" style="display: flex; align-items: center; justify-content: center;">
+      <a href="index.html" class="logo">
+        <span class="logo-badge"><i class="fa-solid fa-bolt"></i></span>
+        <span>COACH</span> PRO
+      </a>
+    </div>
+  </header>
+
+  <main>
+    <section class="section booking-section" style="padding-top: 32px;">
+      <div class="container">
+
+        <!-- Invalid Link State -->
+        <div id="coachNotFound" style="display: none; text-align: center; padding: 60px 20px;">
+          <i class="fa-solid fa-triangle-exclamation" style="font-size: 2.4rem; color: var(--accent-orange); margin-bottom: 16px; display: block;"></i>
+          <h2 class="section-title">Enlace no válido</h2>
+          <p class="section-desc">Este link de reserva no corresponde a ningún entrenador activo. Pedile a tu coach que te comparta su link correcto.</p>
+        </div>
+
+        <!-- Booking Content -->
+        <div id="bookingContent">
+          <div class="coach-identity-card">
+            <img id="coachAvatarPreview" src="" alt="Avatar del entrenador">
+            <div>
+              <div class="coach-identity-name" id="coachIdentityName">Cargando...</div>
+              <div class="coach-identity-specialty" id="coachIdentitySpecialty"></div>
+            </div>
+          </div>
+
+          <div class="section-header">
+            <div class="section-tag"><i class="fa-regular fa-calendar-days"></i> Agenda en Tiempo Real</div>
+            <h2 class="section-title">Reservá tu <span>Turno de Entrenamiento</span></h2>
+            <p class="section-desc">Elegí el servicio, seleccioná día y horario libre, y confirmá tu turno directo por WhatsApp.</p>
+          </div>
+
+          <!-- Stepper Visual -->
+          <div class="stepper-header">
+            <div class="step-item active" id="step1Indicator">
+              <div class="step-bubble">1</div>
+              <div class="step-label">Servicio</div>
+            </div>
+            <div class="step-item" id="step2Indicator">
+              <div class="step-bubble">2</div>
+              <div class="step-label">Fecha & Hora</div>
+            </div>
+            <div class="step-item" id="step3Indicator">
+              <div class="step-bubble">3</div>
+              <div class="step-label">Confirmación</div>
+            </div>
+          </div>
+
+          <div class="booking-wrapper">
+            <div class="booking-grid">
+              <!-- Left Column -->
+              <div>
+                <h3 style="font-size: 1.15rem; margin-bottom: 16px; color: var(--text-white);">1. Seleccioná el Servicio</h3>
+                <div class="services-selection">
+                  <div class="service-card-radio active" data-service="eval">
+                    <div class="service-info">
+                      <h4>Evaluación Inicial</h4>
+                      <p>Charla para conocer tu objetivo, historial y disponibilidad (30 min)</p>
+                    </div>
+                    <div class="service-price">GRATIS</div>
+                  </div>
+                  <div class="service-card-radio" data-service="personalizado">
+                    <div class="service-info">
+                      <h4>Coaching Personalizado</h4>
+                      <p>Arrancá tu plan de seguimiento y rutinas 1 a 1</p>
+                    </div>
+                    <div class="service-price" id="personalizadoPriceLabel">$--/mes</div>
+                  </div>
+                </div>
+
+                <h3 style="font-size: 1.15rem; margin-bottom: 16px; color: var(--text-white);">2. Seleccioná Día y Horario</h3>
+                <div class="date-selector">
+                  <div class="calendar-strip" id="calendarStrip">
+                    <!-- JS dynamically renders days here -->
+                  </div>
+                </div>
+                <div class="slots-grid" id="slotsContainer">
+                  <div class="time-slot-btn active">08:30 AM</div>
+                  <div class="time-slot-btn">10:00 AM</div>
+                  <div class="time-slot-btn">11:30 AM</div>
+                  <div class="time-slot-btn">03:30 PM</div>
+                  <div class="time-slot-btn">05:00 PM</div>
+                  <div class="time-slot-btn">06:30 PM</div>
+                </div>
+              </div>
+
+              <!-- Right Column -->
+              <div>
+                <h3 style="font-size: 1.15rem; margin-bottom: 16px; color: var(--text-white);">3. Completá tus Datos</h3>
+                <form class="booking-form" id="bookingForm">
+                  <div class="form-group">
+                    <label for="bookName">Nombre y Apellido</label>
+                    <input type="text" id="bookName" class="form-input" placeholder="Ej: Lucas Martínez" required>
+                  </div>
+                  <div class="form-group">
+                    <label for="bookPhone">Número de WhatsApp</label>
+                    <input type="tel" id="bookPhone" class="form-input" placeholder="+54 9 11 2345-6789" required>
+                  </div>
+                  <div class="form-group">
+                    <label for="bookNote">Nota u Objetivo (Opcional)</label>
+                    <input type="text" id="bookNote" class="form-input" placeholder="Ej: Mejorar técnica en sentadilla">
+                  </div>
+
+                  <!-- Live Summary Box -->
+                  <div class="booking-summary-box">
+                    <div class="summary-row">
+                      <span>Servicio:</span>
+                      <span id="summaryService">Evaluación Inicial</span>
+                    </div>
+                    <div class="summary-row">
+                      <span>Fecha:</span>
+                      <span id="summaryDate">Hoy</span>
+                    </div>
+                    <div class="summary-row">
+                      <span>Horario:</span>
+                      <span id="summaryTime">08:30 AM</span>
+                    </div>
+                    <div class="summary-row">
+                      <span>Costo:</span>
+                      <span id="summaryCost">GRATIS</span>
+                    </div>
+                  </div>
+
+                  <button type="submit" class="btn btn-whatsapp btn-full" style="margin-top: 10px;">
+                    <i class="fa-brands fa-whatsapp"></i> Confirmar Turno por WhatsApp
+                  </button>
+                </form>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- Toast Notification -->
+  <div class="toast-notification" id="toastNotification">
+    <i class="fa-solid fa-check-circle"></i>
+    <span id="toastMessage">¡Acción completada!</span>
+  </div>
+
+  <!-- Firebase (shared cloud database) -->
+  <script src="https://www.gstatic.com/firebasejs/10.13.2/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.13.2/firebase-firestore-compat.js"></script>
+  <script src="js/firebase-config.js"></script>
+
+  <script src="js/auth.js?v=2.0"></script>
+  <script src="js/reservar.js?v=2.0"></script>
+</body>
+</html>
