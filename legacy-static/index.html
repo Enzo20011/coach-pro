@@ -1,0 +1,360 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="icon" type="image/svg+xml" href="favicon.svg">
+  <title>COACH PRO | La Plataforma para Entrenadores Personales</title>
+
+  <!-- SEO Meta Tags -->
+  <meta name="description" content="COACH PRO es la plataforma todo-en-uno para entrenadores personales: gestión de alumnos, constructor de rutinas, agenda de turnos online y fichas profesionales, todo en un panel a tu marca.">
+  <meta name="keywords" content="plataforma para entrenadores personales, software para personal trainers, gestion de alumnos gym, crear rutinas online, agenda de turnos para coaches, app para entrenadores">
+  <meta name="author" content="Austral Dev">
+
+  <!-- Open Graph / Social Media -->
+  <meta property="og:title" content="COACH PRO | La Plataforma para Entrenadores Personales">
+  <meta property="og:description" content="Gestión de alumnos, rutinas personalizadas y agenda online en un solo panel profesional para entrenadores personales.">
+  <meta property="og:type" content="website">
+  <meta property="og:image" content="https://images.unsplash.com/photo-1571019614242-c5c5dee9f50b?q=80&w=1200&auto=format&fit=crop">
+
+  <!-- Font Awesome Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+  <!-- Custom CSS -->
+  <link rel="stylesheet" href="css/style.css?v=3.1">
+</head>
+<body>
+  <a class="skip-link" href="#main-content">Saltar al contenido</a>
+
+  <!-- Scroll Progress Bar -->
+  <div class="scroll-progress-bar" id="scrollProgressBar"></div>
+
+  <!-- ==========================================================================
+       HEADER & NAVIGATION
+       ========================================================================== -->
+  <header class="header" id="header">
+    <div class="container nav-container">
+      <a href="index.html" class="logo">
+        <span class="logo-badge"><i class="fa-solid fa-bolt"></i></span>
+        <span>COACH</span> PRO
+      </a>
+
+      <nav>
+        <ul class="nav-links" id="navLinks">
+          <li><a class="nav-link active" href="index.html"><i class="fa-solid fa-house"></i> Inicio</a></li>
+          <li><a class="nav-link" href="planes.html"><i class="fa-solid fa-rocket"></i> Sumate</a></li>
+          <li><a class="nav-link" href="rutina-demo.html"><i class="fa-solid fa-mobile-screen-button"></i> App del Alumno</a></li>
+          <li><a class="nav-link" href="turnos.html"><i class="fa-regular fa-calendar-days"></i> Agenda Online</a></li>
+          <li><a class="nav-link" href="transformaciones.html"><i class="fa-solid fa-trophy"></i> Casos de Éxito</a></li>
+          <li><a class="nav-link" href="faq.html"><i class="fa-solid fa-circle-question"></i> FAQ</a></li>
+        </ul>
+      </nav>
+
+      <div class="nav-actions">
+        <a href="admin.html" class="btn btn-secondary btn-sm" style="border-color: rgba(0, 255, 135, 0.4); color: var(--primary);" title="Panel Coach">
+          <i class="fa-solid fa-lock"></i> Ingresar
+        </a>
+        <a class="btn btn-primary btn-sm" href="login.html?tab=register">
+          <i class="fa-solid fa-fire"></i> Empezar
+        </a>
+        <button class="menu-toggle" id="menuToggle" aria-label="Abrir menú">
+          <i class="fa-solid fa-bars"></i>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- ==========================================================================
+       PAGE CONTENT: INICIO (HERO)
+       ========================================================================== -->
+  <main id="main-content">
+
+    <!-- HERO SECTION -->
+    <section class="hero">
+      <div class="container">
+        <div class="hero-grid">
+          <!-- Hero Text Column -->
+          <div class="hero-content">
+            <div class="hero-badge-container">
+              <span class="live-badge">
+                <span class="pulse-dot"></span> Plataforma para Entrenadores Personales
+              </span>
+            </div>
+
+            <h1 class="hero-title">
+              Profesionalizá tu negocio de entrenador. <br>
+              <span class="highlight">Todo en un solo lugar.</span>
+            </h1>
+
+            <p class="hero-subtitle">
+              Gestioná alumnos, diseñá rutinas personalizadas, agendá turnos online y entregá una experiencia profesional con tu propia marca — todo desde un panel pensado para entrenadores.
+            </p>
+
+            <div class="hero-cta-group">
+              <a class="btn btn-primary" href="login.html?tab=register">
+                <i class="fa-solid fa-bolt"></i> Crear mi Cuenta Gratis
+              </a>
+              <a class="btn btn-secondary" href="turnos.html">
+                <i class="fa-regular fa-calendar-check"></i> Ver Cómo Funciona
+              </a>
+            </div>
+
+            <!-- Quick Metrics -->
+            <div class="hero-metrics">
+              <div class="metric-item">
+                <div class="metric-value">+150<span>+</span></div>
+                <div class="metric-label">Entrenadores Activos</div>
+              </div>
+              <div class="metric-item">
+                <div class="metric-value">+5<span>k</span></div>
+                <div class="metric-label">Rutinas Creadas</div>
+              </div>
+              <div class="metric-item">
+                <div class="metric-value">24<span>/7</span></div>
+                <div class="metric-label">Panel Online</div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Hero Media Column -->
+          <div class="hero-media-wrapper">
+            <div class="hero-image-card">
+              <img src="https://images.unsplash.com/photo-1571019614242-c5c5dee9f50b?q=80&w=1000&auto=format&fit=crop" alt="Entrenador personal usando COACH PRO para dar seguimiento a un alumno" loading="eager">
+              <div class="hero-image-overlay"></div>
+            </div>
+
+            <!-- Floating Badges -->
+            <div class="floating-stat-card stat-top-right">
+              <div class="stat-icon-box"><i class="fa-solid fa-star"></i></div>
+              <div class="stat-text">
+                <h4>4.9 / 5.0</h4>
+                <p>+250 Entrenadores nos Recomiendan</p>
+              </div>
+            </div>
+
+            <div class="floating-stat-card stat-bottom-left">
+              <div class="stat-icon-box"><i class="fa-solid fa-chart-line"></i></div>
+              <div class="stat-text">
+                <h4>+35% más Alumnos</h4>
+                <p>Retención promedio en 90 días</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- REPUTATION / CREDIBILITY STRIP -->
+    <section class="reputation-strip">
+      <div class="container">
+        <div class="reputation-flex">
+          <div class="rep-item"><i class="fa-solid fa-lock"></i><span>Datos de tus Alumnos Protegidos</span></div>
+          <div class="rep-item"><i class="fa-solid fa-dumbbell"></i><span>Constructor de Rutinas Ilimitado</span></div>
+          <div class="rep-item"><i class="fa-regular fa-calendar-check"></i><span>Agenda Online Integrada</span></div>
+          <div class="rep-item"><i class="fa-solid fa-headset"></i><span>Soporte Prioritario</span></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- HOW IT WORKS -->
+    <section class="section">
+      <div class="container">
+        <div class="section-header">
+          <div class="section-tag"><i class="fa-solid fa-diagram-project"></i> Cómo Funciona</div>
+          <h2 class="section-title">Empezá a usarlo en <span>tres pasos</span></h2>
+          <p class="section-desc">Sin instalaciones ni curvas de aprendizaje. Tu panel queda listo para trabajar el mismo día.</p>
+        </div>
+
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 20px;">
+          <div class="glass-card" style="padding: 28px 24px;">
+            <div style="width: 42px; height: 42px; border-radius: 50%; background: rgba(0,255,135,0.12); color: var(--primary); display: flex; align-items: center; justify-content: center; font-family: var(--font-heading); font-weight: 800; margin-bottom: 16px;">1</div>
+            <h3 style="font-size: 1.05rem; margin-bottom: 8px;">Creá tu cuenta gratis</h3>
+            <p style="color: var(--text-muted); font-size: 0.9rem; line-height: 1.6;">Te registrás con tu nombre, especialidad y tarifa. Tu panel queda listo al instante, con tu propia marca.</p>
+          </div>
+          <div class="glass-card" style="padding: 28px 24px;">
+            <div style="width: 42px; height: 42px; border-radius: 50%; background: rgba(0,255,135,0.12); color: var(--primary); display: flex; align-items: center; justify-content: center; font-family: var(--font-heading); font-weight: 800; margin-bottom: 16px;">2</div>
+            <h3 style="font-size: 1.05rem; margin-bottom: 8px;">Cargá tus alumnos y sus rutinas</h3>
+            <p style="color: var(--text-muted); font-size: 0.9rem; line-height: 1.6;">Sumá a cada alumno con su plan y objetivo, y armá rutinas de hasta 6 días con el constructor integrado.</p>
+          </div>
+          <div class="glass-card" style="padding: 28px 24px;">
+            <div style="width: 42px; height: 42px; border-radius: 50%; background: rgba(0,255,135,0.12); color: var(--primary); display: flex; align-items: center; justify-content: center; font-family: var(--font-heading); font-weight: 800; margin-bottom: 16px;">3</div>
+            <h3 style="font-size: 1.05rem; margin-bottom: 8px;">Tus alumnos usan la app</h3>
+            <p style="color: var(--text-muted); font-size: 0.9rem; line-height: 1.6;">Ven su rutina, marcan sus series y reservan turnos solos. Vos te enfocás en entrenar, no en gestionar.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- HOME CTA FOOTER -->
+    <section class="cta-banner">
+      <div class="container">
+        <div class="cta-box">
+          <h2>¿Listo para profesionalizar tu marca de entrenador?</h2>
+          <p>Sumate a COACH PRO y empezá a gestionar tus alumnos, rutinas y turnos como un negocio profesional desde hoy.</p>
+          <div class="cta-buttons">
+            <a class="btn btn-primary" href="login.html?tab=register">
+              <i class="fa-solid fa-bolt"></i> Crear mi Cuenta
+            </a>
+            <a href="https://wa.me/5491100000000?text=Hola!%20Quiero%20informaci%C3%B3n%20sobre%20COACH%20PRO%20para%20entrenadores" target="_blank" rel="noopener noreferrer" class="btn btn-whatsapp">
+              <i class="fa-brands fa-whatsapp"></i> Hablar con Ventas
+            </a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- ==========================================================================
+       FOOTER (always visible)
+       ========================================================================== -->
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-grid">
+        <div class="footer-col">
+          <a class="logo" href="index.html">
+            <span class="logo-badge"><i class="fa-solid fa-bolt"></i></span>
+            <span>COACH</span> PRO
+          </a>
+          <p>La plataforma todo-en-uno para entrenadores personales: gestioná alumnos, rutinas y turnos con un panel profesional a tu marca.</p>
+          <div class="footer-socials">
+            <a href="https://wa.me/5491100000000?text=Hola!%20Quiero%20conocer%20m%C3%A1s%20sobre%20COACH%20PRO%20para%20mi%20negocio%20de%20entrenador." class="social-btn" target="_blank" rel="noopener noreferrer" aria-label="Escribinos por WhatsApp"><i class="fa-brands fa-whatsapp"></i></a>
+          </div>
+        </div>
+
+        <div class="footer-col">
+          <h4>Navegación</h4>
+          <div class="footer-links">
+            <a href="index.html">Inicio</a>
+            <a href="planes.html">Sumate a COACH PRO</a>
+            <a href="rutina-demo.html">App del Alumno</a>
+            <a href="turnos.html">Agenda Online</a>
+            <a href="transformaciones.html">Casos de Éxito</a>
+            <a href="admin.html" style="color: var(--primary); font-weight: 700;"><i class="fa-solid fa-lock"></i> Acceso Panel Coach</a>
+          </div>
+        </div>
+
+        <div class="footer-col">
+          <h4>Para tu Negocio</h4>
+          <div class="footer-links">
+            <a href="admin.html">Gestión de Alumnos</a>
+            <a href="rutina-demo.html">Constructor de Rutinas</a>
+            <a href="turnos.html">Agenda de Turnos Online</a>
+            <a href="planes.html">Fichas PDF Profesionales</a>
+            <a href="transformaciones.html">Casos de Éxito</a>
+          </div>
+        </div>
+
+        <div class="footer-col">
+          <h4>Contacto Directo</h4>
+          <div class="footer-links">
+            <a href="tel:+5491100000000"><i class="fa-solid fa-phone"></i> +54 9 11 0000-0000</a>
+            <a href="mailto:hola@coachpro.com"><i class="fa-solid fa-envelope"></i> hola@coachpro.com</a>
+            <span class="footer-info-row"><i class="fa-solid fa-headset"></i> Soporte 100% Online</span>
+            <span class="footer-info-row"><i class="fa-solid fa-clock"></i> Lun a Vie: 09:00 a 19:00 hs</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="footer-bottom">
+        <div>© 2026 COACH PRO. Todos los derechos reservados.</div>
+        <div class="footer-legal">
+          <a href="privacidad.html">Privacidad</a>
+          <a href="terminos.html">Términos y Condiciones</a>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <!-- WhatsApp Widget -->
+  <div class="whatsapp-widget-container">
+    <div class="whatsapp-chat-bubble" id="whatsappChatBubble">
+      <div class="bubble-header">
+        <div class="bubble-sender">
+          <i class="fa-solid fa-circle" style="font-size: 0.6rem; color: #00ff87;"></i> Equipo COACH PRO
+        </div>
+        <button class="bubble-close" id="closeBubble" aria-label="Cerrar mensaje">
+          <i class="fa-solid fa-xmark"></i>
+        </button>
+      </div>
+      <div class="bubble-text">
+        ¡Hola! 👋 ¿Querés conocer cómo COACH PRO puede ayudarte a gestionar tu negocio de entrenador?
+      </div>
+    </div>
+    <a href="https://wa.me/5491100000000?text=Hola!%20Quiero%20conocer%20m%C3%A1s%20sobre%20COACH%20PRO%20para%20mi%20negocio%20de%20entrenador." class="floating-whatsapp" target="_blank" rel="noopener noreferrer" aria-label="Contactar por WhatsApp">
+      <i class="fa-brands fa-whatsapp"></i>
+    </a>
+  </div>
+
+  <!-- Mobile Sticky Action Bar -->
+  <div class="mobile-sticky-bar">
+    <div class="sticky-bar-grid">
+      <a class="sticky-action-btn primary" href="planes.html">
+        <i class="fa-solid fa-bolt"></i> Sumate
+      </a>
+      <a class="sticky-action-btn secondary" href="turnos.html">
+        <i class="fa-regular fa-calendar-check"></i> Agenda
+      </a>
+      <a href="https://wa.me/5491100000000?text=Hola!%20Quiero%20informaci%C3%B3n%20sobre%20COACH%20PRO%20para%20entrenadores" target="_blank" rel="noopener noreferrer" class="sticky-action-btn whatsapp">
+        <i class="fa-brands fa-whatsapp"></i> Chat
+      </a>
+    </div>
+  </div>
+
+  <!-- Checkout Modal -->
+  <div class="modal-overlay" id="checkoutModal">
+    <div class="modal-dialog">
+      <div class="modal-header">
+        <h3><i class="fa-solid fa-comments" style="color: var(--primary); margin-right: 8px;"></i> Solicitar una Demo</h3>
+        <button class="modal-close" id="closeModal" aria-label="Cerrar ventana">
+          <i class="fa-solid fa-xmark"></i>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div class="checkout-plan-summary">
+          <div>
+            <span style="font-size: 0.8rem; text-transform: uppercase; color: var(--text-muted); font-weight: 700;">Consulta sobre:</span>
+            <h4 id="modalPlanName">Demo de COACH PRO</h4>
+          </div>
+          <div class="checkout-price" id="modalPlanPrice"></div>
+        </div>
+        <form id="checkoutForm">
+          <div class="form-group" style="margin-bottom: 12px;">
+            <label for="clientName">Nombre Completo</label>
+            <input type="text" id="clientName" class="form-input" placeholder="Tu nombre y apellido" required>
+          </div>
+          <div class="form-group" style="margin-bottom: 12px;">
+            <label for="clientPhone">Teléfono de WhatsApp</label>
+            <input type="tel" id="clientPhone" class="form-input" placeholder="+54 9 11 1234-5678" required>
+          </div>
+          <div class="form-group" style="margin-bottom: 12px;">
+            <label for="clientEmail">Correo Electrónico</label>
+            <input type="email" id="clientEmail" class="form-input" placeholder="tuemail@ejemplo.com" required>
+          </div>
+          <div class="form-group" style="margin-bottom: 20px;">
+            <label for="clientGoal">¿Qué te interesa?</label>
+            <select id="clientGoal" class="form-input">
+              <option value="Quiero una demo de la plataforma">Quiero una demo de la plataforma</option>
+              <option value="Quiero info de precios para mi negocio">Quiero info de precios para mi negocio</option>
+              <option value="Tengo una consulta técnica">Tengo una consulta técnica</option>
+            </select>
+          </div>
+          <button type="submit" class="btn btn-primary btn-full">
+            <i class="fa-solid fa-paper-plane"></i> Enviar Consulta
+          </button>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <!-- Toast Notification -->
+  <div class="toast-notification" id="toastNotification">
+    <i class="fa-solid fa-check-circle"></i>
+    <span id="toastMessage">¡Acción completada!</span>
+  </div>
+
+  <!-- Main JavaScript -->
+  <script src="js/main.js"></script>
+
+</body>
+</html>
