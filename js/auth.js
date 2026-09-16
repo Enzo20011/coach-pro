@@ -6,7 +6,7 @@
  */
 
 (function () {
-  const ACTIVE_COACH_KEY = 'valenfit_active_coach';
+  const ACTIVE_COACH_KEY = 'coachpro_active_coach';
   const COACHES_COL = 'coaches';
 
   // Manual activation code: shared with a trainer once they've paid (see activar.html).
@@ -20,7 +20,7 @@
       id: 'coach_1',
       name: 'Valentín Rossi',
       displayName: 'Coach Valentín',
-      email: 'coach@valenfit.com',
+      email: 'coach@coachpro.app',
       password: '123',
       phone: '+5491100000000',
       specialty: 'Biomecánica & Fuerza',
@@ -34,7 +34,7 @@
       id: 'coach_2',
       name: 'Sofía Almada',
       displayName: 'Coach Sofía',
-      email: 'sofia@valenfit.com',
+      email: 'sofia@coachpro.app',
       password: '123',
       phone: '+5491122334455',
       specialty: 'Hipertrofia & Glúteos',

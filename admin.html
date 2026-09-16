@@ -3,6 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="icon" type="image/svg+xml" href="favicon.svg">
   <title>Panel de Control | COACH PRO</title>
 
   <!-- Font Awesome -->
@@ -12,6 +13,7 @@
   <link rel="stylesheet" href="css/admin.css?v=2.9">
 </head>
 <body>
+  <a class="skip-link" href="#main-content">Saltar al contenido</a>
 
   <!-- Admin Top Navbar -->
   <header class="admin-navbar">
@@ -35,7 +37,7 @@
       <div class="user-profile-badge" id="coachProfileBadge">
         <img src="https://images.unsplash.com/photo-1567013127542-490d757e51fc?q=80&w=150&auto=format&fit=crop" alt="Coach Avatar" class="user-avatar" id="coachAvatarImg">
         <div>
-          <span id="coachNameDisplay">Coach <strong>Valentín</strong></span>
+          <span id="coachNameDisplay">Cargando <strong>panel…</strong></span>
           <small id="coachSpecialtyDisplay" style="display: block; font-size: 0.7rem; color: var(--text-muted); line-height: 1;">Biomecánica</small>
         </div>
       </div>
@@ -70,7 +72,7 @@
     </nav>
 
     <!-- Content Workspace -->
-    <main class="admin-content">
+    <main class="admin-content" id="main-content">
 
       <!-- ==========================================================================
            TAB 1: DASHBOARD OVERVIEW

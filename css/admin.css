@@ -54,6 +54,29 @@ body {
   flex-direction: column;
 }
 
+:focus-visible {
+  outline: 2px solid var(--primary);
+  outline-offset: 2px;
+  border-radius: var(--radius-xs, 4px);
+}
+
+.skip-link {
+  position: fixed;
+  top: -60px;
+  left: 12px;
+  z-index: 5000;
+  background: var(--primary);
+  color: #08090d;
+  font-family: var(--font-heading);
+  font-weight: 700;
+  font-size: 0.85rem;
+  padding: 10px 18px;
+  border-radius: 8px;
+  transition: top 0.2s ease;
+}
+
+.skip-link:focus-visible { top: 12px; }
+
 /* Header */
 .admin-navbar {
   background: rgba(12, 16, 25, 0.95);

@@ -1,0 +1,12 @@
+User-agent: *
+Allow: /
+
+# Paneles privados y flujos de acceso: no deben indexarse en buscadores
+Disallow: /admin.html
+Disallow: /alumno.html
+Disallow: /activar.html
+Disallow: /login.html
+Disallow: /reservar.html
+
+# Reemplazar por el dominio real antes de publicar
+Sitemap: https://coachpro.app/sitemap.xml

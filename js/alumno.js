@@ -45,7 +45,7 @@ document.addEventListener('DOMContentLoaded', async () => {
 
   const coachDoc = await db.collection('coaches').doc(student.coachId || 'coach_1').get();
   const assignedCoach = coachDoc.exists ? coachDoc.data() : {
-    displayName: 'Coach Valentín',
+    displayName: 'Tu entrenador',
     phone: '+5491100000000',
     avatar: 'https://images.unsplash.com/photo-1567013127542-490d757e51fc?q=80&w=150&auto=format&fit=crop',
     specialty: 'Biomecánica & Fuerza'
@@ -61,7 +61,7 @@ document.addEventListener('DOMContentLoaded', async () => {
   const appCoachName = document.getElementById('appCoachName');
 
   if (appCoachAvatar && assignedCoach.avatar) appCoachAvatar.src = assignedCoach.avatar;
-  if (appCoachName) appCoachName.textContent = assignedCoach.displayName || 'Coach Valentín';
+  if (appCoachName) appCoachName.textContent = assignedCoach.displayName || 'Tu entrenador';
   if (studentNameHeader) studentNameHeader.textContent = `Hola, ${student.name.split(' ')[0]} 👋`;
   if (studentPlanBadge) studentPlanBadge.textContent = student.plan;
   if (routineTitleBadge) routineTitleBadge.textContent = studentRoutine.title || 'Plan de Entrenamiento';
