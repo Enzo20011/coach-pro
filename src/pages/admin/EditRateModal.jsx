@@ -23,14 +23,14 @@ export default function EditRateModal({ isOpen, currentPrice, onClose, onSave })
           Define cuánto cobras mensualmente por tu plan 1 a 1 de seguimiento y rutinas personalizadas.
         </p>
         <div className={a['form-group']} style={{ marginBottom: 16 }}>
-          <label htmlFor="inputNewRate">Precio Mensual ($ USD / Moneda local)</label>
+          <label htmlFor="inputNewRate">Precio Mensual (en pesos argentinos)</label>
           <input
             type="number"
             id="inputNewRate"
             className={a['form-input']}
-            min="5"
-            max="2000"
-            step="1"
+            min="1000"
+            max="10000000"
+            step="500"
             value={value}
             onChange={(e) => setValue(e.target.value)}
             required

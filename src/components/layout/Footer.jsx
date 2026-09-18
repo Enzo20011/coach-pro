@@ -14,7 +14,7 @@ export default function Footer() {
               <span>COACH</span> PRO
             </Link>
             <p>
-              La plataforma todo-en-uno para entrenadores personales: gestioná alumnos, rutinas y turnos con un panel
+              La plataforma todo-en-uno para entrenadores personales: gestioná alumnos y rutinas con un panel
               profesional a tu marca.
             </p>
             <div className="footer-socials">
@@ -36,7 +36,6 @@ export default function Footer() {
               <Link to="/">Inicio</Link>
               <Link to="/planes">Sumate a COACH PRO</Link>
               <Link to="/rutina-demo">App del Alumno</Link>
-              <Link to="/turnos">Agenda Online</Link>
               <Link to="/transformaciones">Casos de Éxito</Link>
               <Link to="/admin" style={{ color: 'var(--primary)', fontWeight: 700 }}>
                 <i className="fa-solid fa-lock" /> Acceso Panel Coach
@@ -49,7 +48,6 @@ export default function Footer() {
             <div className="footer-links">
               <Link to="/admin">Gestión de Alumnos</Link>
               <Link to="/rutina-demo">Constructor de Rutinas</Link>
-              <Link to="/turnos">Agenda de Turnos Online</Link>
               <Link to="/planes">Fichas PDF Profesionales</Link>
               <Link to="/transformaciones">Casos de Éxito</Link>
             </div>

@@ -1,7 +1,8 @@
-import { useState } from 'react';
+import { useId, useRef, useState } from 'react';
 import { useCheckoutModal } from '../../context/CheckoutModalContext.jsx';
 import { useToast } from '../../context/ToastContext.jsx';
 import { platformWhatsAppLink } from '../../lib/whatsapp.js';
+import useModalA11y from '../../hooks/useModalA11y.js';
 
 const GOAL_OPTIONS = [
   'Quiero una demo de la plataforma',
@@ -15,6 +16,9 @@ export default function CheckoutModal() {
   const { isOpen, planName, planPrice, close } = useCheckoutModal();
   const showToast = useToast();
   const [form, setForm] = useState(emptyForm);
+  const dialogRef = useRef(null);
+  const titleId = useId();
+  useModalA11y(isOpen, close, dialogRef);
 
   function handleChange(e) {
     const { id, value } = e.target;
@@ -35,15 +39,21 @@ export default function CheckoutModal() {
   }
 
   return (
-    <div className={`modal-overlay${isOpen ? ' open' : ''}`} id="checkoutModal">
-      <div className="modal-dialog">
+    <div
+      className={`modal-overlay${isOpen ? ' open' : ''}`}
+      id="checkoutModal"
+      onClick={(e) => {
+        if (e.target === e.currentTarget) close();
+      }}
+    >
+      <div className="modal-dialog" ref={dialogRef} role="dialog" aria-modal="true" aria-labelledby={titleId} tabIndex={-1}>
         <div className="modal-header">
-          <h3>
-            <i className="fa-solid fa-comments" style={{ color: 'var(--primary)', marginRight: 8 }} /> Solicitar una
+          <h3 id={titleId}>
+            <i className="fa-solid fa-comments" style={{ color: 'var(--primary)', marginRight: 8 }} aria-hidden="true" /> Solicitar una
             Demo
           </h3>
           <button className="modal-close" aria-label="Cerrar ventana" onClick={close} type="button">
-            <i className="fa-solid fa-xmark" />
+            <i className="fa-solid fa-xmark" aria-hidden="true" />
           </button>
         </div>
         <div className="modal-body">

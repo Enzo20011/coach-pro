@@ -1,13 +1,31 @@
 import { useToast } from '../../context/ToastContext.jsx';
 import { buildWhatsAppLink } from '../../lib/whatsapp.js';
+import { updateBooking } from '../../lib/firestore/bookings.js';
 import a from '../../styles/admin.module.css';
 
-export default function TurnosTab({ bookings, coach }) {
+export default function TurnosTab({ bookings, coach, onBookingUpdated }) {
   const showToast = useToast();
   const myBookingUrl = `${window.location.origin}/reservar?coach=${coach.id}`;
 
   function handleCopyLink() {
     navigator.clipboard.writeText(myBookingUrl).then(() => showToast('¡Enlace de reservas copiado al portapapeles!'));
+  }
+
+  async function handleStatusChange(bookingId, status) {
+    try {
+      await updateBooking(bookingId, { status });
+      onBookingUpdated();
+      showToast(status === 'Confirmado' ? '¡Turno confirmado!' : 'Turno cancelado. El horario vuelve a quedar libre.');
+    } catch (err) {
+      console.error(err);
+      showToast('No se pudo actualizar el turno. Probá de nuevo.');
+    }
+  }
+
+  function statusModifier(status) {
+    if (status === 'Confirmado') return a.active;
+    if (status === 'Cancelado') return a.cancelled;
+    return a.pending;
   }
 
   return (
@@ -52,29 +70,49 @@ export default function TurnosTab({ bookings, coach }) {
               ) : (
                 bookings.map((b) => (
                   <tr key={b.id}>
-                    <td>
+                    <td data-label="Cliente">
                       <strong>{b.clientName}</strong>
                     </td>
-                    <td>{b.service}</td>
-                    <td>
+                    <td data-label="Servicio Solicitado">{b.service}</td>
+                    <td data-label="Fecha & Horario">
                       {b.date} • {b.time}
                     </td>
-                    <td>{b.phone}</td>
-                    <td>
-                      <span className={`${a['status-badge']} ${a.active}`}>{b.status}</span>
+                    <td data-label="WhatsApp">{b.phone}</td>
+                    <td data-label="Estado">
+                      <span className={`${a['status-badge']} ${statusModifier(b.status)}`}>{b.status}</span>
                     </td>
-                    <td>
-                      <a
-                        href={buildWhatsAppLink(
-                          b.phone,
-                          `Hola ${b.clientName}! Te saluda ${coach.displayName}. Te confirmo tu turno en COACH PRO`
+                    <td data-label="Acción">
+                      <div className={a['table-actions']}>
+                        <a
+                          href={buildWhatsAppLink(
+                            b.phone,
+                            `Hola ${b.clientName}! Te saluda ${coach.displayName}. Te confirmo tu turno en COACH PRO`
+                          )}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className={`${a.btn} ${a['btn-whatsapp']} ${a['btn-sm']}`}
+                        >
+                          <i className="fa-brands fa-whatsapp" /> Contactar
+                        </a>
+                        {b.status !== 'Confirmado' && (
+                          <button
+                            type="button"
+                            className={`${a.btn} ${a['btn-primary']} ${a['btn-sm']}`}
+                            onClick={() => handleStatusChange(b.id, 'Confirmado')}
+                          >
+                            <i className="fa-solid fa-check" /> Confirmar
+                          </button>
                         )}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className={`${a.btn} ${a['btn-whatsapp']} ${a['btn-sm']}`}
-                      >
-                        <i className="fa-brands fa-whatsapp" /> Contactar
-                      </a>
+                        {b.status !== 'Cancelado' && (
+                          <button
+                            type="button"
+                            className={`${a.btn} ${a['btn-danger-outline']} ${a['btn-sm']}`}
+                            onClick={() => handleStatusChange(b.id, 'Cancelado')}
+                          >
+                            <i className="fa-solid fa-xmark" /> Cancelar
+                          </button>
+                        )}
+                      </div>
                     </td>
                   </tr>
                 ))

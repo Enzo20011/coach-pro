@@ -1,4 +1,5 @@
 import { Link } from 'react-router-dom';
+import { formatARS } from '../../lib/formatCurrency.js';
 import a from '../../styles/admin.module.css';
 
 export default function AdminNavbar({ coach, onEditRate, onLogout }) {
@@ -18,7 +19,7 @@ export default function AdminNavbar({ coach, onEditRate, onLogout }) {
         <div className={a['coach-rate-badge']} title="Tu tarifa mensual actual para entrenamiento personalizado">
           <i className="fa-solid fa-tag" style={{ color: 'var(--primary)' }} />
           <span>
-            Personalizado: <strong>${coach.pricePersonalizado ?? 49}</strong>/mes
+            Personalizado: <strong>{formatARS(coach.pricePersonalizado ?? 50000)}</strong>/mes
           </span>
           <button type="button" className={a['btn-edit-rate']} title="Cambiar precio de tu servicio personalizado" onClick={onEditRate}>
             <i className="fa-solid fa-pen" />
@@ -45,9 +46,8 @@ export default function AdminNavbar({ coach, onEditRate, onLogout }) {
 
         <button
           type="button"
-          className={`${a.btn} ${a['btn-secondary']} ${a['btn-sm']}`}
+          className={`${a.btn} ${a['btn-danger-outline']} ${a['btn-sm']}`}
           title="Cerrar Sesión de Entrenador"
-          style={{ borderColor: 'rgba(255, 94, 87, 0.4)', color: '#ff5e57' }}
           onClick={onLogout}
         >
           <i className="fa-solid fa-right-from-bracket" /> Salir

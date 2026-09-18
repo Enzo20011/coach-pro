@@ -1,8 +1,9 @@
 import { useEffect, useState } from 'react';
 import { Link, useSearchParams } from 'react-router-dom';
 import { getCoach } from '../../lib/firestore/coaches.js';
-import { createBooking } from '../../lib/firestore/bookings.js';
+import { buildSlotId, createBooking } from '../../lib/firestore/bookings.js';
 import { buildWhatsAppLink } from '../../lib/whatsapp.js';
+import { formatARS } from '../../lib/formatCurrency.js';
 import { useToast } from '../../context/ToastContext.jsx';
 import BookingWizard from '../../components/marketing/BookingWizard.jsx';
 import useDocumentMeta from '../../hooks/useDocumentMeta.js';
@@ -38,10 +39,12 @@ export default function Reservar() {
   }, [coachId]);
 
   async function handleSubmit({ serviceName, servicePrice, dateLabel, time, name, phone, note }) {
-    const bookingId = `b_${Date.now()}`;
+    // ID determinístico por (coach, fecha, horario): si ese slot ya está
+    // Pendiente/Confirmado, Firestore Security Rules rechazan la escritura
+    // (permission-denied) en vez de dejar crear un turno duplicado.
+    const bookingId = buildSlotId(coach.id, dateLabel, time);
     try {
       await createBooking(bookingId, {
-        id: bookingId,
         coachId: coach.id,
         clientName: name,
         phone,
@@ -63,7 +66,11 @@ export default function Reservar() {
       setTimeout(() => window.open(buildWhatsAppLink(coach.phone, message), '_blank'), 900);
     } catch (err) {
       console.error(err);
-      showToast('No se pudo guardar el turno. Probá de nuevo.');
+      if (err?.code === 'permission-denied') {
+        showToast('Ese horario ya fue reservado. Elegí otro día u horario.');
+      } else {
+        showToast('No se pudo guardar el turno. Probá de nuevo.');
+      }
     }
   }
 
@@ -126,7 +133,7 @@ export default function Reservar() {
                 <BookingWizard
                   services={[
                     { id: 'eval', name: 'Evaluación Inicial', description: 'Charla para conocer tu objetivo, historial y disponibilidad (30 min)', priceLabel: 'GRATIS' },
-                    { id: 'personalizado', name: 'Coaching Personalizado', description: 'Arrancá tu plan de seguimiento y rutinas 1 a 1', priceLabel: `$${coach.pricePersonalizado}/mes` },
+                    { id: 'personalizado', name: 'Coaching Personalizado', description: 'Arrancá tu plan de seguimiento y rutinas 1 a 1', priceLabel: `${formatARS(coach.pricePersonalizado)}/mes` },
                   ]}
                   onSubmit={handleSubmit}
                 />

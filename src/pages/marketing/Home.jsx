@@ -16,7 +16,7 @@ const STEPS = [
   {
     n: 3,
     title: 'Tus alumnos usan la app',
-    desc: 'Ven su rutina, marcan sus series y reservan turnos solos. Vos te enfocás en entrenar, no en gestionar.',
+    desc: 'Ven su rutina, marcan sus series y siguen su progreso solos. Vos te enfocás en entrenar, no en gestionar.',
   },
 ];
 
@@ -24,7 +24,7 @@ export default function Home() {
   useDocumentMeta({
     title: 'COACH PRO | La Plataforma para Entrenadores Personales',
     description:
-      'COACH PRO es la plataforma todo-en-uno para entrenadores personales: gestión de alumnos, constructor de rutinas, agenda de turnos online y fichas profesionales, todo en un panel a tu marca.',
+      'COACH PRO es la plataforma todo-en-uno para entrenadores personales: gestión de alumnos, constructor de rutinas y fichas profesionales, todo en un panel a tu marca.',
   });
 
   return (
@@ -46,16 +46,16 @@ export default function Home() {
               </h1>
 
               <p className="hero-subtitle">
-                Gestioná alumnos, diseñá rutinas personalizadas, agendá turnos online y entregá una experiencia
-                profesional con tu propia marca — todo desde un panel pensado para entrenadores.
+                Gestioná alumnos, diseñá rutinas personalizadas y entregá una experiencia profesional con tu propia
+                marca — todo desde un panel pensado para entrenadores.
               </p>
 
               <div className="hero-cta-group">
                 <Link className="btn btn-primary" to="/login?tab=register">
                   <i className="fa-solid fa-bolt" /> Crear mi Cuenta Gratis
                 </Link>
-                <Link className="btn btn-secondary" to="/turnos">
-                  <i className="fa-regular fa-calendar-check" /> Ver Cómo Funciona
+                <Link className="btn btn-secondary" to="/rutina-demo">
+                  <i className="fa-solid fa-mobile-screen-button" /> Ver Cómo Funciona
                 </Link>
               </div>
 
@@ -154,28 +154,14 @@ export default function Home() {
             </p>
           </div>
 
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(240px, 1fr))', gap: 20 }}>
+          <div className="steps-grid">
             {STEPS.map((step) => (
-              <div className="glass-card" style={{ padding: '28px 24px' }} key={step.n}>
-                <div
-                  style={{
-                    width: 42,
-                    height: 42,
-                    borderRadius: '50%',
-                    background: 'rgba(0,255,135,0.12)',
-                    color: 'var(--primary)',
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                    fontFamily: 'var(--font-heading)',
-                    fontWeight: 800,
-                    marginBottom: 16,
-                  }}
-                >
+              <div className="glass-card step-card" key={step.n}>
+                <div className="step-num-badge" aria-hidden="true">
                   {step.n}
                 </div>
-                <h3 style={{ fontSize: '1.05rem', marginBottom: 8 }}>{step.title}</h3>
-                <p style={{ color: 'var(--text-muted)', fontSize: '0.9rem', lineHeight: 1.6 }}>{step.desc}</p>
+                <h3>{step.title}</h3>
+                <p>{step.desc}</p>
               </div>
             ))}
           </div>
@@ -188,8 +174,7 @@ export default function Home() {
           <div className="cta-box">
             <h2>¿Listo para profesionalizar tu marca de entrenador?</h2>
             <p>
-              Sumate a COACH PRO y empezá a gestionar tus alumnos, rutinas y turnos como un negocio profesional desde
-              hoy.
+              Sumate a COACH PRO y empezá a gestionar tus alumnos y rutinas como un negocio profesional desde hoy.
             </p>
             <div className="cta-buttons">
               <Link className="btn btn-primary" to="/login?tab=register">

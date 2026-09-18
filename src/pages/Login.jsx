@@ -8,7 +8,7 @@ import a from '../styles/admin.module.css';
 import styles from '../styles/auth.module.css';
 
 const emptyLogin = { email: '', password: '' };
-const emptyRegister = { name: '', specialty: '', price: '50', phone: '', email: '', password: '' };
+const emptyRegister = { name: '', specialty: '', price: '50000', phone: '', email: '', password: '' };
 
 export default function Login() {
   useDocumentMeta({ title: 'Acceso Entrenadores | COACH PRO' });
@@ -161,14 +161,15 @@ export default function Login() {
                 />
               </div>
               <div className={a['form-group']} style={{ marginBottom: 12 }}>
-                <label htmlFor="regPrice">Tarifa Mensual de tu Servicio Personalizado ($)</label>
+                <label htmlFor="regPrice">Tarifa Mensual de tu Servicio Personalizado (en pesos argentinos)</label>
                 <input
                   type="number"
                   id="regPrice"
                   className={a['form-input']}
-                  placeholder="Ej: 50"
-                  min="10"
-                  max="1000"
+                  placeholder="Ej: 50000"
+                  min="1000"
+                  max="10000000"
+                  step="500"
                   value={registerForm.price}
                   onChange={(e) => setRegisterForm((f) => ({ ...f, price: e.target.value }))}
                   required

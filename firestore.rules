@@ -1,0 +1,104 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    function isSignedIn() {
+      return request.auth != null;
+    }
+
+    function isOwnerCoach(coachId) {
+      return isSignedIn() && request.auth.uid == coachId;
+    }
+
+    // Coaches: público de solo-lectura (lo consumen las páginas sin login de
+    // /alumno y /reservar para mostrar la identidad del coach), pero nunca
+    // enumerable, y solo el propio coach puede crear/editar su perfil.
+    match /coaches/{coachId} {
+      allow get: if true;
+      allow list: if false;
+      allow create: if isOwnerCoach(coachId);
+      allow update: if isOwnerCoach(coachId);
+      allow delete: if false;
+    }
+
+    // Alumnos: el portal del alumno no tiene login — funciona con el id del
+    // documento como si fuera un link/token (ver el cambio a IDs no
+    // adivinables). Por eso un `get` puntual es público, pero `list` (barrer
+    // toda la colección) queda restringido al coach dueño.
+    match /alumnos/{studentId} {
+      allow get: if true;
+      allow list: if isSignedIn() && request.auth.uid == resource.data.coachId;
+      allow create: if isOwnerCoach(request.resource.data.coachId);
+      allow update: if isOwnerCoach(resource.data.coachId);
+      allow delete: if false;
+    }
+
+    // Rutinas: mismo modelo de confianza "el id es el link" que alumnos.
+    match /routines/{studentId} {
+      allow get: if true;
+      allow list: if isSignedIn() && request.auth.uid == resource.data.coachId;
+      allow create: if isOwnerCoach(request.resource.data.coachId);
+      allow update: if isOwnerCoach(resource.data.coachId);
+      allow delete: if false;
+    }
+
+    // Biblioteca de ejercicios del coach (un doc por coach, se completa sola
+    // con cada ejercicio que usa) — privada, nunca pública ni de otro coach.
+    match /exerciseLibrary/{coachId} {
+      allow get: if isOwnerCoach(coachId);
+      allow list: if false;
+      allow create: if isOwnerCoach(coachId);
+      allow update: if isOwnerCoach(coachId);
+      allow delete: if false;
+    }
+
+    // Versiones archivadas de rutinas — solo el coach dueño, nunca públicas.
+    match /routineHistory/{versionId} {
+      allow get: if isSignedIn() && request.auth.uid == resource.data.coachId;
+      allow list: if isSignedIn() && request.auth.uid == resource.data.coachId;
+      allow create: if isOwnerCoach(request.resource.data.coachId);
+      allow update: if false;
+      allow delete: if false;
+    }
+
+    // Progreso de series del alumno: se escribe directo desde el portal sin
+    // login, con el mismo modelo de confianza que alumnos/rutinas (el link es
+    // el "token"). Solo el coach dueño puede listar el progreso de todos sus
+    // alumnos (usado en la métrica semanal del dashboard).
+    match /progress/{studentId} {
+      allow get: if true;
+      allow create: if true;
+      allow update: if true;
+      allow list: if isSignedIn() && request.auth.uid == resource.data.coachId;
+      allow delete: if false;
+    }
+
+    // Turnos: cualquiera puede pedir un turno nuevo (página pública de reserva,
+    // sin login) siempre que el slot no esté ya Pendiente/Confirmado — el id
+    // del doc es determinístico por (coach, fecha, horario), así que "pedir un
+    // slot ocupado" es técnicamente un `update` de un doc ajeno y se rechaza
+    // acá mismo, sin necesidad de una consulta previa con condición de carrera.
+    // Solo el coach dueño puede confirmar/cancelar, y un slot Cancelado puede
+    // volver a reservarse públicamente.
+    function isValidBooking(data) {
+      return data.status == 'Pendiente'
+        && data.coachId.size() > 0
+        && data.clientName.size() > 0
+        && data['service'].size() > 0
+        && data.date.size() > 0
+        && data.time.size() > 0
+        && data.phone.size() > 0;
+    }
+
+    match /bookings/{bookingId} {
+      allow get: if isSignedIn() && request.auth.uid == resource.data.coachId;
+      allow list: if isSignedIn() && request.auth.uid == resource.data.coachId;
+      allow create: if isValidBooking(request.resource.data);
+      allow update: if isOwnerCoach(resource.data.coachId)
+        || (resource.data.status == 'Cancelado'
+            && request.resource.data.coachId == resource.data.coachId
+            && isValidBooking(request.resource.data));
+      allow delete: if false;
+    }
+  }
+}

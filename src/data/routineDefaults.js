@@ -1,3 +1,5 @@
+import { formatARS } from '../lib/formatCurrency.js';
+
 export const DEFAULT_DAY_NAMES = {
   1: 'Día 1: Empujes de Pecho & Hombro',
   2: 'Día 2: Piernas & Glúteos',
@@ -32,7 +34,7 @@ export function starterRoutineFor(studentId, coach, goal) {
     studentId,
     coachId: coach.id,
     title: 'Fase 1: Adaptación & Fuerza',
-    notes: `Plan adaptado a objetivo: ${goal}. Tarifa acordada: $${coach.pricePersonalizado}/mes. Priorizar técnica biomecánica estricta.`,
+    notes: `Plan adaptado a objetivo: ${goal}. Tarifa acordada: ${formatARS(coach.pricePersonalizado)}/mes. Priorizar técnica biomecánica estricta.`,
     days: {
       day1: {
         name: 'Día 1: Empujes de Pecho, Hombro & Tríceps',

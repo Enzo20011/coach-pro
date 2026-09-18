@@ -1,0 +1,13 @@
+{
+  "indexes": [
+    {
+      "collectionGroup": "routineHistory",
+      "queryScope": "COLLECTION",
+      "fields": [
+        { "fieldPath": "studentId", "order": "ASCENDING" },
+        { "fieldPath": "archivedAt", "order": "DESCENDING" }
+      ]
+    }
+  ],
+  "fieldOverrides": []
+}

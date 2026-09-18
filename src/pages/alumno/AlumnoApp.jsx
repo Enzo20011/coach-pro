@@ -4,10 +4,18 @@ import { useQuery } from '@tanstack/react-query';
 import { getAlumno } from '../../lib/firestore/alumnos.js';
 import { getRoutineForStudent } from '../../lib/firestore/routines.js';
 import { getCoach } from '../../lib/firestore/coaches.js';
-import { sortDayKeys } from '../../lib/routineUtils.js';
+import { getProgress, logCompletedSession, saveDayProgress } from '../../lib/firestore/progress.js';
+import {
+  computeTrainingStreak,
+  countRecentTrainingDays,
+  parseRestSeconds,
+  recommendNextDayKey,
+  sortDayKeys,
+} from '../../lib/routineUtils.js';
 import { buildWhatsAppLink } from '../../lib/whatsapp.js';
 import useRestTimer from '../../hooks/useRestTimer.js';
 import useDocumentMeta from '../../hooks/useDocumentMeta.js';
+import { useToast } from '../../context/ToastContext.jsx';
 import a from '../../styles/alumno.module.css';
 
 const FALLBACK_STUDENT = { name: 'Alumno', coachId: 'coach_1', plan: 'Coaching Integral (Personalizado)', goal: 'Fuerza & Hipertrofia' };
@@ -32,37 +40,88 @@ const FALLBACK_COACH = {
 };
 
 async function fetchPortalData(studentId) {
-  const [student, routine] = await Promise.all([getAlumno(studentId), getRoutineForStudent(studentId)]);
+  const [student, routine, progress] = await Promise.all([
+    getAlumno(studentId),
+    getRoutineForStudent(studentId),
+    getProgress(studentId),
+  ]);
   const resolvedStudent = student || FALLBACK_STUDENT;
   const resolvedRoutine = routine || FALLBACK_ROUTINE;
   const coach = (await getCoach(resolvedStudent.coachId || 'coach_1')) || FALLBACK_COACH;
-  return { student: resolvedStudent, routine: resolvedRoutine, coach };
+  return { student: resolvedStudent, routine: resolvedRoutine, coach, progress };
 }
 
 export default function AlumnoApp() {
   useDocumentMeta({ title: 'Mi Rutina de Entrenamiento | COACH PRO App' });
 
   const [searchParams] = useSearchParams();
-  const studentId = searchParams.get('id') || '1';
+  const studentId = searchParams.get('id');
 
-  const { data, isLoading } = useQuery({ queryKey: ['alumnoPortal', studentId], queryFn: () => fetchPortalData(studentId) });
+  const { data, isLoading } = useQuery({
+    queryKey: ['alumnoPortal', studentId],
+    queryFn: () => fetchPortalData(studentId),
+    enabled: Boolean(studentId),
+  });
+  const showToast = useToast();
 
   const [activeDayKey, setActiveDayKey] = useState(null);
   const [completedSets, setCompletedSets] = useState(new Set());
+  const [sessionCompleted, setSessionCompleted] = useState(false);
   const timer = useRestTimer();
 
   const dayKeys = useMemo(() => (data ? sortDayKeys(Object.keys(data.routine.days || {})) : []), [data]);
+  const sessions = data?.progress?.sessions;
+  const recommendedDayKey = useMemo(() => recommendNextDayKey(dayKeys, sessions), [dayKeys, sessions]);
+  const streak = useMemo(() => computeTrainingStreak(sessions), [sessions]);
+  const recentDaysCount = useMemo(() => countRecentTrainingDays(sessions, 7), [sessions]);
 
   useEffect(() => {
-    if (dayKeys.length > 0 && !activeDayKey) setActiveDayKey(dayKeys[0]);
-  }, [dayKeys, activeDayKey]);
+    if (dayKeys.length > 0 && !activeDayKey) setActiveDayKey(recommendedDayKey ?? dayKeys[0]);
+  }, [dayKeys, activeDayKey, recommendedDayKey]);
+
+  // Carga las series ya marcadas para el día activo (persistidas en Firestore),
+  // en vez de arrancar siempre en cero al cambiar de día o recargar la página.
+  useEffect(() => {
+    if (!activeDayKey) return;
+    const saved = data?.progress?.days?.[activeDayKey] || [];
+    setCompletedSets(new Set(saved));
+  }, [activeDayKey, data]);
 
   function switchDay(key) {
     setActiveDayKey(key);
-    setCompletedSets(new Set());
+    setSessionCompleted(false);
   }
 
-  if (isLoading || !data) return null;
+  if (!studentId) {
+    return (
+      <div className={a['alumno-root']}>
+        <div style={{ textAlign: 'center', padding: '90px 20px', color: 'var(--text-muted)' }}>
+          <i
+            className="fa-solid fa-link-slash"
+            style={{ fontSize: '2rem', marginBottom: 12, display: 'block', color: 'var(--primary)' }}
+            aria-hidden="true"
+          />
+          <p>Este link no tiene un alumno asignado.</p>
+          <p style={{ fontSize: '0.85rem', marginTop: 6 }}>Pedile a tu coach el link directo a tu rutina.</p>
+        </div>
+      </div>
+    );
+  }
+
+  if (isLoading || !data) {
+    return (
+      <div className={a['alumno-root']}>
+        <div style={{ textAlign: 'center', padding: '90px 20px', color: 'var(--text-muted)' }}>
+          <i
+            className="fa-solid fa-circle-notch fa-spin"
+            style={{ fontSize: '1.8rem', marginBottom: 12, display: 'block', color: 'var(--primary)' }}
+            aria-hidden="true"
+          />
+          Cargando tu rutina...
+        </div>
+      </div>
+    );
+  }
 
   const { student, routine, coach } = data;
   const dayData = activeDayKey ? routine.days[activeDayKey] : null;
@@ -80,8 +139,11 @@ export default function AlumnoApp() {
         next.delete(key);
       } else {
         next.add(key);
-        timer.start(90);
+        timer.start(parseRestSeconds(exercises[exIndex]?.rest));
       }
+      saveDayProgress(studentId, student.coachId, activeDayKey, Array.from(next)).catch((err) =>
+        console.error('No se pudo guardar el progreso de la serie:', err)
+      );
       return next;
     });
   }
@@ -94,8 +156,20 @@ export default function AlumnoApp() {
       `✅ *Rutina:* ${routine.title}\n` +
       `📊 *Progreso:* Completé ${completedCount} de ${totalSets} series programadas.\n\n` +
       `¡Gran sesión de entrenamiento!`;
-    alert(`¡Felicitaciones ${student.name.split(' ')[0]}! Has completado el entrenamiento de hoy. Registraste ${completedCount} series.`);
-    window.open(buildWhatsAppLink(coach.phone, message), '_blank');
+    showToast(`¡Felicitaciones ${student.name.split(' ')[0]}! Registraste ${completedCount} de ${totalSets} series.`);
+    // Evita registrar la misma sesión varias veces si el alumno toca el botón
+    // más de una vez — cada click sin este guard sumaba una entrada más a
+    // "sessions" e inflaba la métrica de entrenamientos completados del coach.
+    if (!sessionCompleted) {
+      setSessionCompleted(true);
+      logCompletedSession(studentId, student.coachId, {
+        dayKey: activeDayKey,
+        completedCount,
+        totalSets,
+        completedAt: Date.now(),
+      }).catch((err) => console.error('No se pudo registrar la sesión completada:', err));
+    }
+    setTimeout(() => window.open(buildWhatsAppLink(coach.phone, message), '_blank'), 900);
   }
 
   return (
@@ -112,7 +186,6 @@ export default function AlumnoApp() {
             <span>{coach.displayName}</span>
           </div>
         </div>
-        <span className={a['routine-title-pill']}>{student.plan}</span>
       </header>
 
       <section className={a['student-greeting-box']}>
@@ -124,10 +197,27 @@ export default function AlumnoApp() {
             </div>
           </div>
           <button type="button" className={a['btn-pdf-pill']} title="Descargar Ficha PDF / Imprimir Rutina" onClick={() => window.print()}>
-            <i className="fa-solid fa-file-pdf" style={{ color: '#ff5e57' }} /> Ficha PDF
+            <i className={`fa-solid fa-file-pdf ${a['icon-danger']}`} /> Ficha PDF
           </button>
         </div>
       </section>
+
+      <div className={a['mini-stats-row']}>
+        <div className={a['mini-stat-pill']}>
+          <i className="fa-solid fa-fire" aria-hidden="true" />
+          <div>
+            <div className={a['mini-stat-value']}>{streak}</div>
+            <div className={a['mini-stat-label']}>Días Seguidos</div>
+          </div>
+        </div>
+        <div className={a['mini-stat-pill']}>
+          <i className="fa-solid fa-calendar-week" aria-hidden="true" />
+          <div>
+            <div className={a['mini-stat-value']}>{recentDaysCount}</div>
+            <div className={a['mini-stat-label']}>Esta Semana</div>
+          </div>
+        </div>
+      </div>
 
       <section className={a['progress-summary']}>
         <div className={a['progress-summary-top']}>
@@ -163,6 +253,7 @@ export default function AlumnoApp() {
               onClick={() => switchDay(key)}
             >
               {day.name || `Día ${index + 1}`}
+              {key === recommendedDayKey && <span className={a['today-badge']}>HOY</span>}
             </button>
           );
         })}
@@ -201,13 +292,16 @@ export default function AlumnoApp() {
                     const setNum = i + 1;
                     const isCompleted = completedSets.has(`${exIndex}-${setNum}`);
                     return (
-                      <div
+                      <button
+                        type="button"
+                        role="checkbox"
+                        aria-checked={isCompleted}
                         className={`${a['set-row']} ${isCompleted ? a.completed : ''}`}
                         key={setNum}
                         onClick={() => toggleSet(exIndex, setNum)}
                       >
                         <div className={a['set-left-group']}>
-                          <div className={a['set-checkbox']}>
+                          <div className={a['set-checkbox']} aria-hidden="true">
                             <i className="fa-solid fa-check" />
                           </div>
                           <span className={a['set-label']}>Serie {setNum}</span>
@@ -215,13 +309,17 @@ export default function AlumnoApp() {
                         <div className={a['set-target']}>
                           <strong>{ex.reps}</strong> {ex.rir}
                         </div>
-                      </div>
+                      </button>
                     );
                   })}
                 </div>
 
-                <button type="button" className={a['btn-trigger-rest']} onClick={() => timer.start(90)}>
-                  <i className="fa-solid fa-stopwatch" /> Iniciar Descanso (90s)
+                <button
+                  type="button"
+                  className={a['btn-trigger-rest']}
+                  onClick={() => timer.start(parseRestSeconds(ex.rest))}
+                >
+                  <i className="fa-solid fa-stopwatch" /> Iniciar Descanso ({ex.rest || '90s'})
                 </button>
               </div>
             );
@@ -238,8 +336,8 @@ export default function AlumnoApp() {
           <button type="button" className={a['timer-btn']} onClick={() => timer.addSeconds(30)}>
             +30s
           </button>
-          <button type="button" className={a['timer-btn']} onClick={timer.close}>
-            <i className="fa-solid fa-xmark" />
+          <button type="button" className={a['timer-btn']} onClick={timer.close} aria-label="Cerrar temporizador de descanso">
+            <i className="fa-solid fa-xmark" aria-hidden="true" />
           </button>
         </div>
       </div>

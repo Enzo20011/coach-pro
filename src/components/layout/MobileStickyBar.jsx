@@ -8,8 +8,8 @@ export default function MobileStickyBar() {
         <Link className="sticky-action-btn primary" to="/planes">
           <i className="fa-solid fa-bolt" /> Sumate
         </Link>
-        <Link className="sticky-action-btn secondary" to="/turnos">
-          <i className="fa-regular fa-calendar-check" /> Agenda
+        <Link className="sticky-action-btn secondary" to="/rutina-demo">
+          <i className="fa-solid fa-mobile-screen-button" /> Ver Demo
         </Link>
         <a
           href={platformWhatsAppLink('Hola! Quiero información sobre COACH PRO para entrenadores')}

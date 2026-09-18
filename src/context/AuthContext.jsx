@@ -33,7 +33,13 @@ export function AuthProvider({ children }) {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    seedDemoDataIfEmpty();
+    // Nunca en producción: sembraba cuentas demo reales (contraseña "123" hardcodeada
+    // en el repo) contra la base de datos viva apenas alguien entraba a la web.
+    // Tampoco si ya hay alguien logueado: el seed crea/entra a cuentas demo, y la
+    // sesión de Firebase Auth es compartida entre pestañas del mismo origen — abrir
+    // /alumno en una pestaña nueva mientras el coach real está logueado en otra
+    // terminaba cerrándole la sesión ahí también.
+    if (import.meta.env.DEV && !auth.currentUser) seedDemoDataIfEmpty();
   }, []);
 
   useEffect(() => {
@@ -72,8 +78,7 @@ export function AuthProvider({ children }) {
         email: cleanEmail,
         phone: data.phone.trim() || '+5491100000000',
         specialty: data.specialty.trim() || 'Preparador Físico',
-        pricePersonalizado: parseInt(data.pricePersonalizado, 10) || 50,
-        currency: '$',
+        pricePersonalizado: parseInt(data.pricePersonalizado, 10) || 50000,
         avatar: 'https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?q=80&w=150&auto=format&fit=crop',
         bio: 'Entrenador personal certificado.',
         isActive: false,

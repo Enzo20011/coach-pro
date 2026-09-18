@@ -7,7 +7,6 @@ const NAV_LINKS = [
   { to: '/', label: 'Inicio', icon: 'fa-solid fa-house' },
   { to: '/planes', label: 'Sumate', icon: 'fa-solid fa-rocket' },
   { to: '/rutina-demo', label: 'App del Alumno', icon: 'fa-solid fa-mobile-screen-button' },
-  { to: '/turnos', label: 'Agenda Online', icon: 'fa-regular fa-calendar-days' },
   { to: '/transformaciones', label: 'Casos de Éxito', icon: 'fa-solid fa-trophy' },
   { to: '/faq', label: 'FAQ', icon: 'fa-solid fa-circle-question' },
 ];

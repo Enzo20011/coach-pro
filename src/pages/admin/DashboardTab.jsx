@@ -1,8 +1,8 @@
 import a from '../../styles/admin.module.css';
 
-export default function DashboardTab({ countAlumnos, countRoutines, countBookings, onOpenNewStudent, onGoToBuilder }) {
+export default function DashboardTab({ countAlumnos, countRoutines, countBookings, sessionsThisWeek, onOpenNewStudent, onGoToBuilder }) {
   return (
-    <section className={`${a['tab-panel']} ${a.active}`}>
+    <section className={a['tab-panel']}>
       <div className={a['metrics-grid']}>
         <div className={a['metric-card']}>
           <div className={a['metric-icon-wrap']}>
@@ -36,8 +36,8 @@ export default function DashboardTab({ countAlumnos, countRoutines, countBooking
             <i className="fa-solid fa-circle-check" />
           </div>
           <div className={a['metric-info']}>
-            <h4>94%</h4>
-            <p>Cumplimiento Semanal</p>
+            <h4>{sessionsThisWeek}</h4>
+            <p>Entrenamientos Completados (7 días)</p>
           </div>
         </div>
       </div>
@@ -55,9 +55,6 @@ export default function DashboardTab({ countAlumnos, countRoutines, countBooking
           <button type="button" className={`${a.btn} ${a['btn-secondary']}`} onClick={onGoToBuilder}>
             <i className="fa-solid fa-dumbbell" /> Diseñar Nueva Rutina
           </button>
-          <a href="/alumno?id=1" target="_blank" rel="noopener noreferrer" className={`${a.btn} ${a['btn-secondary']}`}>
-            <i className="fa-solid fa-mobile-screen" /> Ver Portal del Alumno (Demo Lucas)
-          </a>
         </div>
       </div>
     </section>

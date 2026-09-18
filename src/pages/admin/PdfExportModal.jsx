@@ -1,7 +1,9 @@
+import { PDFDownloadLink, PDFViewer } from '@react-pdf/renderer';
 import { sortDayKeys } from '../../lib/routineUtils.js';
+import { formatARS } from '../../lib/formatCurrency.js';
 import { useToast } from '../../context/ToastContext.jsx';
 import ModalShell from './ModalShell.jsx';
-import PrintableRoutineSheet from './PrintableRoutineSheet.jsx';
+import RoutinePdfDocument from './RoutinePdfDocument.jsx';
 import a from '../../styles/admin.module.css';
 
 function buildRoutineSummaryText({ student, routine, coach }) {
@@ -10,7 +12,7 @@ function buildRoutineSummaryText({ student, routine, coach }) {
   summary += `👤 *Alumno:* ${student.name}\n`;
   summary += `🎯 *Objetivo:* ${student.goal}\n`;
   summary += `🔥 *Fase:* ${routine.title || 'Fuerza & Hipertrofia'}\n`;
-  summary += `💰 *Tarifa Personalizado:* $${coach.pricePersonalizado}/mes\n`;
+  summary += `💰 *Tarifa Personalizado:* ${formatARS(coach.pricePersonalizado)}/mes\n`;
   if (routine.notes) summary += `💡 *Directriz:* ${routine.notes}\n`;
   summary += `\n--------------------------------\n`;
 
@@ -36,11 +38,23 @@ export default function PdfExportModal({ isOpen, onClose, student, routine, coac
     });
   }
 
+  const fileName = student ? `Rutina-${student.name.replace(/\s+/g, '-')}.pdf` : 'Rutina.pdf';
+
   const headerExtra = (
     <>
-      <button type="button" className={`${a.btn} ${a['btn-primary']} ${a['btn-sm']}`} onClick={() => window.print()}>
-        <i className="fa-solid fa-print" /> Imprimir / Guardar en PDF
-      </button>
+      {student && routine && (
+        <PDFDownloadLink
+          document={<RoutinePdfDocument student={student} routine={routine} coach={coach} />}
+          fileName={fileName}
+          className={`${a.btn} ${a['btn-primary']} ${a['btn-sm']}`}
+        >
+          {({ loading }) => (
+            <>
+              <i className="fa-solid fa-download" /> {loading ? 'Generando...' : 'Descargar PDF'}
+            </>
+          )}
+        </PDFDownloadLink>
+      )}
       <button type="button" className={`${a.btn} ${a['btn-secondary']} ${a['btn-sm']}`} onClick={handleCopyText} title="Copiar texto resumen">
         <i className="fa-regular fa-copy" /> Copiar Texto
       </button>
@@ -64,7 +78,11 @@ export default function PdfExportModal({ isOpen, onClose, student, routine, coac
       headerExtra={headerExtra}
     >
       <div className={a['pdf-preview-scroller']}>
-        {student && routine && <PrintableRoutineSheet student={student} routine={routine} coach={coach} />}
+        {student && routine && (
+          <PDFViewer style={{ width: '100%', height: '75vh', border: 'none' }} showToolbar>
+            <RoutinePdfDocument student={student} routine={routine} coach={coach} />
+          </PDFViewer>
+        )}
       </div>
     </ModalShell>
   );

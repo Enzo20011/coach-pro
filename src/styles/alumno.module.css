@@ -16,10 +16,18 @@
   --primary-glow: rgba(0, 255, 135, 0.38);
   --accent-cyan: #00d4ff;
 
+  /* Danger / destructive actions — same value as global.css & admin.module.css. */
+  --danger: #ff5e57;
+  --danger-hover: #ff2a1f;
+  --danger-dim: rgba(255, 94, 87, 0.12);
+  --danger-border: rgba(255, 94, 87, 0.35);
+  --text-on-primary: #05070d;
+
   --text-white: #ffffff;
   --text-main: #dde4ef;
   --text-muted: #8896b0;
-  --text-dim: #4d5d78;
+  /* Lightened from #4d5d78 for WCAG AA contrast on small labels (see global.css). */
+  --text-dim: #6d7c9c;
 
   --border-subtle: rgba(255, 255, 255, 0.07);
   --border-medium: rgba(255, 255, 255, 0.12);
@@ -80,7 +88,7 @@ html {
   left: 12px;
   z-index: 5000;
   background: var(--primary);
-  color: #060810;
+  color: var(--text-on-primary);
   font-family: var(--font-heading);
   font-weight: 700;
   font-size: 0.85rem;
@@ -235,6 +243,50 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 /* ==========================================================================
+   MINI STATS (racha + actividad semanal)
+   ========================================================================== */
+.mini-stats-row {
+  display: flex;
+  gap: 10px;
+  margin: 14px 18px 0 18px;
+  position: relative;
+  z-index: 1;
+}
+
+.mini-stat-pill {
+  flex: 1;
+  background: var(--bg-card);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-md);
+  padding: 10px 12px;
+  display: flex;
+  align-items: center;
+  gap: 9px;
+}
+
+.mini-stat-pill i {
+  color: var(--primary);
+  font-size: 1.05rem;
+  flex-shrink: 0;
+}
+
+.mini-stat-value {
+  font-family: var(--font-heading);
+  font-weight: 800;
+  font-size: 1.05rem;
+  color: var(--text-white);
+  line-height: 1;
+}
+
+.mini-stat-label {
+  font-size: 0.66rem;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  margin-top: 2px;
+}
+
+/* ==========================================================================
    PROGRESS SUMMARY
    ========================================================================== */
 .progress-summary {
@@ -368,8 +420,26 @@ h1, h2, h3, h4, h5, h6 {
 .day-tab-pill.active {
   background: var(--primary);
   border-color: var(--primary);
-  color: #050810;
+  color: var(--text-on-primary);
   box-shadow: 0 0 18px var(--primary-glow);
+}
+
+.today-badge {
+  display: inline-block;
+  margin-left: 6px;
+  background: var(--accent-cyan);
+  color: var(--text-on-primary);
+  font-size: 0.6rem;
+  font-weight: 800;
+  letter-spacing: 0.03em;
+  padding: 1px 6px;
+  border-radius: var(--radius-full);
+  vertical-align: middle;
+}
+
+.day-tab-pill.active .today-badge {
+  background: var(--text-on-primary);
+  color: var(--primary);
 }
 
 /* ==========================================================================
@@ -464,6 +534,13 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 .set-row {
+  /* Rendered as a <button role="checkbox">, so undo the browser's default
+     button chrome (auto width, centered text, system font). */
+  appearance: none;
+  -webkit-appearance: none;
+  width: 100%;
+  text-align: left;
+  font-family: inherit;
   background: rgba(255, 255, 255, 0.025);
   border: 1px solid var(--border-subtle);
   border-radius: var(--radius-sm);
@@ -505,7 +582,7 @@ h1, h2, h3, h4, h5, h6 {
 .set-row.completed .set-checkbox {
   background: var(--primary);
   border-color: var(--primary);
-  color: #050810;
+  color: var(--text-on-primary);
   box-shadow: 0 0 10px var(--primary-glow);
 }
 
@@ -688,7 +765,7 @@ h1, h2, h3, h4, h5, h6 {
 
 .app-action-btn.finish {
   background: var(--primary);
-  color: #050810;
+  color: var(--text-on-primary);
   box-shadow: 0 4px 18px var(--primary-glow);
 }
 
@@ -712,10 +789,14 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 /* Ficha PDF Pill Button */
+.icon-danger {
+  color: var(--danger);
+}
+
 .btn-pdf-pill {
-  background: rgba(255, 94, 87, 0.12);
-  border: 1px solid rgba(255, 94, 87, 0.35);
-  color: #ff5e57;
+  background: var(--danger-dim);
+  border: 1px solid var(--danger-border);
+  color: var(--danger);
   font-family: var(--font-heading);
   font-size: 0.78rem;
   font-weight: 700;
@@ -731,7 +812,7 @@ h1, h2, h3, h4, h5, h6 {
 
 .btn-pdf-pill:hover {
   background: rgba(255, 94, 87, 0.22);
-  border-color: #ff5e57;
+  border-color: var(--danger);
   transform: translateY(-1px);
 }
 

@@ -22,6 +22,15 @@
   --accent-purple: #7c3aed;
   --accent-orange: #f97316;
 
+  /* Danger / destructive actions (unified across marketing, admin & alumno) */
+  --danger: #ff5e57;
+  --danger-hover: #ff2a1f;
+  --danger-dim: rgba(255, 94, 87, 0.12);
+  --danger-border: rgba(255, 94, 87, 0.35);
+
+  /* Text painted on top of the solid primary-green surfaces (buttons, badges, pills) */
+  --text-on-primary: #05070d;
+
   /* Gradients */
   --grad-primary: linear-gradient(135deg, #00ff87 0%, #00d4ff 100%);
   --grad-hero-glow: radial-gradient(ellipse 70% 50% at 60% 50%, rgba(0, 255, 135, 0.07) 0%, transparent 70%);
@@ -32,7 +41,9 @@
   --text-white: #ffffff;
   --text-main: #dde4ef;
   --text-muted: #8896b0;
-  --text-dim: #4d5d78;
+  /* Lightened from #4d5d78 — that value fell to ~3:1 contrast on --bg-main, below
+     WCAG AA (4.5:1) for the small (0.68-0.76rem) labels it's used on. */
+  --text-dim: #6d7c9c;
 
   /* Borders */
   --border-subtle: rgba(255,255,255,0.07);
@@ -103,7 +114,7 @@ body {
   left: 12px;
   z-index: 5000;
   background: var(--primary);
-  color: #05070d;
+  color: var(--text-on-primary);
   font-family: var(--font-heading);
   font-weight: 700;
   font-size: 0.85rem;
@@ -134,6 +145,22 @@ body {
   .page-transition {
     animation: none;
     opacity: 1;
+  }
+
+  /* Ambient/looping decorative animations — nothing here carries meaning, so they
+     just get frozen on their first frame instead of animating forever. */
+  body::before,
+  .pulse-dot,
+  .pricing-card.featured,
+  .whatsapp-chat-bubble,
+  .modal-dialog {
+    animation: none !important;
+  }
+
+  * {
+    transition-duration: 0.01ms !important;
+    animation-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
   }
 }
 
@@ -302,7 +329,7 @@ h1, h2, h3, h4, h5, h6 {
 
 .btn-primary {
   background: var(--primary);
-  color: #05070d;
+  color: var(--text-on-primary);
   box-shadow: 0 4px 20px var(--primary-glow), inset 0 1px 0 rgba(255,255,255,0.2);
 }
 
@@ -347,6 +374,19 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 .btn-full { width: 100%; }
+
+.btn:disabled,
+.btn[aria-disabled="true"] {
+  opacity: 0.55;
+  cursor: not-allowed;
+  transform: none !important;
+  box-shadow: none !important;
+}
+
+.btn:disabled:hover,
+.btn[aria-disabled="true"]:hover {
+  transform: none;
+}
 
 /* Glass Card */
 .glass-card {
@@ -414,7 +454,7 @@ h1, h2, h3, h4, h5, h6 {
   width: 30px;
   height: 30px;
   background: var(--primary);
-  color: #05070d;
+  color: var(--text-on-primary);
   border-radius: 8px;
   display: flex;
   align-items: center;
@@ -841,6 +881,44 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 /* ==========================================================================
+   HOW IT WORKS (numbered steps grid)
+   ========================================================================== */
+.steps-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 20px;
+}
+
+.step-card {
+  padding: 28px 24px;
+}
+
+.step-num-badge {
+  width: 42px;
+  height: 42px;
+  border-radius: 50%;
+  background: var(--primary-dim);
+  color: var(--primary);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--font-heading);
+  font-weight: 800;
+  margin-bottom: 16px;
+}
+
+.step-card h3 {
+  font-size: 1.05rem;
+  margin-bottom: 8px;
+}
+
+.step-card p {
+  color: var(--text-muted);
+  font-size: 0.9rem;
+  line-height: 1.6;
+}
+
+/* ==========================================================================
    PRICING & PLANS
    ========================================================================== */
 .pricing-section {
@@ -958,7 +1036,7 @@ h1, h2, h3, h4, h5, h6 {
   left: 50%;
   transform: translateX(-50%);
   background: var(--grad-primary);
-  color: #05070d;
+  color: var(--text-on-primary);
   font-family: var(--font-heading);
   font-size: 0.7rem;
   font-weight: 800;
@@ -1310,7 +1388,7 @@ h1, h2, h3, h4, h5, h6 {
 .badge-after {
   right: 14px;
   background: var(--grad-primary);
-  color: #05070d;
+  color: var(--text-on-primary);
 }
 
 .drag-slider-input {
@@ -1332,7 +1410,7 @@ h1, h2, h3, h4, h5, h6 {
   height: 38px;
   border-radius: 50%;
   background: var(--primary);
-  color: #05070d;
+  color: var(--text-on-primary);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -1575,7 +1653,7 @@ h1, h2, h3, h4, h5, h6 {
 .step-item.active .step-bubble {
   background: var(--primary);
   border-color: var(--primary);
-  color: #05070d;
+  color: var(--text-on-primary);
   box-shadow: 0 0 12px var(--primary-glow);
 }
 
@@ -1664,7 +1742,7 @@ h1, h2, h3, h4, h5, h6 {
 .cal-day-btn.active {
   background: var(--primary);
   border-color: var(--primary);
-  color: #05070d;
+  color: var(--text-on-primary);
 }
 
 .cal-day-name {
@@ -1674,7 +1752,7 @@ h1, h2, h3, h4, h5, h6 {
   color: var(--text-muted);
 }
 
-.cal-day-btn.active .cal-day-name { color: #05070d; }
+.cal-day-btn.active .cal-day-name { color: var(--text-on-primary); }
 .cal-day-num { font-family: var(--font-heading); font-size: 1rem; font-weight: 800; }
 
 .slots-grid {
@@ -2207,7 +2285,7 @@ h1, h2, h3, h4, h5, h6 {
 
 .sticky-action-btn.primary {
   background: var(--primary);
-  color: #05070d;
+  color: var(--text-on-primary);
 }
 
 .sticky-action-btn.secondary {

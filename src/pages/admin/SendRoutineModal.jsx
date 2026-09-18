@@ -1,6 +1,7 @@
 import ModalShell from './ModalShell.jsx';
 import { useToast } from '../../context/ToastContext.jsx';
 import { buildWhatsAppLink } from '../../lib/whatsapp.js';
+import { formatARS } from '../../lib/formatCurrency.js';
 import a from '../../styles/admin.module.css';
 
 export default function SendRoutineModal({ isOpen, onClose, student, routine, coach, onExportPdf }) {
@@ -22,7 +23,7 @@ export default function SendRoutineModal({ isOpen, onClose, student, routine, co
       `Tu rutina personalizada de *${title}* ya está lista en tu portal digital de *COACH PRO*.\n\n` +
       `📲 *Accede a tu rutina aquí:*\n${portalUrl}\n\n` +
       `Vas a encontrar los ejercicios detallados con series, repeticiones, descansos y notas biomecánicas. Podrás marcar cada serie en el gym.\n\n` +
-      `Tarifa de tu plan personalizado: *$${coach.pricePersonalizado}/mes*.\n\n` +
+      `Tarifa de tu plan personalizado: *${formatARS(coach.pricePersonalizado)}/mes*.\n\n` +
       `¡A darlo todo en el gym! Cualquier duda me escribes directamente por acá.`;
 
     showToast(`Abriendo WhatsApp para enviar a ${student.name}...`);
@@ -56,7 +57,7 @@ export default function SendRoutineModal({ isOpen, onClose, student, routine, co
             onExportPdf(student.id);
           }}
         >
-          <i className="fa-solid fa-file-pdf" style={{ color: '#ff5e57' }} /> Descargar Ficha PDF / Imprimir
+          <i className={`fa-solid fa-file-pdf ${a['text-danger']}`} /> Descargar Ficha PDF / Imprimir
         </button>
         <a
           href={`/alumno?id=${student.id}`}
