@@ -13,11 +13,21 @@ service cloud.firestore {
     // Coaches: público de solo-lectura (lo consumen las páginas sin login de
     // /alumno y /reservar para mostrar la identidad del coach), pero nunca
     // enumerable, y solo el propio coach puede crear/editar su perfil.
+    // `isActive` (cuenta paga/activada) NUNCA lo puede tocar el cliente: nace en
+    // false y solo lo cambia la Cloud Function `activateAccount` (Admin SDK, que
+    // ignora estas reglas). Tampoco se puede cambiar el email del perfil.
     match /coaches/{coachId} {
       allow get: if true;
       allow list: if false;
-      allow create: if isOwnerCoach(coachId);
-      allow update: if isOwnerCoach(coachId);
+      allow create: if isOwnerCoach(coachId)
+        && request.resource.data.isActive == false
+        && request.resource.data.keys().hasOnly(['name', 'displayName', 'email', 'phone', 'specialty',
+             'pricePersonalizado', 'avatar', 'bio', 'isActive'])
+        && request.resource.data.name is string && request.resource.data.name.size() <= 100
+        && request.resource.data.pricePersonalizado is number;
+      allow update: if isOwnerCoach(coachId)
+        && request.resource.data.get('isActive', false) == resource.data.get('isActive', false)
+        && request.resource.data.get('email', null) == resource.data.get('email', null);
       allow delete: if false;
     }
 
@@ -29,7 +39,8 @@ service cloud.firestore {
       allow get: if true;
       allow list: if isSignedIn() && request.auth.uid == resource.data.coachId;
       allow create: if isOwnerCoach(request.resource.data.coachId);
-      allow update: if isOwnerCoach(resource.data.coachId);
+      allow update: if isOwnerCoach(resource.data.coachId)
+        && request.resource.data.coachId == resource.data.coachId;
       allow delete: if false;
     }
 
@@ -38,7 +49,8 @@ service cloud.firestore {
       allow get: if true;
       allow list: if isSignedIn() && request.auth.uid == resource.data.coachId;
       allow create: if isOwnerCoach(request.resource.data.coachId);
-      allow update: if isOwnerCoach(resource.data.coachId);
+      allow update: if isOwnerCoach(resource.data.coachId)
+        && request.resource.data.coachId == resource.data.coachId;
       allow delete: if false;
     }
 
@@ -65,10 +77,18 @@ service cloud.firestore {
     // login, con el mismo modelo de confianza que alumnos/rutinas (el link es
     // el "token"). Solo el coach dueño puede listar el progreso de todos sus
     // alumnos (usado en la métrica semanal del dashboard).
+    //
+    // El `coachId` del progreso debe coincidir con el del alumno real (así nadie
+    // puede inventar progreso "a nombre" del dashboard de otro coach) y el alumno
+    // tiene que existir.
     match /progress/{studentId} {
       allow get: if true;
-      allow create: if true;
-      allow update: if true;
+      allow create: if exists(/databases/$(database)/documents/alumnos/$(studentId))
+        && request.resource.data.coachId
+           == get(/databases/$(database)/documents/alumnos/$(studentId)).data.coachId;
+      allow update: if request.resource.data.coachId == resource.data.coachId
+        && request.resource.data.coachId
+           == get(/databases/$(database)/documents/alumnos/$(studentId)).data.coachId;
       allow list: if isSignedIn() && request.auth.uid == resource.data.coachId;
       allow delete: if false;
     }
@@ -82,12 +102,14 @@ service cloud.firestore {
     // volver a reservarse públicamente.
     function isValidBooking(data) {
       return data.status == 'Pendiente'
-        && data.coachId.size() > 0
-        && data.clientName.size() > 0
-        && data['service'].size() > 0
-        && data.date.size() > 0
-        && data.time.size() > 0
-        && data.phone.size() > 0;
+        && data.coachId is string && data.coachId.size() > 0 && data.coachId.size() <= 128
+        && data.clientName is string && data.clientName.size() > 0 && data.clientName.size() <= 100
+        && data['service'] is string && data['service'].size() > 0 && data['service'].size() <= 100
+        && data.date is string && data.date.size() > 0 && data.date.size() <= 60
+        && data.time is string && data.time.size() > 0 && data.time.size() <= 20
+        && data.phone is string && data.phone.size() >= 6 && data.phone.size() <= 25
+        && data.keys().size() <= 15
+        && exists(/databases/$(database)/documents/coaches/$(data.coachId));
     }
 
     match /bookings/{bookingId} {

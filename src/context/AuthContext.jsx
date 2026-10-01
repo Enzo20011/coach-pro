@@ -1,12 +1,22 @@
 import { createContext, useCallback, useContext, useEffect, useMemo, useState } from 'react';
-import { createUserWithEmailAndPassword, onAuthStateChanged, signInWithEmailAndPassword, signOut } from 'firebase/auth';
-import { auth } from '../firebase.js';
+import {
+  createUserWithEmailAndPassword,
+  onAuthStateChanged,
+  sendEmailVerification,
+  sendPasswordResetEmail,
+  signInWithEmailAndPassword,
+  signOut,
+} from 'firebase/auth';
+import { httpsCallable } from 'firebase/functions';
+import { auth, functions } from '../firebase.js';
 import { createCoachProfile, getCoach, updateCoach } from '../lib/firestore/coaches.js';
 import { seedDemoDataIfEmpty } from '../lib/seed.js';
 
-// Código de activación manual (gate de venta directa, no es información secreta —
-// se compara en el cliente igual que en el sitio anterior). Ver activar.html/Activar.jsx.
-const ACTIVATION_CODE = 'COACHPRO-2026';
+// El código de activación se valida en la Cloud Function `activateAccount`
+// (functions/index.js); nunca vive en el cliente.
+const activateAccountFn = httpsCallable(functions, 'activateAccount');
+
+export const MIN_PASSWORD_LENGTH = 8;
 
 const AuthContext = createContext(null);
 
@@ -19,7 +29,9 @@ function mapAuthError(err) {
     case 'auth/email-already-in-use':
       return 'Ya existe un entrenador registrado con este correo.';
     case 'auth/weak-password':
-      return 'La contraseña debe tener al menos 6 caracteres.';
+      return `La contraseña debe tener al menos ${MIN_PASSWORD_LENGTH} caracteres.`;
+    case 'auth/too-many-requests':
+      return 'Demasiados intentos. Esperá unos minutos antes de volver a probar.';
     case 'auth/invalid-email':
       return 'El correo ingresado no es válido.';
     default:
@@ -71,6 +83,9 @@ export function AuthProvider({ children }) {
   const register = useCallback(async (data) => {
     try {
       const cleanEmail = data.email.trim().toLowerCase();
+      if (data.password.length < MIN_PASSWORD_LENGTH || !/[a-zA-Z]/.test(data.password) || !/\d/.test(data.password)) {
+        return { success: false, message: `La contraseña debe tener al menos ${MIN_PASSWORD_LENGTH} caracteres, con letras y números.` };
+      }
       const cred = await createUserWithEmailAndPassword(auth, cleanEmail, data.password);
       const profile = {
         name: data.name.trim(),
@@ -84,6 +99,7 @@ export function AuthProvider({ children }) {
         isActive: false,
       };
       await createCoachProfile(cred.user.uid, profile);
+      sendEmailVerification(cred.user).catch(() => {});
       const coachWithId = { id: cred.user.uid, ...profile };
       setCoach(coachWithId);
       return { success: true, coach: coachWithId };
@@ -94,15 +110,33 @@ export function AuthProvider({ children }) {
 
   const logout = useCallback(() => signOut(auth), []);
 
+  // Respuesta siempre genérica: no revela si el correo está registrado o no.
+  const resetPassword = useCallback(async (email) => {
+    try {
+      await sendPasswordResetEmail(auth, email.trim().toLowerCase());
+    } catch {
+      // se ignora a propósito (anti-enumeración de cuentas)
+    }
+    return { success: true };
+  }, []);
+
   const activate = useCallback(
     async (code) => {
       if (!user) return { success: false, message: 'No hay sesión activa.' };
-      if (!code || code.trim().toUpperCase() !== ACTIVATION_CODE) {
-        return { success: false, message: 'Código de activación incorrecto.' };
+      if (!code || !code.trim()) return { success: false, message: 'Ingresá el código de activación.' };
+      try {
+        await activateAccountFn({ code });
+        setCoach((c) => (c ? { ...c, isActive: true } : c));
+        return { success: true };
+      } catch (err) {
+        const message =
+          err?.code === 'functions/permission-denied'
+            ? 'Código de activación incorrecto.'
+            : err?.code === 'functions/resource-exhausted'
+              ? 'Demasiados intentos. Probá de nuevo en unos minutos.'
+              : 'No pudimos validar el código. Probá de nuevo en un momento.';
+        return { success: false, message };
       }
-      await updateCoach(user.uid, { isActive: true });
-      setCoach((c) => (c ? { ...c, isActive: true } : c));
-      return { success: true };
     },
     [user]
   );
@@ -119,8 +153,8 @@ export function AuthProvider({ children }) {
   );
 
   const value = useMemo(
-    () => ({ user, coach, loading, login, register, logout, activate, refetchCoach, updateCoachPrice }),
-    [user, coach, loading, login, register, logout, activate, refetchCoach, updateCoachPrice]
+    () => ({ user, coach, loading, login, register, logout, resetPassword, activate, refetchCoach, updateCoachPrice }),
+    [user, coach, loading, login, register, logout, resetPassword, activate, refetchCoach, updateCoachPrice]
   );
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;

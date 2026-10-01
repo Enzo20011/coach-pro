@@ -15,7 +15,7 @@ export default function Login() {
 
   const [searchParams] = useSearchParams();
   const navigate = useNavigate();
-  const { login, register } = useAuth();
+  const { login, register, resetPassword } = useAuth();
 
   const [tab, setTab] = useState(searchParams.get('tab') === 'register' ? 'register' : 'login');
   const [loginForm, setLoginForm] = useState(emptyLogin);
@@ -44,6 +44,15 @@ export default function Login() {
       setAlert({ status: 'error', message: res.message });
       setSubmitting(false);
     }
+  }
+
+  async function handleForgot() {
+    if (!loginForm.email.trim()) {
+      setAlert({ status: 'error', message: 'Ingresá tu correo arriba y volvé a tocar "Olvidé mi contraseña".' });
+      return;
+    }
+    await resetPassword(loginForm.email);
+    setAlert({ status: 'success', message: 'Si el correo está registrado, te enviamos un enlace para restablecer la contraseña.' });
   }
 
   async function handleRegister(e) {
@@ -118,6 +127,8 @@ export default function Login() {
                 <input
                   type="password"
                   id="loginPassword"
+                  autoComplete="current-password"
+                  maxLength={128}
                   className={a['form-input']}
                   placeholder="••••••••"
                   value={loginForm.password}
@@ -132,6 +143,13 @@ export default function Login() {
                 disabled={submitting}
               >
                 <i className="fa-solid fa-lock-open" /> Entrar a mi Panel de Control
+              </button>
+              <button
+                type="button"
+                onClick={handleForgot}
+                style={{ background: 'none', border: 0, color: 'var(--text-muted)', fontSize: '0.82rem', marginTop: 12, width: '100%', cursor: 'pointer' }}
+              >
+                Olvidé mi contraseña
               </button>
             </form>
           ) : (
@@ -208,8 +226,9 @@ export default function Login() {
                   type="password"
                   id="regPassword"
                   className={a['form-input']}
-                  placeholder="Mínimo 6 caracteres"
-                  minLength={6}
+                  placeholder="Mínimo 8 caracteres, con letras y números"
+                  minLength={8}
+                  autoComplete="new-password"
                   value={registerForm.password}
                   onChange={(e) => setRegisterForm((f) => ({ ...f, password: e.target.value }))}
                   required

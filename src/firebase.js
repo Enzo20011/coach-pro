@@ -5,6 +5,8 @@
 import { initializeApp } from 'firebase/app';
 import { getFirestore } from 'firebase/firestore';
 import { getAuth } from 'firebase/auth';
+import { getFunctions } from 'firebase/functions';
+import { initializeAppCheck, ReCaptchaV3Provider } from 'firebase/app-check';
 
 const firebaseConfig = {
   apiKey: 'AIzaSyA7raoIXYGnE39jE-I7BvHcz2IVdh5JOt4',
@@ -16,5 +18,15 @@ const firebaseConfig = {
 };
 
 export const app = initializeApp(firebaseConfig);
+
+// App Check (reCAPTCHA v3): frena bots/scripts que pegan directo a Firestore y Auth.
+// Se activa al definir VITE_RECAPTCHA_SITE_KEY; luego "Enforce" en la consola de Firebase.
+const siteKey = import.meta.env.VITE_RECAPTCHA_SITE_KEY;
+if (siteKey) {
+  if (import.meta.env.DEV) self.FIREBASE_APPCHECK_DEBUG_TOKEN = true;
+  initializeAppCheck(app, { provider: new ReCaptchaV3Provider(siteKey), isTokenAutoRefreshEnabled: true });
+}
+
 export const db = getFirestore(app);
 export const auth = getAuth(app);
+export const functions = getFunctions(app, 'us-central1');
