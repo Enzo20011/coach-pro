@@ -1,5 +1,6 @@
 import { collection, doc, getDoc, getDocs, query, setDoc, where } from 'firebase/firestore';
-import { db } from '../../firebase.js';
+import { httpsCallable } from 'firebase/functions';
+import { db, functions } from '../../firebase.js';
 
 const COL = 'alumnos';
 
@@ -15,4 +16,9 @@ export async function getAlumno(id) {
 
 export async function createAlumno(id, data) {
   await setDoc(doc(db, COL, id), data);
+}
+
+/** Borrado en servidor (Cloud Function): elimina alumno + rutina + progreso + historial. */
+export async function deleteAlumno(studentId) {
+  await httpsCallable(functions, 'deleteStudent')({ studentId });
 }

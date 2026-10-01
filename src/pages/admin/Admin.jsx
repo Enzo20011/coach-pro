@@ -4,7 +4,7 @@ import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { useAuth } from '../../context/AuthContext.jsx';
 import { useToast } from '../../context/ToastContext.jsx';
 import useDocumentMeta from '../../hooks/useDocumentMeta.js';
-import { getAlumnosForCoach, createAlumno } from '../../lib/firestore/alumnos.js';
+import { getAlumnosForCoach, createAlumno, deleteAlumno } from '../../lib/firestore/alumnos.js';
 import {
   getRoutineForStudent,
   saveRoutine,
@@ -27,6 +27,7 @@ import AyudaTab from './AyudaTab.jsx';
 import NewStudentModal from './NewStudentModal.jsx';
 import SendRoutineModal from './SendRoutineModal.jsx';
 import EditRateModal from './EditRateModal.jsx';
+import SecurityModal from './SecurityModal.jsx';
 import RoutineHistoryModal from './RoutineHistoryModal.jsx';
 import ExercisePickerModal from './ExercisePickerModal.jsx';
 import ModalShell from './ModalShell.jsx';
@@ -71,6 +72,8 @@ export default function Admin() {
   const [pdfModal, setPdfModal] = useState(null); // { student, routine }
   const [confirmLogoutOpen, setConfirmLogoutOpen] = useState(false);
   const [historyOpen, setHistoryOpen] = useState(false);
+  const [securityOpen, setSecurityOpen] = useState(false);
+  const [deleteTarget, setDeleteTarget] = useState(null); // alumno a eliminar
   const [exercisePickerOpen, setExercisePickerOpen] = useState(false);
 
   const coachId = coach?.id;
@@ -256,6 +259,22 @@ export default function Admin() {
     onError: () => showToast('No se pudo registrar el alumno. Probá de nuevo.'),
   });
 
+  const deleteStudentMutation = useMutation({
+    mutationFn: (studentId) => deleteAlumno(studentId),
+    onSuccess: (_res, studentId) => {
+      queryClient.invalidateQueries({ queryKey: ['alumnos', coachId] });
+      queryClient.invalidateQueries({ queryKey: ['routinesCount', coachId] });
+      queryClient.invalidateQueries({ queryKey: ['progress', coachId] });
+      if (activeStudentId === studentId) {
+        setActiveStudentId(null);
+        setDraft(null);
+      }
+      setDeleteTarget(null);
+      showToast('Alumno eliminado junto con su rutina e historial.');
+    },
+    onError: () => showToast('No se pudo eliminar el alumno. Probá de nuevo.'),
+  });
+
   if (loading) return null;
   if (!user) return <Navigate to="/login" replace />;
   if (coach && !coach.isActive) return <Navigate to="/activar" replace />;
@@ -362,7 +381,7 @@ export default function Admin() {
         Saltar al contenido
       </a>
 
-      <AdminNavbar coach={coach} onEditRate={() => setEditRateOpen(true)} onLogout={() => setConfirmLogoutOpen(true)} />
+      <AdminNavbar coach={coach} onEditRate={() => setEditRateOpen(true)} onSecurity={() => setSecurityOpen(true)} onLogout={() => setConfirmLogoutOpen(true)} />
 
       <div className={a['admin-layout']}>
         <nav className={a['admin-tabbar']}>
@@ -401,6 +420,7 @@ export default function Admin() {
               }}
               onExportPdf={openPdfModal}
               onSendWhatsApp={openSendModal}
+              onDeleteStudent={(id) => setDeleteTarget(alumnos.find((al) => al.id === id) ?? null)}
             />
           )}
 
@@ -484,6 +504,33 @@ export default function Admin() {
         suggestions={exerciseSuggestions}
         onAddSelected={handleAddMultipleExercises}
       />
+
+      <SecurityModal isOpen={securityOpen} onClose={() => setSecurityOpen(false)} />
+
+      <ModalShell
+        isOpen={Boolean(deleteTarget)}
+        onClose={() => setDeleteTarget(null)}
+        titleIcon="fa-solid fa-trash"
+        title="Eliminar alumno"
+        maxWidth={420}
+      >
+        <p style={{ fontSize: '0.9rem', color: 'var(--text-muted)', marginBottom: 20 }}>
+          Vas a eliminar a <strong>{deleteTarget?.name}</strong> con su rutina, progreso e historial de versiones. Esta acción no se puede deshacer.
+        </p>
+        <div style={{ display: 'flex', gap: 10, justifyContent: 'flex-end' }}>
+          <button type="button" className={`${a.btn} ${a['btn-secondary']}`} onClick={() => setDeleteTarget(null)}>
+            Cancelar
+          </button>
+          <button
+            type="button"
+            className={`${a.btn} ${a['btn-danger']}`}
+            disabled={deleteStudentMutation.isPending}
+            onClick={() => deleteStudentMutation.mutate(deleteTarget.id)}
+          >
+            Eliminar definitivamente
+          </button>
+        </div>
+      </ModalShell>
 
       <EditRateModal
         isOpen={editRateOpen}

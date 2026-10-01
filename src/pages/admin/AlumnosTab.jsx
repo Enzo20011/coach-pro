@@ -2,7 +2,7 @@ import { formatRelativeDay, getLastSessionAt } from '../../lib/routineUtils.js';
 import { formatARS } from '../../lib/formatCurrency.js';
 import a from '../../styles/admin.module.css';
 
-export default function AlumnosTab({ alumnos, coach, progressByStudent, onOpenNewStudent, onEditRoutine, onExportPdf, onSendWhatsApp }) {
+export default function AlumnosTab({ alumnos, coach, progressByStudent, onOpenNewStudent, onEditRoutine, onExportPdf, onSendWhatsApp, onDeleteStudent }) {
   return (
     <section className={a['tab-panel']}>
       <div className={a['content-box']}>
@@ -108,6 +108,15 @@ export default function AlumnosTab({ alumnos, coach, progressByStudent, onOpenNe
                         >
                           <i className="fa-solid fa-arrow-up-right-from-square" />
                         </a>
+                        <button
+                          type="button"
+                          className={`${a.btn} ${a['btn-danger-outline']} ${a['btn-sm']}`}
+                          title="Eliminar alumno"
+                          aria-label={`Eliminar a ${al.name}`}
+                          onClick={() => onDeleteStudent(al.id)}
+                        >
+                          <i className="fa-solid fa-trash" />
+                        </button>
                       </div>
                     </td>
                   </tr>

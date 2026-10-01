@@ -2,7 +2,7 @@ import { Link } from 'react-router-dom';
 import { formatARS } from '../../lib/formatCurrency.js';
 import a from '../../styles/admin.module.css';
 
-export default function AdminNavbar({ coach, onEditRate, onLogout }) {
+export default function AdminNavbar({ coach, onEditRate, onSecurity, onLogout }) {
   return (
     <header className={a['admin-navbar']}>
       <div style={{ display: 'flex', alignItems: 'center', gap: 14 }}>
@@ -43,6 +43,10 @@ export default function AdminNavbar({ coach, onEditRate, onLogout }) {
         <Link to="/" className={`${a.btn} ${a['btn-secondary']} ${a['btn-sm']}`} title="Ir a la web principal">
           <i className="fa-solid fa-globe" /> Ver Web
         </Link>
+
+        <button type="button" className={`${a.btn} ${a['btn-secondary']} ${a['btn-sm']}`} title="Seguridad de la cuenta" onClick={onSecurity}>
+          <i className="fa-solid fa-shield-halved" /> Seguridad
+        </button>
 
         <button
           type="button"

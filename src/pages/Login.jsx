@@ -15,13 +15,14 @@ export default function Login() {
 
   const [searchParams] = useSearchParams();
   const navigate = useNavigate();
-  const { login, register, resetPassword } = useAuth();
+  const { login, completeMfaLogin, register, resetPassword } = useAuth();
 
   const [tab, setTab] = useState(searchParams.get('tab') === 'register' ? 'register' : 'login');
   const [loginForm, setLoginForm] = useState(emptyLogin);
   const [registerForm, setRegisterForm] = useState(emptyRegister);
   const [alert, setAlert] = useState({ status: null, message: '' });
   const [submitting, setSubmitting] = useState(false);
+  const [mfa, setMfa] = useState(null); // { resolver, code }
 
   useEffect(() => {
     if (searchParams.get('tab') === 'register') setTab('register');
@@ -36,6 +37,22 @@ export default function Login() {
     e.preventDefault();
     setSubmitting(true);
     const res = await login(loginForm.email, loginForm.password);
+    if (res.mfaRequired) {
+      setMfa({ resolver: res.resolver, code: '' });
+      setAlert({ status: null, message: '' });
+      setSubmitting(false);
+      return;
+    }
+    finishLogin(res);
+  }
+
+  async function handleMfa(e) {
+    e.preventDefault();
+    setSubmitting(true);
+    finishLogin(await completeMfaLogin(mfa.resolver, mfa.code));
+  }
+
+  function finishLogin(res) {
     if (res.success) {
       setAlert({ status: 'success', message: `¡Bienvenido/a, ${res.coach?.displayName ?? ''}! Ingresando...` });
       const target = res.coach?.isActive ? '/admin' : '/activar';
@@ -108,7 +125,31 @@ export default function Login() {
 
           <AuthAlert status={alert.status} message={alert.message} styles={styles} />
 
-          {tab === 'login' ? (
+          {mfa ? (
+            <form className={styles.authFormPanel} onSubmit={handleMfa}>
+              <p style={{ fontSize: '0.88rem', color: 'var(--text-muted)', marginBottom: 14 }}>
+                Ingresá el código de 6 dígitos de tu app de autenticación.
+              </p>
+              <div className={a['form-group']} style={{ marginBottom: 20 }}>
+                <label htmlFor="mfaCode">Código de verificación</label>
+                <input
+                  type="text"
+                  id="mfaCode"
+                  inputMode="numeric"
+                  autoComplete="one-time-code"
+                  pattern="[0-9]{6}"
+                  maxLength={6}
+                  className={a['form-input']}
+                  value={mfa.code}
+                  onChange={(e) => setMfa((m) => ({ ...m, code: e.target.value.replace(/\D/g, '') }))}
+                  required
+                />
+              </div>
+              <button type="submit" className={clsx(a.btn, a['btn-primary'])} style={{ width: '100%', padding: 13 }} disabled={submitting}>
+                <i className="fa-solid fa-shield-halved" /> Verificar y entrar
+              </button>
+            </form>
+          ) : tab === 'login' ? (
             <form className={styles.authFormPanel} onSubmit={handleLogin}>
               <div className={a['form-group']} style={{ marginBottom: 14 }}>
                 <label htmlFor="loginEmail">Correo Electrónico del Coach</label>

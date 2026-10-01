@@ -1,11 +1,14 @@
 import { createContext, useCallback, useContext, useEffect, useMemo, useState } from 'react';
 import {
   createUserWithEmailAndPassword,
+  getMultiFactorResolver,
+  multiFactor,
   onAuthStateChanged,
   sendEmailVerification,
   sendPasswordResetEmail,
   signInWithEmailAndPassword,
   signOut,
+  TotpMultiFactorGenerator,
 } from 'firebase/auth';
 import { httpsCallable } from 'firebase/functions';
 import { auth, functions } from '../firebase.js';
@@ -30,6 +33,12 @@ function mapAuthError(err) {
       return 'Ya existe un entrenador registrado con este correo.';
     case 'auth/weak-password':
       return `La contraseña debe tener al menos ${MIN_PASSWORD_LENGTH} caracteres.`;
+    case 'auth/invalid-verification-code':
+      return 'El código de verificación es incorrecto o venció.';
+    case 'auth/requires-recent-login':
+      return 'Por seguridad, cerrá sesión y volvé a entrar antes de cambiar esto.';
+    case 'auth/unverified-email':
+      return 'Primero verificá tu correo (te enviamos un enlace) para activar la verificación en dos pasos.';
     case 'auth/too-many-requests':
       return 'Demasiados intentos. Esperá unos minutos antes de volver a probar.';
     case 'auth/invalid-email':
@@ -75,6 +84,64 @@ export function AuthProvider({ children }) {
       const cred = await signInWithEmailAndPassword(auth, email.trim().toLowerCase(), password);
       const profile = await getCoach(cred.user.uid);
       return { success: true, coach: profile };
+    } catch (err) {
+      if (err?.code === 'auth/multi-factor-auth-required') {
+        return { success: false, mfaRequired: true, resolver: getMultiFactorResolver(auth, err) };
+      }
+      return { success: false, message: mapAuthError(err) };
+    }
+  }, []);
+
+  // Segundo paso del login para coaches con verificación en dos pasos (TOTP).
+  const completeMfaLogin = useCallback(async (resolver, code) => {
+    try {
+      const hint = resolver.hints.find((h) => h.factorId === TotpMultiFactorGenerator.FACTOR_ID);
+      const assertion = TotpMultiFactorGenerator.assertionForSignIn(hint.uid, code.trim());
+      const cred = await resolver.resolveSignIn(assertion);
+      const profile = await getCoach(cred.user.uid);
+      return { success: true, coach: profile };
+    } catch (err) {
+      return { success: false, message: mapAuthError(err) };
+    }
+  }, []);
+
+  const startTotpEnrollment = useCallback(async () => {
+    try {
+      if (!auth.currentUser?.emailVerified) {
+        return { success: false, message: mapAuthError({ code: 'auth/unverified-email' }) };
+      }
+      const session = await multiFactor(auth.currentUser).getSession();
+      const secret = await TotpMultiFactorGenerator.generateSecret(session);
+      return { success: true, secret, uri: secret.generateQrCodeUrl(auth.currentUser.email, 'COACH PRO') };
+    } catch (err) {
+      return { success: false, message: mapAuthError(err) };
+    }
+  }, []);
+
+  const finishTotpEnrollment = useCallback(async (secret, code) => {
+    try {
+      const assertion = TotpMultiFactorGenerator.assertionForEnrollment(secret, code.trim());
+      await multiFactor(auth.currentUser).enroll(assertion, 'Authenticator');
+      return { success: true };
+    } catch (err) {
+      return { success: false, message: mapAuthError(err) };
+    }
+  }, []);
+
+  const disableTotp = useCallback(async () => {
+    try {
+      const mf = multiFactor(auth.currentUser);
+      await Promise.all(mf.enrolledFactors.map((f) => mf.unenroll(f)));
+      return { success: true };
+    } catch (err) {
+      return { success: false, message: mapAuthError(err) };
+    }
+  }, []);
+
+  const resendVerification = useCallback(async () => {
+    try {
+      await sendEmailVerification(auth.currentUser);
+      return { success: true };
     } catch (err) {
       return { success: false, message: mapAuthError(err) };
     }
@@ -153,8 +220,8 @@ export function AuthProvider({ children }) {
   );
 
   const value = useMemo(
-    () => ({ user, coach, loading, login, register, logout, resetPassword, activate, refetchCoach, updateCoachPrice }),
-    [user, coach, loading, login, register, logout, resetPassword, activate, refetchCoach, updateCoachPrice]
+    () => ({ user, coach, loading, login, completeMfaLogin, startTotpEnrollment, finishTotpEnrollment, disableTotp, resendVerification, register, logout, resetPassword, activate, refetchCoach, updateCoachPrice }),
+    [user, coach, loading, login, completeMfaLogin, startTotpEnrollment, finishTotpEnrollment, disableTotp, resendVerification, register, logout, resetPassword, activate, refetchCoach, updateCoachPrice]
   );
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
