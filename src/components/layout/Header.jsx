@@ -38,13 +38,18 @@ export default function Header() {
                   </NavLink>
                 </li>
               ))}
+              <li className="nav-link-mobile-only">
+                <NavLink to="/admin" onClick={() => setMenuOpen(false)} className="nav-link">
+                  <i className="fa-solid fa-lock" /> Ingresar
+                </NavLink>
+              </li>
             </ul>
           </nav>
 
           <div className="nav-actions">
             <NavLink
               to="/admin"
-              className="btn btn-secondary btn-sm"
+              className="btn btn-secondary btn-sm btn-ingresar"
               style={{ borderColor: 'rgba(0, 255, 135, 0.4)', color: 'var(--primary)' }}
               title="Panel Coach"
             >

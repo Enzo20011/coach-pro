@@ -64,9 +64,11 @@ export default function AlumnosTab({ alumnos, coach, progressByStudent, onOpenNe
                       </div>
                     </td>
                     <td data-label="Plan Contratado">
-                      <span style={{ fontWeight: 600, color: 'var(--text-white)' }}>{al.plan}</span>
-                      <div style={{ fontSize: '0.72rem', color: 'var(--primary)' }}>
-                        Personalizado {formatARS(coach.pricePersonalizado)}/mes
+                      <div style={{ minWidth: 0 }}>
+                        <span style={{ fontWeight: 600, color: 'var(--text-white)' }}>{al.plan}</span>
+                        <div style={{ fontSize: '0.72rem', color: 'var(--primary)' }}>
+                          Personalizado {formatARS(coach.pricePersonalizado)}/mes
+                        </div>
                       </div>
                     </td>
                     <td data-label="WhatsApp">{al.phone}</td>

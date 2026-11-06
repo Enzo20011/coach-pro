@@ -997,6 +997,54 @@ body {
   white-space: nowrap;
 }
 
+/* Barra superior del panel en celular: apilada, sin cortes a la derecha */
+@media (max-width: 700px) {
+  .admin-navbar {
+    position: static;
+    flex-direction: column;
+    align-items: stretch;
+    gap: 10px;
+    padding: 10px 14px;
+  }
+  .box-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 12px;
+  }
+  .admin-navbar > div:first-child {
+    flex-wrap: wrap;
+    row-gap: 6px;
+  }
+  .nav-user-actions {
+    width: 100%;
+  }
+  .coach-rate-badge {
+    width: 100%;
+    justify-content: space-between;
+  }
+  .coach-rate-badge > span {
+    flex: 1;
+    min-width: 0;
+  }
+  .user-profile-badge {
+    flex: 1 1 0;
+    min-width: 0;
+  }
+  .user-profile-badge > div {
+    min-width: 0;
+  }
+  .user-profile-badge > div > span,
+  .user-profile-badge > div > small {
+    display: block;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+  .admin-content {
+    padding: 20px 14px;
+  }
+}
+
 /* Responsive */
 @media (max-width: 900px) {
   .admin-tabbar {
@@ -1013,6 +1061,7 @@ body {
   .builder-topbar .form-group,
   .builder-topbar > button {
     width: 100%;
+    flex: 0 0 auto !important;
   }
   .exercise-edit-row {
     grid-template-columns: 1fr 1fr;

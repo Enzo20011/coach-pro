@@ -459,6 +459,14 @@ h1, h2, h3, h4, h5, h6 {
   flex-shrink: 0;
 }
 
+.nav-link-mobile-only { display: none; }
+
+@media (max-width: 480px) {
+  .nav-actions { gap: 6px; }
+  .nav-actions .btn-ingresar { display: none; }
+  .nav-link-mobile-only { display: block; }
+}
+
 .menu-toggle {
   background: rgba(255,255,255,0.06);
   border: 1px solid var(--border-subtle);
@@ -2100,7 +2108,7 @@ h1, h2, h3, h4, h5, h6 {
   bottom: 72px;
   right: 16px;
   z-index: 999;
-  display: flex;
+  display: none;
   flex-direction: column;
   align-items: flex-end;
   gap: 8px;
@@ -2350,6 +2358,8 @@ h1, h2, h3, h4, h5, h6 {
   bottom: 28px;
   left: 50%;
   transform: translateX(-50%) translateY(120px);
+  opacity: 0;
+  visibility: hidden;
   background: rgba(12,16,26,0.95);
   border: 1px solid var(--primary);
   color: var(--text-white);
@@ -2362,14 +2372,22 @@ h1, h2, h3, h4, h5, h6 {
   display: flex;
   align-items: center;
   gap: 10px;
-  transition: transform 0.38s var(--ease-smooth);
+  transition: transform 0.38s var(--ease-smooth), opacity 0.38s var(--ease-smooth), visibility 0.38s;
   pointer-events: none;
   white-space: nowrap;
   backdrop-filter: blur(12px);
 }
 
-.toast-notification.show { transform: translateX(-50%) translateY(0); }
-.toast-notification i { color: var(--primary); font-size: 1rem; }
+.toast-notification.show { transform: translateX(-50%) translateY(0); opacity: 1; visibility: visible; }
+.toast-notification i { color: var(--primary); font-size: 1rem; flex-shrink: 0; }
+
+@media (max-width: 480px) {
+  .toast-notification {
+    white-space: normal;
+    width: calc(100vw - 24px);
+    bottom: 80px;
+  }
+}
 
 /* ==========================================================================
    TABLET (min-width: 768px)
@@ -2378,7 +2396,7 @@ h1, h2, h3, h4, h5, h6 {
   html { font-size: 16px; }
   body { padding-bottom: 0; }
   .mobile-sticky-bar { display: none; }
-  .whatsapp-widget-container { bottom: 30px; right: 28px; }
+  .whatsapp-widget-container { display: flex; bottom: 30px; right: 28px; }
 
   .section { padding: 80px 0; }
   .section-title { font-size: 2.4rem; }
