@@ -13,7 +13,7 @@ const styles = StyleSheet.create({
 
   header: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'flex-start', borderBottomWidth: 2, borderBottomColor: '#0f172a', paddingBottom: 12, marginBottom: 16 },
   brandRow: { flexDirection: 'row', alignItems: 'center', gap: 8 },
-  brandIcon: { width: 26, height: 26, backgroundColor: '#0f172a', color: '#00e676', borderRadius: 4, textAlign: 'center', paddingTop: 6, fontFamily: 'Helvetica-Bold', fontSize: 11 },
+  brandIcon: { width: 26, height: 26, backgroundColor: '#0f172a', color: '#5fbf8a', borderRadius: 4, textAlign: 'center', paddingTop: 6, fontFamily: 'Helvetica-Bold', fontSize: 11 },
   brandTitle: { fontFamily: 'Helvetica-Bold', fontSize: 15, color: '#0f172a' },
   brandSub: { fontSize: 8, color: '#64748b', marginTop: 2, textTransform: 'uppercase' },
   docMeta: { alignItems: 'flex-end' },
@@ -32,7 +32,7 @@ const styles = StyleSheet.create({
   dayBlock: { marginBottom: 16 },
   dayHeader: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', backgroundColor: '#0f172a', color: '#ffffff', paddingVertical: 6, paddingHorizontal: 10, borderRadius: 4, marginBottom: 6 },
   dayTitle: { fontFamily: 'Helvetica-Bold', fontSize: 10 },
-  dayBadge: { fontSize: 7, fontFamily: 'Helvetica-Bold', backgroundColor: 'rgba(255,255,255,0.15)', color: '#00e676', paddingHorizontal: 6, paddingVertical: 2, borderRadius: 3 },
+  dayBadge: { fontSize: 7, fontFamily: 'Helvetica-Bold', backgroundColor: 'rgba(255,255,255,0.15)', color: '#5fbf8a', paddingHorizontal: 6, paddingVertical: 2, borderRadius: 3 },
 
   table: { borderWidth: 1, borderColor: '#e2e8f0' },
   tableHeadRow: { flexDirection: 'row', backgroundColor: '#e2e8f0' },

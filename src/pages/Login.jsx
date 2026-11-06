@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 import { Link, useNavigate, useSearchParams } from 'react-router-dom';
+import GuestButton from '../components/ui/GuestButton.jsx';
 import clsx from 'clsx';
 import { useAuth } from '../context/AuthContext.jsx';
 import AuthAlert from '../components/ui/AuthAlert.jsx';
@@ -72,7 +73,7 @@ export default function Login() {
         <div className={styles.loginBrandHeader}>
           <Link to="/" className={a['brand-badge']}>
             <div className={a['brand-icon']}>
-              <i className="fa-solid fa-bolt" />
+              <i className="fa-solid fa-dumbbell" />
             </div>
             <span>COACH PRO</span>
           </Link>
@@ -228,6 +229,10 @@ export default function Login() {
         </div>
 
         <div style={{ textAlign: 'center', marginTop: 18 }}>
+          <GuestButton className={clsx(a.btn, a['btn-secondary'])}>Entrar como invitado</GuestButton>
+          <p style={{ color: 'var(--text-muted)', fontSize: '0.78rem', margin: '8px 0 18px' }}>
+            Datos de prueba, sin cuenta. Quedan solo en este navegador.
+          </p>
           <Link to="/" style={{ color: 'var(--text-muted)', fontSize: '0.85rem', textDecoration: 'none' }}>
             <i className="fa-solid fa-arrow-left" /> Volver a la página principal
           </Link>

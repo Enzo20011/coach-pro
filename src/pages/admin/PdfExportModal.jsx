@@ -7,24 +7,24 @@ import RoutinePdfDocument from './RoutinePdfDocument.jsx';
 import a from '../../styles/admin.module.css';
 
 function buildRoutineSummaryText({ student, routine, coach }) {
-  let summary = `📋 *COACH PRO - FICHA DE ENTRENAMIENTO*\n`;
-  summary += `⚡ *Coach:* ${coach.displayName} (${coach.specialty})\n`;
-  summary += `👤 *Alumno:* ${student.name}\n`;
-  summary += `🎯 *Objetivo:* ${student.goal}\n`;
-  summary += `🔥 *Fase:* ${routine.title || 'Fuerza & Hipertrofia'}\n`;
-  summary += `💰 *Tarifa Personalizado:* ${formatARS(coach.pricePersonalizado)}/mes\n`;
-  if (routine.notes) summary += `💡 *Directriz:* ${routine.notes}\n`;
+  let summary = `*COACH PRO - FICHA DE ENTRENAMIENTO*\n`;
+  summary += `*Coach:* ${coach.displayName} (${coach.specialty})\n`;
+  summary += `*Alumno:* ${student.name}\n`;
+  summary += `*Objetivo:* ${student.goal}\n`;
+  summary += `*Fase:* ${routine.title || 'Fuerza & Hipertrofia'}\n`;
+  summary += `*Tarifa Personalizado:* ${formatARS(coach.pricePersonalizado)}/mes\n`;
+  if (routine.notes) summary += `*Directriz:* ${routine.notes}\n`;
   summary += `\n--------------------------------\n`;
 
   sortDayKeys(Object.keys(routine.days || {})).forEach((k) => {
     const day = routine.days[k];
-    summary += `\n📌 *${day.name || k}*\n`;
+    summary += `\n*${day.name || k}*\n`;
     (day.exercises || []).forEach((ex, i) => {
       summary += `${i + 1}. *${ex.name}*: ${ex.sets}x${ex.reps} (${ex.rir}) - Pausa: ${ex.rest}${ex.cue ? ` [Cue: ${ex.cue}]` : ''}\n`;
     });
   });
 
-  summary += `\n📲 Acceso a tu app móvil: ${window.location.origin}/alumno?id=${student.id}\n`;
+  summary += `\nAcceso a tu app móvil: ${window.location.origin}/alumno?id=${student.id}\n`;
   return summary;
 }
 

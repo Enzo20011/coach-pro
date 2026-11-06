@@ -22,11 +22,6 @@
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://coachpro.app/transformaciones.html</loc>
-    <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
     <loc>https://coachpro.app/faq.html</loc>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>

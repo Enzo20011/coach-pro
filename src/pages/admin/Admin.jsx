@@ -56,7 +56,7 @@ function cleanDraftDays(days) {
 export default function Admin() {
   useDocumentMeta({ title: 'Panel de Control | COACH PRO' });
 
-  const { user, coach, loading, logout, updateCoachPrice } = useAuth();
+  const { user, coach, loading, logout, resetGuest, updateCoachPrice } = useAuth();
   const showToast = useToast();
   const queryClient = useQueryClient();
 
@@ -362,6 +362,14 @@ export default function Admin() {
         Saltar al contenido
       </a>
 
+      {user.isDemo && (
+        <div style={{ display: 'flex', gap: 12, flexWrap: 'wrap', alignItems: 'center', justifyContent: 'center', padding: '8px 16px', fontSize: '0.8rem', color: 'var(--text-muted)', borderBottom: '1px solid var(--border-subtle)' }}>
+          <span>Modo invitado: los datos son de prueba y quedan solo en este navegador.</span>
+          <button type="button" onClick={resetGuest} style={{ background: 'none', color: 'var(--primary)', textDecoration: 'underline', cursor: 'pointer', fontSize: '0.8rem' }}>
+            Volver a los datos originales
+          </button>
+        </div>
+      )}
       <AdminNavbar coach={coach} onEditRate={() => setEditRateOpen(true)} onLogout={() => setConfirmLogoutOpen(true)} />
 
       <div className={a['admin-layout']}>

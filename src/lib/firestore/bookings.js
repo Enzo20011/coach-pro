@@ -1,5 +1,6 @@
 import { collection, doc, getDocs, query, setDoc, updateDoc, where } from 'firebase/firestore';
 import { db } from '../../firebase.js';
+import * as demo from '../demo/localStore.js';
 
 const COL = 'bookings';
 
@@ -24,14 +25,17 @@ export function buildSlotId(coachId, dateLabel, time) {
 }
 
 export async function getBookingsForCoach(coachId) {
+  if (demo.isDemo()) return demo.listWhere(COL, 'coachId', coachId);
   const snap = await getDocs(query(collection(db, COL), where('coachId', '==', coachId)));
   return snap.docs.map((d) => ({ id: d.id, ...d.data() }));
 }
 
 export async function createBooking(id, data) {
+  if (demo.isDemo()) return demo.setDoc(COL, id, data);
   await setDoc(doc(db, COL, id), data);
 }
 
 export async function updateBooking(id, partial) {
+  if (demo.isDemo()) return demo.updateDoc(COL, id, partial);
   await updateDoc(doc(db, COL, id), partial);
 }

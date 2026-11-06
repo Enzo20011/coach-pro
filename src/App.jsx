@@ -3,7 +3,6 @@ import MarketingLayout from './layouts/MarketingLayout.jsx';
 import Home from './pages/marketing/Home.jsx';
 import Planes from './pages/marketing/Planes.jsx';
 import RutinaDemo from './pages/marketing/RutinaDemo.jsx';
-import Transformaciones from './pages/marketing/Transformaciones.jsx';
 import Faq from './pages/marketing/Faq.jsx';
 import Privacidad from './pages/marketing/Privacidad.jsx';
 import Terminos from './pages/marketing/Terminos.jsx';
@@ -21,7 +20,6 @@ export default function App() {
         <Route path="/" element={<Home />} />
         <Route path="/planes" element={<Planes />} />
         <Route path="/rutina-demo" element={<RutinaDemo />} />
-        <Route path="/transformaciones" element={<Transformaciones />} />
         <Route path="/faq" element={<Faq />} />
         <Route path="/privacidad" element={<Privacidad />} />
         <Route path="/terminos" element={<Terminos />} />

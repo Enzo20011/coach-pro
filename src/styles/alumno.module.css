@@ -9,12 +9,12 @@
   --bg-app: #060810;
   --bg-surface: #0c1020;
   --bg-card: rgba(14, 20, 34, 0.92);
-  --bg-card-active: rgba(0, 255, 135, 0.07);
+  --bg-card-active: rgba(95, 191, 138, 0.07);
 
-  --primary: #00ff87;
-  --primary-dim: rgba(0, 255, 135, 0.16);
-  --primary-glow: rgba(0, 255, 135, 0.38);
-  --accent-cyan: #00d4ff;
+  --primary: #5fbf8a;
+  --primary-dim: rgba(95, 191, 138, 0.16);
+  --primary-glow: rgba(95, 191, 138, 0.38);
+  --accent-cyan: #5fbf8a;
 
   /* Danger / destructive actions — same value as global.css & admin.module.css. */
   --danger: #ff5e57;
@@ -31,7 +31,7 @@
 
   --border-subtle: rgba(255, 255, 255, 0.07);
   --border-medium: rgba(255, 255, 255, 0.12);
-  --border-accent: rgba(0, 255, 135, 0.38);
+  --border-accent: rgba(95, 191, 138, 0.38);
 
   --font-heading: 'Outfit', sans-serif;
   --font-body: 'Plus Jakarta Sans', sans-serif;
@@ -106,8 +106,8 @@ html {
 @media (min-width: 640px) {
   .alumno-root {
     background:
-      radial-gradient(circle at 18% 12%, rgba(0, 255, 135, 0.12) 0%, transparent 55%),
-      radial-gradient(circle at 85% 88%, rgba(0, 212, 255, 0.10) 0%, transparent 55%),
+      radial-gradient(circle at 18% 12%, rgba(95, 191, 138, 0.12) 0%, transparent 55%),
+      radial-gradient(circle at 85% 88%, rgba(95, 191, 138, 0.10) 0%, transparent 55%),
       var(--bg-app);
     box-shadow: 0 40px 100px rgba(0, 0, 0, 0.65), 0 0 0 1px var(--border-medium);
   }
@@ -126,7 +126,7 @@ html {
   transform: translateX(-50%);
   width: 360px;
   height: 360px;
-  background: radial-gradient(circle, rgba(0, 255, 135, 0.07) 0%, transparent 65%);
+  background: radial-gradient(circle, rgba(95, 191, 138, 0.07) 0%, transparent 65%);
   filter: blur(60px);
   pointer-events: none;
   z-index: 0;
@@ -222,7 +222,7 @@ h1, h2, h3, h4, h5, h6 {
   right: -60px;
   width: 220px;
   height: 220px;
-  background: radial-gradient(circle, rgba(0, 255, 135, 0.08) 0%, transparent 65%);
+  background: radial-gradient(circle, rgba(95, 191, 138, 0.08) 0%, transparent 65%);
   pointer-events: none;
 }
 
@@ -349,8 +349,8 @@ h1, h2, h3, h4, h5, h6 {
    ========================================================================== */
 .coach-note-alert {
   margin: 16px 18px 0 18px;
-  background: linear-gradient(135deg, rgba(0, 212, 255, 0.08) 0%, rgba(0, 255, 135, 0.04) 100%);
-  border: 1px solid rgba(0, 212, 255, 0.25);
+  background: linear-gradient(135deg, rgba(95, 191, 138, 0.08) 0%, rgba(95, 191, 138, 0.04) 100%);
+  border: 1px solid rgba(95, 191, 138, 0.25);
   padding: 13px 16px;
   border-radius: var(--radius-md);
   display: flex;
@@ -477,8 +477,8 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 .exercise-client-card.all-done {
-  border-color: rgba(0, 255, 135, 0.35);
-  background: rgba(0, 255, 135, 0.05);
+  border-color: rgba(95, 191, 138, 0.35);
+  background: rgba(95, 191, 138, 0.05);
 }
 
 .exercise-client-header {
@@ -505,7 +505,7 @@ h1, h2, h3, h4, h5, h6 {
   background: var(--primary-dim);
   padding: 3px 10px;
   border-radius: var(--radius-full);
-  border: 1px solid rgba(0, 255, 135, 0.2);
+  border: 1px solid rgba(95, 191, 138, 0.2);
 }
 
 /* Coach cue */
@@ -556,8 +556,8 @@ h1, h2, h3, h4, h5, h6 {
 .set-row:active { transform: scale(0.98); }
 
 .set-row.completed {
-  background: rgba(0, 255, 135, 0.07);
-  border-color: rgba(0, 255, 135, 0.3);
+  background: rgba(95, 191, 138, 0.07);
+  border-color: rgba(95, 191, 138, 0.3);
 }
 
 .set-left-group {
@@ -635,7 +635,7 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 .btn-trigger-rest:hover, .btn-trigger-rest:active {
-  background: rgba(0, 255, 135, 0.25);
+  background: rgba(95, 191, 138, 0.25);
   box-shadow: 0 0 16px var(--primary-glow);
 }
 
@@ -690,7 +690,6 @@ h1, h2, h3, h4, h5, h6 {
   font-weight: 900;
   color: var(--primary);
   letter-spacing: -0.02em;
-  text-shadow: 0 0 20px var(--primary-glow);
   min-width: 55px;
   text-align: center;
 }

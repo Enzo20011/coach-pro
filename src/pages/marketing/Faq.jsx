@@ -6,20 +6,17 @@ import useDocumentMeta from '../../hooks/useDocumentMeta.js';
 export default function Faq() {
   useDocumentMeta({
     title: 'Preguntas Frecuentes | COACH PRO',
-    description: 'Todo lo que necesitás saber antes de sumar tu negocio de entrenador a COACH PRO.',
+    description: 'Lo que suelen preguntar los entrenadores antes de empezar.',
   });
 
   return (
     <section className="section" style={{ background: 'var(--bg-secondary)' }}>
       <div className="container">
         <div className="section-header">
-          <div className="section-tag">
-            <i className="fa-solid fa-circle-question" /> Despeja tus Dudas
-          </div>
           <h2 className="section-title">
-            Preguntas <span>Frecuentes</span>
+            Preguntas frecuentes
           </h2>
-          <p className="section-desc">Todo lo que necesitás saber antes de sumar tu negocio de entrenador a COACH PRO.</p>
+          <p className="section-desc">Lo que suelen preguntar los entrenadores antes de empezar.</p>
         </div>
 
         <div style={{ maxWidth: 780, margin: '0 auto 40px auto' }}>

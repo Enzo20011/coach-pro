@@ -7,7 +7,7 @@ export const faqItems = [
   {
     question: '¿Cómo ven mis alumnos las rutinas que les armo?',
     answer:
-      'Cada alumno recibe un link a su propio portal, donde ve sus ejercicios con series, repeticiones, esfuerzo (RIR) y descansos, y puede marcar sus series a medida que entrena. Vos también podés generar una ficha PDF profesional con tu marca.',
+      'Cada alumno recibe un link a su propio portal, donde ve sus ejercicios con series, repeticiones, esfuerzo (RIR) y descansos, y puede marcar sus series a medida que entrena. Vos también podés exportar la rutina en una ficha PDF.',
   },
   {
     question: '¿Mis datos y los de mis alumnos están separados de los de otros entrenadores?',
@@ -16,11 +16,11 @@ export const faqItems = [
   {
     question: '¿Cuánto cuesta usar COACH PRO?',
     answer:
-      'Armamos un plan a medida según la cantidad de alumnos que gestionás. Escribinos por WhatsApp o creá tu cuenta y coordinamos los detalles directamente con vos.',
+      'Los primeros 7 días son gratis. Después se cobra, con un plan a medida según la cantidad de alumnos que gestionás. Escribinos por WhatsApp y coordinamos los detalles directamente con vos.',
   },
   {
     question: '¿Cómo funciona la agenda de turnos para mis alumnos?',
     answer:
-      'Vos definís tus servicios, precios y horarios disponibles. Tus alumnos reservan un turno online y te llega la solicitud a tu panel, con confirmación automática por WhatsApp.',
+      'Vos definís tus servicios, precios y horarios disponibles. Tus alumnos reservan un turno online y te llega la solicitud a tu panel y la contactás por WhatsApp desde ahí.',
   },
 ];

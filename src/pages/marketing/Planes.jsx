@@ -14,16 +14,8 @@ export default function Planes() {
     <section className="section pricing-section">
       <div className="container">
         <div className="section-header">
-          <div className="section-tag">
-            <i className="fa-solid fa-rocket" /> Para Entrenadores Personales
-          </div>
-          <h2 className="section-title">
-            Hacé crecer tu negocio con <span>COACH PRO</span>
-          </h2>
-          <p className="section-desc">
-            Dejá las planillas sueltas y el WhatsApp desordenado. Gestioná tu marca de entrenador con un panel
-            profesional hecho a tu medida.
-          </p>
+          <h2 className="section-title">Qué incluye COACH PRO</h2>
+          <p className="section-desc">Alumnos, rutinas y turnos en el mismo panel, en lugar de planillas y chats sueltos.</p>
         </div>
 
         <div className="pricing-grid">
@@ -53,8 +45,7 @@ export default function Planes() {
             </ul>
           </div>
 
-          <div className="pricing-card featured">
-            <div className="featured-ribbon">⭐ Lo Más Usado</div>
+          <div className="pricing-card">
             <div className="pricing-header">
               <h3 className="plan-name">
                 <i className="fa-solid fa-dumbbell" style={{ color: 'var(--primary)', marginRight: 8 }} />
@@ -75,7 +66,7 @@ export default function Planes() {
                 <i className="fa-solid fa-check" /> Envío directo por WhatsApp al alumno
               </li>
               <li>
-                <i className="fa-solid fa-check" /> Ficha PDF profesional con tu marca
+                <i className="fa-solid fa-check" /> Ficha de rutina en PDF
               </li>
             </ul>
           </div>
@@ -93,7 +84,7 @@ export default function Planes() {
                 <i className="fa-solid fa-check" /> Calendario de turnos integrado
               </li>
               <li>
-                <i className="fa-solid fa-check" /> Confirmación automática por WhatsApp
+                <i className="fa-solid fa-check" /> Botón para contactar al alumno por WhatsApp
               </li>
               <li>
                 <i className="fa-solid fa-check" /> Panel de solicitudes pendientes
@@ -106,14 +97,14 @@ export default function Planes() {
         </div>
 
         <div className="cta-box" style={{ marginTop: 50 }}>
-          <h2>¿Listo para profesionalizar tu marca de entrenador?</h2>
-          <p>Creá tu cuenta gratis y empezá a usar tu panel hoy mismo, o hablá con nuestro equipo si preferís una demo guiada.</p>
+          <h2>Probalo con tu primer alumno</h2>
+          <p>Los primeros 7 días son gratis y después se cobra. Creá tu cuenta o pedí una demo si preferís que te lo mostremos.</p>
           <div className="cta-buttons">
             <Link className="btn btn-primary" to="/login?tab=register">
-              <i className="fa-solid fa-bolt" /> Crear mi Cuenta Gratis
+              Probar 7 días gratis
             </Link>
             <button className="btn btn-secondary" type="button" onClick={() => open('Demo de COACH PRO', '')}>
-              <i className="fa-solid fa-comments" /> Solicitar una Demo
+              Pedir una demo
             </button>
           </div>
         </div>

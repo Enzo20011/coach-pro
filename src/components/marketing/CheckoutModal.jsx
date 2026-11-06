@@ -31,7 +31,7 @@ export default function CheckoutModal() {
     close();
     const text =
       `¡Hola equipo de COACH PRO! Soy entrenador/a y quiero más información.\n` +
-      `🎯 *Motivo:* ${form.goal}\n👤 *Nombre:* ${form.name}\n📱 *WhatsApp:* ${form.phone}\n✉️ *Email:* ${form.email}\n\n` +
+      `*Motivo:* ${form.goal}\n*Nombre:* ${form.name}\n*WhatsApp:* ${form.phone}\n*Email:* ${form.email}\n\n` +
       `¿Podemos coordinar una charla para conocer la plataforma?`;
     showToast('¡Consulta enviada! Abriendo WhatsApp...');
     setTimeout(() => window.open(platformWhatsAppLink(text), '_blank'), 1000);

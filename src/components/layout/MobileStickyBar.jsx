@@ -6,7 +6,7 @@ export default function MobileStickyBar() {
     <div className="mobile-sticky-bar">
       <div className="sticky-bar-grid">
         <Link className="sticky-action-btn primary" to="/planes">
-          <i className="fa-solid fa-bolt" /> Sumate
+          <i className="fa-solid fa-dumbbell" /> Sumate
         </Link>
         <Link className="sticky-action-btn secondary" to="/rutina-demo">
           <i className="fa-solid fa-mobile-screen-button" /> Ver Demo

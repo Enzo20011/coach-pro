@@ -56,10 +56,10 @@ export default function Reservar() {
 
       const message =
         `¡Hola ${coach.displayName}! Quiero reservar un turno:\n` +
-        `📌 *Servicio:* ${serviceName} (${servicePrice})\n` +
-        `📅 *Fecha:* ${dateLabel}\n⏰ *Horario:* ${time}\n` +
-        `👤 *Nombre:* ${name}\n📱 *Contacto:* ${phone}\n` +
-        (note ? `🎯 *Nota:* ${note}\n\n` : '\n') +
+        `*Servicio:* ${serviceName} (${servicePrice})\n` +
+        `*Fecha:* ${dateLabel}\n⏰ *Horario:* ${time}\n` +
+        `*Nombre:* ${name}\n*Contacto:* ${phone}\n` +
+        (note ? `*Nota:* ${note}\n\n` : '\n') +
         `¡Quedo a la espera de confirmación!`;
 
       showToast('¡Turno enviado! Abriendo WhatsApp...');
@@ -80,7 +80,7 @@ export default function Reservar() {
         <div className="container" style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
           <Link to="/" className="logo">
             <span className="logo-badge">
-              <i className="fa-solid fa-bolt" />
+              <i className="fa-solid fa-dumbbell" />
             </span>
             <span>COACH</span> PRO
           </Link>

@@ -152,9 +152,9 @@ export default function AlumnoApp() {
 
   function handleComplete() {
     const message =
-      `¡Hola ${coach.displayName}! 🏋️‍♂️ Acabo de completar el entrenamiento de hoy:\n` +
-      `✅ *Rutina:* ${routine.title}\n` +
-      `📊 *Progreso:* Completé ${completedCount} de ${totalSets} series programadas.\n\n` +
+      `¡Hola ${coach.displayName}! Acabo de completar el entrenamiento de hoy:\n` +
+      `*Rutina:* ${routine.title}\n` +
+      `*Progreso:* Completé ${completedCount} de ${totalSets} series programadas.\n\n` +
       `¡Gran sesión de entrenamiento!`;
     showToast(`¡Felicitaciones ${student.name.split(' ')[0]}! Registraste ${completedCount} de ${totalSets} series.`);
     // Evita registrar la misma sesión varias veces si el alumno toca el botón
@@ -191,7 +191,7 @@ export default function AlumnoApp() {
       <section className={a['student-greeting-box']}>
         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', gap: 10 }}>
           <div>
-            <h2>Hola, {student.name.split(' ')[0]} 👋</h2>
+            <h2>Hola, {student.name.split(' ')[0]}</h2>
             <div className={a['routine-title-pill']} style={{ marginTop: 6 }}>
               <i className="fa-solid fa-dumbbell" /> {routine.title || 'Plan de Entrenamiento'}
             </div>

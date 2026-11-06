@@ -8,7 +8,7 @@ export default function AdminNavbar({ coach, onEditRate, onLogout }) {
       <div style={{ display: 'flex', alignItems: 'center', gap: 14 }}>
         <Link to="/" className={a['brand-badge']}>
           <div className={a['brand-icon']}>
-            <i className="fa-solid fa-bolt" />
+            <i className="fa-solid fa-dumbbell" />
           </div>
           <span>COACH PRO</span>
         </Link>

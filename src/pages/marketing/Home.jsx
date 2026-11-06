@@ -1,4 +1,5 @@
 import { Link } from 'react-router-dom';
+import GuestButton from '../../components/ui/GuestButton.jsx';
 import { platformWhatsAppLink } from '../../lib/whatsapp.js';
 import useDocumentMeta from '../../hooks/useDocumentMeta.js';
 
@@ -22,9 +23,9 @@ const STEPS = [
 
 export default function Home() {
   useDocumentMeta({
-    title: 'COACH PRO | La Plataforma para Entrenadores Personales',
+    title: 'COACH PRO | Panel para entrenadores personales',
     description:
-      'COACH PRO es la plataforma todo-en-uno para entrenadores personales: gestión de alumnos, constructor de rutinas y fichas profesionales, todo en un panel a tu marca.',
+      'Panel para entrenadores personales: alumnos, constructor de rutinas, agenda de turnos y ficha en PDF.',
   });
 
   return (
@@ -34,106 +35,54 @@ export default function Home() {
         <div className="container">
           <div className="hero-grid">
             <div className="hero-content">
-              <div className="hero-badge-container">
-                <span className="live-badge">
-                  <span className="pulse-dot" /> Plataforma para Entrenadores Personales
-                </span>
-              </div>
-
-              <h1 className="hero-title">
-                Profesionalizá tu negocio de entrenador. <br />
-                <span className="highlight">Todo en un solo lugar.</span>
-              </h1>
+              <h1 className="hero-title">Alumnos, rutinas y turnos en un solo panel.</h1>
 
               <p className="hero-subtitle">
-                Gestioná alumnos, diseñá rutinas personalizadas y entregá una experiencia profesional con tu propia
-                marca — todo desde un panel pensado para entrenadores.
+                Cargás a tus alumnos, armás rutinas de hasta 6 días y exportás la ficha en PDF. Cada alumno ve su
+                rutina y marca sus series desde el celular.
               </p>
 
               <div className="hero-cta-group">
                 <Link className="btn btn-primary" to="/login?tab=register">
-                  <i className="fa-solid fa-bolt" /> Crear mi Cuenta Gratis
+                  Probar 7 días gratis
                 </Link>
-                <Link className="btn btn-secondary" to="/rutina-demo">
-                  <i className="fa-solid fa-mobile-screen-button" /> Ver Cómo Funciona
-                </Link>
+                <GuestButton className="btn btn-secondary">Entrar como invitado</GuestButton>
               </div>
-
-              <div className="hero-metrics">
-                <div className="metric-item">
-                  <div className="metric-value">
-                    +150<span>+</span>
-                  </div>
-                  <div className="metric-label">Entrenadores Activos</div>
-                </div>
-                <div className="metric-item">
-                  <div className="metric-value">
-                    +5<span>k</span>
-                  </div>
-                  <div className="metric-label">Rutinas Creadas</div>
-                </div>
-                <div className="metric-item">
-                  <div className="metric-value">
-                    24<span>/7</span>
-                  </div>
-                  <div className="metric-label">Panel Online</div>
-                </div>
-              </div>
+              <p className="hero-subtitle" style={{ fontSize: '0.85rem', marginTop: 14, marginBottom: 0 }}>
+                Los primeros 7 días son gratis y después se cobra. Como invitado entrás sin cuenta, con datos de prueba.
+              </p>
             </div>
 
             <div className="hero-media-wrapper">
               <div className="hero-image-card">
                 <img
-                  src="https://images.unsplash.com/photo-1571019614242-c5c5dee9f50b?q=80&w=1000&auto=format&fit=crop"
-                  alt="Entrenador personal usando COACH PRO para dar seguimiento a un alumno"
+                  src="/img/app-alumno.png"
+                  alt="Pantalla de la app del alumno con la rutina del día 1: ejercicios, series, esfuerzo y descanso"
+                  width="420"
+                  height="640"
                   loading="eager"
                 />
-                <div className="hero-image-overlay" />
-              </div>
-
-              <div className="floating-stat-card stat-top-right">
-                <div className="stat-icon-box">
-                  <i className="fa-solid fa-star" />
-                </div>
-                <div className="stat-text">
-                  <h4>4.9 / 5.0</h4>
-                  <p>+250 Entrenadores nos Recomiendan</p>
-                </div>
-              </div>
-
-              <div className="floating-stat-card stat-bottom-left">
-                <div className="stat-icon-box">
-                  <i className="fa-solid fa-chart-line" />
-                </div>
-                <div className="stat-text">
-                  <h4>+35% más Alumnos</h4>
-                  <p>Retención promedio en 90 días</p>
-                </div>
               </div>
             </div>
           </div>
         </div>
       </section>
 
-      {/* REPUTATION / CREDIBILITY STRIP */}
+      {/* QUE INCLUYE */}
       <section className="reputation-strip">
         <div className="container">
           <div className="reputation-flex">
             <div className="rep-item">
-              <i className="fa-solid fa-lock" />
-              <span>Datos de tus Alumnos Protegidos</span>
+              <span>Constructor de rutinas</span>
             </div>
             <div className="rep-item">
-              <i className="fa-solid fa-dumbbell" />
-              <span>Constructor de Rutinas Ilimitado</span>
+              <span>Agenda de turnos</span>
             </div>
             <div className="rep-item">
-              <i className="fa-regular fa-calendar-check" />
-              <span>Agenda Online Integrada</span>
+              <span>Ficha de rutina en PDF</span>
             </div>
             <div className="rep-item">
-              <i className="fa-solid fa-headset" />
-              <span>Soporte Prioritario</span>
+              <span>App para el alumno</span>
             </div>
           </div>
         </div>
@@ -143,15 +92,8 @@ export default function Home() {
       <section className="section">
         <div className="container">
           <div className="section-header">
-            <div className="section-tag">
-              <i className="fa-solid fa-diagram-project" /> Cómo Funciona
-            </div>
-            <h2 className="section-title">
-              Empezá a usarlo en <span>tres pasos</span>
-            </h2>
-            <p className="section-desc">
-              Sin instalaciones ni curvas de aprendizaje. Tu panel queda listo para trabajar el mismo día.
-            </p>
+            <h2 className="section-title">Cómo se usa</h2>
+            <p className="section-desc">Son tres pasos y no hay nada que instalar.</p>
           </div>
 
           <div className="steps-grid">
@@ -172,13 +114,11 @@ export default function Home() {
       <section className="cta-banner">
         <div className="container">
           <div className="cta-box">
-            <h2>¿Listo para profesionalizar tu marca de entrenador?</h2>
-            <p>
-              Sumate a COACH PRO y empezá a gestionar tus alumnos y rutinas como un negocio profesional desde hoy.
-            </p>
+            <h2>Probalo con tu primer alumno</h2>
+            <p>Creás la cuenta, cargás un alumno y armás su primera rutina. Los primeros 7 días son gratis y después se cobra.</p>
             <div className="cta-buttons">
               <Link className="btn btn-primary" to="/login?tab=register">
-                <i className="fa-solid fa-bolt" /> Crear mi Cuenta
+                Probar 7 días gratis
               </Link>
               <a
                 href={platformWhatsAppLink('Hola! Quiero información sobre COACH PRO para entrenadores')}
@@ -186,7 +126,7 @@ export default function Home() {
                 rel="noopener noreferrer"
                 className="btn btn-whatsapp"
               >
-                <i className="fa-brands fa-whatsapp" /> Hablar con Ventas
+                Escribinos por WhatsApp
               </a>
             </div>
           </div>

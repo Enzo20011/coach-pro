@@ -42,7 +42,7 @@ export default function Activar() {
         <div className={styles.loginBrandHeader}>
           <a href="/" className={a['brand-badge']}>
             <div className={a['brand-icon']}>
-              <i className="fa-solid fa-bolt" />
+              <i className="fa-solid fa-dumbbell" />
             </div>
             <span>COACH PRO</span>
           </a>

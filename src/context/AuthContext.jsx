@@ -3,6 +3,7 @@ import { createUserWithEmailAndPassword, onAuthStateChanged, signInWithEmailAndP
 import { auth } from '../firebase.js';
 import { createCoachProfile, getCoach, updateCoach } from '../lib/firestore/coaches.js';
 import { seedDemoDataIfEmpty } from '../lib/seed.js';
+import { DEMO_UID, enterDemo, exitDemo, isDemo, resetDemo } from '../lib/demo/localStore.js';
 
 // Código de activación manual (gate de venta directa, no es información secreta —
 // se compara en el cliente igual que en el sitio anterior). Ver activar.html/Activar.jsx.
@@ -44,6 +45,12 @@ export function AuthProvider({ children }) {
 
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, async (firebaseUser) => {
+      if (!firebaseUser && isDemo()) {
+        setUser({ uid: DEMO_UID, isDemo: true });
+        setCoach(await getCoach(DEMO_UID));
+        setLoading(false);
+        return;
+      }
       setUser(firebaseUser);
       setCoach(firebaseUser ? await getCoach(firebaseUser.uid) : null);
       setLoading(false);
@@ -92,7 +99,26 @@ export function AuthProvider({ children }) {
     }
   }, []);
 
-  const logout = useCallback(() => signOut(auth), []);
+  const loginAsGuest = useCallback(async () => {
+    enterDemo();
+    setUser({ uid: DEMO_UID, isDemo: true });
+    setCoach(await getCoach(DEMO_UID));
+  }, []);
+
+  const resetGuest = useCallback(() => {
+    resetDemo();
+    window.location.reload();
+  }, []);
+
+  const logout = useCallback(async () => {
+    if (isDemo()) {
+      exitDemo();
+      setUser(null);
+      setCoach(null);
+      return;
+    }
+    await signOut(auth);
+  }, []);
 
   const activate = useCallback(
     async (code) => {
@@ -119,8 +145,8 @@ export function AuthProvider({ children }) {
   );
 
   const value = useMemo(
-    () => ({ user, coach, loading, login, register, logout, activate, refetchCoach, updateCoachPrice }),
-    [user, coach, loading, login, register, logout, activate, refetchCoach, updateCoachPrice]
+    () => ({ user, coach, loading, login, register, logout, loginAsGuest, resetGuest, activate, refetchCoach, updateCoachPrice }),
+    [user, coach, loading, login, register, logout, loginAsGuest, resetGuest, activate, refetchCoach, updateCoachPrice]
   );
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;

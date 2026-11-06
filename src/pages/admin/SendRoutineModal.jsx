@@ -18,10 +18,10 @@ export default function SendRoutineModal({ isOpen, onClose, student, routine, co
   function handleSendWhatsApp() {
     const title = routine?.title || 'Plan de Entrenamiento';
     const message =
-      `¡Hola ${student.name}! 👋\n\n` +
+      `¡Hola ${student.name}!\n\n` +
       `Te saluda tu entrenador *${coach.displayName}* (${coach.specialty}).\n\n` +
       `Tu rutina personalizada de *${title}* ya está lista en tu portal digital de *COACH PRO*.\n\n` +
-      `📲 *Accede a tu rutina aquí:*\n${portalUrl}\n\n` +
+      `*Accede a tu rutina aquí:*\n${portalUrl}\n\n` +
       `Vas a encontrar los ejercicios detallados con series, repeticiones, descansos y notas biomecánicas. Podrás marcar cada serie en el gym.\n\n` +
       `Tarifa de tu plan personalizado: *${formatARS(coach.pricePersonalizado)}/mes*.\n\n` +
       `¡A darlo todo en el gym! Cualquier duda me escribes directamente por acá.`;

@@ -1,28 +1,25 @@
 import { useState } from 'react';
 import { NavLink } from 'react-router-dom';
 import useScrollHeader from '../../hooks/useScrollHeader.js';
-import ScrollProgressBar from './ScrollProgressBar.jsx';
 
 const NAV_LINKS = [
   { to: '/', label: 'Inicio', icon: 'fa-solid fa-house' },
   { to: '/planes', label: 'Sumate', icon: 'fa-solid fa-rocket' },
   { to: '/rutina-demo', label: 'App del Alumno', icon: 'fa-solid fa-mobile-screen-button' },
-  { to: '/transformaciones', label: 'Casos de Éxito', icon: 'fa-solid fa-trophy' },
   { to: '/faq', label: 'FAQ', icon: 'fa-solid fa-circle-question' },
 ];
 
 export default function Header() {
-  const { scrolled, progress } = useScrollHeader();
+  const { scrolled } = useScrollHeader();
   const [menuOpen, setMenuOpen] = useState(false);
 
   return (
     <>
-      <ScrollProgressBar progress={progress} />
       <header className={`header${scrolled ? ' scrolled' : ''}`}>
         <div className="container nav-container">
           <NavLink to="/" className="logo" onClick={() => setMenuOpen(false)}>
             <span className="logo-badge">
-              <i className="fa-solid fa-bolt" />
+              <svg viewBox="0 0 32 32" width="22" height="22" fill="currentColor" aria-hidden="true"><rect x="3" y="10" width="4" height="12" rx="1" /><rect x="7" y="7" width="4" height="18" rx="1" /><rect x="11" y="14.5" width="10" height="3" /><rect x="21" y="7" width="4" height="18" rx="1" /><rect x="25" y="10" width="4" height="12" rx="1" /></svg>
             </span>
             <span>COACH</span> PRO
           </NavLink>

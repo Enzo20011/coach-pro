@@ -26,7 +26,7 @@ export default function WhatsAppWidget() {
             </button>
           </div>
           <div className="bubble-text">
-            ¡Hola! 👋 ¿Querés conocer cómo COACH PRO puede ayudarte a gestionar tu negocio de entrenador?
+            ¡Hola! ¿Querés conocer cómo COACH PRO puede ayudarte a gestionar tu negocio de entrenador?
           </div>
         </div>
       )}

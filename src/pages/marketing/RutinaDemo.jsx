@@ -17,11 +17,8 @@ export default function RutinaDemo() {
     <section className="section workout-demo-section">
       <div className="container">
         <div className="section-header">
-          <div className="section-tag">
-            <i className="fa-solid fa-mobile-screen-button" /> Funcionalidad: App del Alumno
-          </div>
           <h2 className="section-title">
-            Así ven tus <span>alumnos su rutina</span>
+            Así ven tus alumnos su rutina
           </h2>
           <p className="section-desc">
             Este es el portal que recibe cada alumno tuyo: ejercicios, series, esfuerzo (RIR), descansos y tus notas
@@ -45,7 +42,7 @@ export default function RutinaDemo() {
         <div className="workout-phone-container">
           <div className="phone-top-bar">
             <div className="phone-app-brand">
-              <i className="fa-solid fa-bolt" style={{ color: 'var(--primary)' }} />
+              <i className="fa-solid fa-dumbbell" style={{ color: 'var(--primary)' }} />
               <span>COACH PRO APP</span>
             </div>
             <span className="phone-app-badge">Semana 4 • Hipertrofia & Sobrecarga</span>

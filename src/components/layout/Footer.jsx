@@ -9,13 +9,12 @@ export default function Footer() {
           <div className="footer-col">
             <Link className="logo" to="/">
               <span className="logo-badge">
-                <i className="fa-solid fa-bolt" />
+                <i className="fa-solid fa-dumbbell" />
               </span>
               <span>COACH</span> PRO
             </Link>
             <p>
-              La plataforma todo-en-uno para entrenadores personales: gestioná alumnos y rutinas con un panel
-              profesional a tu marca.
+              Panel para entrenadores personales: alumnos, rutinas y turnos en un solo lugar.
             </p>
             <div className="footer-socials">
               <a
@@ -36,7 +35,6 @@ export default function Footer() {
               <Link to="/">Inicio</Link>
               <Link to="/planes">Sumate a COACH PRO</Link>
               <Link to="/rutina-demo">App del Alumno</Link>
-              <Link to="/transformaciones">Casos de Éxito</Link>
               <Link to="/admin" style={{ color: 'var(--primary)', fontWeight: 700 }}>
                 <i className="fa-solid fa-lock" /> Acceso Panel Coach
               </Link>
@@ -49,7 +47,6 @@ export default function Footer() {
               <Link to="/admin">Gestión de Alumnos</Link>
               <Link to="/rutina-demo">Constructor de Rutinas</Link>
               <Link to="/planes">Fichas PDF Profesionales</Link>
-              <Link to="/transformaciones">Casos de Éxito</Link>
             </div>
           </div>
 

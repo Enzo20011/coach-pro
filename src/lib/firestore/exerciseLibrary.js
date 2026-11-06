@@ -1,5 +1,6 @@
 import { deleteField, doc, getDoc, setDoc, updateDoc } from 'firebase/firestore';
 import { db } from '../../firebase.js';
+import * as demo from '../demo/localStore.js';
 
 const COL = 'exerciseLibrary';
 
@@ -10,6 +11,7 @@ const MAX_LIBRARY_SIZE = 300;
 
 /** Un solo doc por coach: { exercises: { [nombreNormalizado]: {name, sets, reps, rir, rest, cue, lastUsedAt} } }. */
 export async function getExerciseLibrary(coachId) {
+  if (demo.isDemo()) return Object.values(demo.getDoc(COL, coachId)?.exercises || {});
   const snap = await getDoc(doc(db, COL, coachId));
   return snap.exists() ? Object.values(snap.data().exercises || {}) : [];
 }
@@ -31,6 +33,22 @@ export async function saveExercisesToLibrary(coachId, exercises) {
   if (validExercises.length === 0) return;
 
   const now = Date.now();
+  if (demo.isDemo()) {
+    const exercises = { ...(demo.getDoc(COL, coachId)?.exercises || {}) };
+    validExercises.forEach((ex) => {
+      exercises[normalizeKey(ex.name)] = {
+        name: ex.name.trim(),
+        sets: ex.sets || '',
+        reps: ex.reps || '',
+        rir: ex.rir || '',
+        rest: ex.rest || '',
+        cue: ex.cue || '',
+        lastUsedAt: now,
+      };
+    });
+    demo.setDoc(COL, coachId, { exercises });
+    return;
+  }
   const updates = {};
   validExercises.forEach((ex) => {
     const key = normalizeKey(ex.name);
