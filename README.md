@@ -9,13 +9,17 @@ Más trabajos en mi portfolio: https://portfolio-fawn-kappa-35.vercel.app
 
 ## Qué tiene
 
-Sitio público: inicio, planes, una rutina de demostración, transformaciones, preguntas frecuentes, privacidad, términos y un botón de WhatsApp.
+Sitio público: inicio, planes, una rutina de demostración, preguntas frecuentes, privacidad, términos y un botón de WhatsApp.
 
 Panel del coach, en `/admin`: resumen, alumnos (con alta de alumnos nuevos), constructor de rutinas con biblioteca de ejercicios y autocompletado, historial de versiones de cada rutina, envío de la rutina al alumno, exportación a PDF, turnos y una pestaña de ayuda.
 
 Portal del alumno, en `/alumno`: muestra la rutina, permite marcar las series completadas y tiene un cronómetro de descanso. El progreso y las sesiones completadas quedan guardados.
 
 Reservas, en `/reservar`: un asistente paso a paso para pedir un turno con un coach.
+
+## Modo invitado
+
+El botón "Entrar como invitado" abre el panel con un coach de ejemplo, sin cuenta. Los datos de ese modo viven en el `localStorage` del navegador (`src/lib/demo/localStore.js`), son propios de cada visitante y no tocan Firebase.
 
 ## Stack
 
